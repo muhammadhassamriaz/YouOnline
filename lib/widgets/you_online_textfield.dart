@@ -1,9 +1,7 @@
-import 'package:youonline/provider/widget_provider.dart';
 import 'package:youonline/utils/size_config.dart';
 import 'package:youonline/utils/styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class YouOnlineTextField extends StatefulWidget {
@@ -30,8 +28,6 @@ class _YouOnlineTextFieldState extends State<YouOnlineTextField> {
 
   @override
   Widget build(BuildContext context) {
-    var _widgetProvider = Provider.of<WidgetProvider>(context);
-
     SizeConfig().init(context);
     return Container(
       decoration: BoxDecoration(

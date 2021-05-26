@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:youonline/component/group_categories.dart';
-import 'package:youonline/model/group.dart';
 import 'package:youonline/provider/user_provider.dart';
 import 'package:youonline/route/group_detail_screen.dart';
 import 'package:youonline/route/search_screen.dart';
@@ -14,7 +13,6 @@ import 'package:youonline/widgets/icon_button.dart';
 import 'package:flutter/material.dart';
 import 'create_group_screen.dart';
 import 'package:provider/provider.dart';
-import 'package:bot_toast/bot_toast.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class GroupScreen extends StatefulWidget {

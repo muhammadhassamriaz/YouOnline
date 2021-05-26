@@ -7,6 +7,7 @@ import 'package:youonline/widgets/you_online_text.dart';
 import 'package:youonline/widgets/you_online_textfield.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class ResetPasswordScreen extends StatelessWidget {
   TextEditingController _passwordTextEditingController =
           TextEditingController(),

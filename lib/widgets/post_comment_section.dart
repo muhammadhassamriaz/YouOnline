@@ -5,6 +5,7 @@ import 'package:youonline/utils/size_config.dart';
 import 'package:youonline/utils/styles.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class PostCommentSection extends StatefulWidget {
   final bool isView;
   final String imageURL;
@@ -23,7 +24,7 @@ class PostCommentSection extends StatefulWidget {
     @required this.postID,
     @required this.onSubmitCallback,
     @required this.onChangedCallback,
-    @required this.comment = "",
+    this.comment = "",
     @required this.imageUploadCallback,
   }) : super(key: key);
 

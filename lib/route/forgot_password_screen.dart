@@ -1,4 +1,3 @@
-import 'package:youonline/route/verify_otp_screen.dart';
 import 'package:youonline/utils/size_config.dart';
 import 'package:youonline/utils/styles.dart';
 import 'package:youonline/widgets/you_online_button.dart';
@@ -7,6 +6,7 @@ import 'package:youonline/widgets/you_online_textfield.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class ForgotPasswordScreen extends StatelessWidget {
   TextEditingController _emailTextEditingController = TextEditingController();
 

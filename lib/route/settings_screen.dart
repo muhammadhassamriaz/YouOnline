@@ -3,7 +3,6 @@ import 'package:youonline/route/change_password_screen.dart';
 import 'package:youonline/route/edit_profile_screen.dart';
 import 'package:youonline/route/my_information_screen.dart';
 import 'package:youonline/route/notification_screen.dart';
-import 'package:youonline/route/privacy_policy_screen.dart';
 import 'package:youonline/route/social_account_screen.dart';
 import 'package:youonline/route/verify_profile_screen.dart';
 import 'package:youonline/utils/color.dart';

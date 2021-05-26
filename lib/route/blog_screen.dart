@@ -6,7 +6,7 @@ import 'package:youonline/utils/color.dart';
 import 'package:youonline/utils/size_config.dart';
 import 'package:youonline/utils/styles.dart';
 import 'package:flutter/material.dart';
-
+// ignore: must_be_immutable
 class BlogScreen extends StatelessWidget {
   TextEditingController searchTextEditingController = TextEditingController();
 

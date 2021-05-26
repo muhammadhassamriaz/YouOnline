@@ -1,7 +1,4 @@
 import 'package:youonline/component/profile_header.dart';
-import 'package:youonline/component/profile_post_section_rich_text.dart';
-import 'package:youonline/model/follower.dart';
-import 'package:youonline/model/following.dart';
 import 'package:youonline/provider/user_provider.dart';
 import 'package:youonline/utils/assets.dart';
 import 'package:youonline/utils/color.dart';
@@ -265,10 +262,11 @@ class _AboutSectionState extends State<AboutSection> {
                             spacing: width * .035,
                             runSpacing: width * .02,
                             children: List.generate(
-                              _userProvider.followerData.followers.length > 5 ?
-                              _userProvider.followerData.followers
-                                  .sublist(0, 4)
-                                  .length : _userProvider.followerData.followers.length,
+                              _userProvider.followerData.followers.length > 5
+                                  ? _userProvider.followerData.followers
+                                      .sublist(0, 4)
+                                      .length
+                                  : _userProvider.followerData.followers.length,
                               (index) {
                                 return FriendTag(
                                   imageURL: _userProvider

@@ -1,8 +1,6 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:provider/provider.dart';
 import 'package:youonline/provider/user_provider.dart';
-import 'package:youonline/route/forgot_password_screen.dart';
-import 'package:youonline/route/main_screen.dart';
 import 'package:youonline/route/registration_screen.dart';
 import 'package:youonline/utils/color.dart';
 import 'package:youonline/utils/size_config.dart';
@@ -12,6 +10,7 @@ import 'package:youonline/widgets/you_online_text.dart';
 import 'package:youonline/widgets/you_online_textfield.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class LoginScreen extends StatelessWidget {
   TextEditingController _userNameTextEditingController =
           TextEditingController(),

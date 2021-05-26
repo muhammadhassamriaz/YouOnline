@@ -1,6 +1,4 @@
 import 'package:youonline/provider/user_provider.dart';
-import 'package:youonline/provider/widget_provider.dart';
-import 'package:youonline/utils/assets.dart';
 import 'package:youonline/utils/color.dart';
 import 'package:youonline/utils/size_config.dart';
 import 'package:youonline/utils/styles.dart';
@@ -8,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
+// ignore: must_be_immutable
 class PostCommentsLikesWidget extends StatelessWidget {
   final bool isView;
   final Function commentButtonCallback;

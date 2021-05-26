@@ -2,7 +2,6 @@ import 'package:youonline/model/page.dart';
 import 'package:youonline/model/timeline_data.dart';
 import 'package:youonline/provider/user_provider.dart';
 import 'package:youonline/route/group_detail_screen.dart';
-import 'package:youonline/route/group_screen.dart';
 import 'package:youonline/route/profile_screen.dart';
 import 'package:youonline/route/single_page_screen.dart';
 import 'package:youonline/utils/assets.dart';
@@ -10,10 +9,10 @@ import 'package:youonline/utils/color.dart';
 import 'package:youonline/utils/size_config.dart';
 import 'package:youonline/utils/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:youonline/widgets/post_card_menu.dart';
 import 'package:provider/provider.dart';
 import 'package:bot_toast/bot_toast.dart';
 
+// ignore: must_be_immutable
 class PostCardHeader extends StatelessWidget {
   final String profileAvatar;
   final String name;

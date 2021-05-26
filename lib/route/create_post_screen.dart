@@ -176,11 +176,10 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                             _userProvider.userAuthenticationToken,
                         context: context,
                         text: _postTextEditingController.text,
+                        feelings: _postProvider.feelings,
                       );
                     } else if (_postTextEditingController.text.isNotEmpty &&
                         _postProvider.gifURL != null) {
-                      print(_postProvider.feelings);
-
                       if (_postProvider.feelings != null) {
                         BotToast.showLoading();
                         await _postProvider.createGIFPostwithFeelings(
@@ -265,6 +264,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                           ),
                           (route) => false);
                     } else {
+                      BotToast.closeAllLoading();
+
                       BotToast.showText(
                         text: 'Please write something.',
                         textStyle: labelTextStyle.copyWith(
@@ -520,6 +521,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                         .contains("video")) {
                                       FilePickerResult result =
                                           await FilePicker.platform.pickFiles(
+                                        allowCompression: true,
                                         allowMultiple: false,
                                         type: FileType.video,
                                       );
@@ -641,6 +643,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     @required String authenticationToken,
     @required BuildContext context,
     @required String text,
+    @required String feelings,
   }) async {
     var uri = Uri.parse(ApiNetwork.BASE_URL + ApiNetwork().createPost);
 
@@ -662,6 +665,10 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       request.files.add(multipartFileSign);
     }
     request.fields['postText'] = text;
+    if (feelings != null && feelings.isNotEmpty) {
+      request.fields["feeling_type"] = "feelings";
+      request.fields["feeling"] = feelings;
+    }
 
     Map<String, String> headers = {
       "Accept": "application/json",

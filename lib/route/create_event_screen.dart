@@ -11,6 +11,7 @@ import 'package:youonline/widgets/you_online_textfield.dart';
 import 'package:dotted_decoration/dotted_decoration.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class CreateEventScreen extends StatelessWidget {
   TextEditingController _titleTextEditingController = TextEditingController(),
       _dateTextEditingController = TextEditingController(),

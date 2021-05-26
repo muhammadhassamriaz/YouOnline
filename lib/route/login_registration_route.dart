@@ -1,5 +1,3 @@
-import 'package:provider/provider.dart';
-import 'package:youonline/provider/user_provider.dart';
 import 'package:youonline/route/login_screen.dart';
 import 'package:youonline/route/registration_screen.dart';
 import 'package:youonline/utils/assets.dart';

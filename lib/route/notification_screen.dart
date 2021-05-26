@@ -1,11 +1,9 @@
 import 'package:youonline/component/notification_settings.dart';
-import 'package:youonline/provider/data_provider.dart';
 import 'package:youonline/utils/color.dart';
 import 'package:youonline/utils/size_config.dart';
 import 'package:youonline/utils/styles.dart';
 import 'package:youonline/widgets/title_header.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class NotificationScreen extends StatefulWidget {
   @override
@@ -16,7 +14,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    var _dataProvider = Provider.of<DataProvider>(context);
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(

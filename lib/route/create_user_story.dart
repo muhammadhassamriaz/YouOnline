@@ -11,6 +11,7 @@ import 'package:dotted_decoration/dotted_decoration.dart';
 import 'package:youonline/widgets/you_online_textfield.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:bot_toast/bot_toast.dart';
 
 class CreateUserStories extends StatefulWidget {
   @override
@@ -100,8 +101,10 @@ class _CreateUserStoriesState extends State<CreateUserStories> {
                   ),
                   child: GestureDetector(
                     onTap: () async {
-                      await ImagePicker.pickImage(source: ImageSource.gallery)
-                          .then((value) {
+                      await ImagePicker.pickImage(
+                        imageQuality: 70,
+                        source: ImageSource.gallery,
+                      ).then((value) {
                         if (value != null) {
                           setState(() {
                             imageFile = value;
@@ -169,7 +172,8 @@ class _CreateUserStoriesState extends State<CreateUserStories> {
                   ),
                   child: GestureDetector(
                     onTap: () async {
-                      await ImagePicker.pickImage(source: ImageSource.gallery)
+                      await ImagePicker.pickImage(
+                              source: ImageSource.gallery, imageQuality: 70)
                           .then((value) {
                         if (value != null) {
                           setState(() {
@@ -220,8 +224,9 @@ class _CreateUserStoriesState extends State<CreateUserStories> {
                                     ),
                                     onPressed: () async {
                                       await ImagePicker.pickImage(
-                                              source: ImageSource.gallery)
-                                          .then((value) {
+                                        imageQuality: 70,
+                                        source: ImageSource.gallery,
+                                      ).then((value) {
                                         if (value != null) {
                                           setState(() {
                                             imageFile = value;
@@ -242,36 +247,36 @@ class _CreateUserStoriesState extends State<CreateUserStories> {
               SizedBox(
                 height: height * .05,
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: SizeConfig.kDefaultSize * 5,
-                ),
-                child: RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: "Note:",
-                        style: labelTextStyle.copyWith(
-                          fontSize: width * .04,
-                          color: primaryColor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      TextSpan(
-                        text:
-                            " Image is optional. User can create story without image as well.",
-                        style: labelTextStyle.copyWith(
-                          fontSize: width * .038,
-                          color: hintTextColor,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: height * .1,
-              ),
+              // Padding(
+              //   padding: EdgeInsets.symmetric(
+              //     horizontal: SizeConfig.kDefaultSize * 5,
+              //   ),
+              //   child: RichText(
+              //     text: TextSpan(
+              //       children: [
+              //         TextSpan(
+              //           text: "Note:",
+              //           style: labelTextStyle.copyWith(
+              //             fontSize: width * .04,
+              //             color: primaryColor,
+              //             fontWeight: FontWeight.bold,
+              //           ),
+              //         ),
+              //         TextSpan(
+              //           text:
+              //               " Image is optional. User can create story without image as well.",
+              //           style: labelTextStyle.copyWith(
+              //             fontSize: width * .038,
+              //             color: hintTextColor,
+              //           ),
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              // ),
+              // SizedBox(
+              //   height: height * .1,
+              // ),
               Padding(
                 padding: EdgeInsets.symmetric(
                   horizontal: SizeConfig.kDefaultSize * 5,
@@ -282,11 +287,23 @@ class _CreateUserStoriesState extends State<CreateUserStories> {
                     setState(() {
                       imageFiles.add(imageFile);
                     });
-                    if (_descriptionTextEditingController.text.length > 0) {
+                    if (_descriptionTextEditingController.text.length > 0 &&
+                        imageFiles.length > 0 &&
+                        imageFile != null) {
                       userProvider.createUserStory(
                         context: context,
-                        description: _descriptionTextEditingController.text,
+                        description:
+                            _descriptionTextEditingController.text ?? "",
                         imageFile: imageFiles ?? [],
+                      );
+                    } else {
+                      BotToast.showText(
+                        text: "Please fill all the fields.",
+                        textStyle: labelTextStyle.copyWith(
+                          fontSize: 12,
+                          color: Colors.white,
+                        ),
+                        contentColor: Colors.red,
                       );
                     }
                   },

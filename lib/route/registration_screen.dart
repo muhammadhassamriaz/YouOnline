@@ -1,10 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:youonline/provider/user_provider.dart';
 import 'package:youonline/provider/widget_provider.dart';
-import 'package:youonline/route/main_screen.dart';
 import 'package:youonline/route/policy_screen.dart';
-import 'package:youonline/route/privacy_policy_screen.dart';
-import 'package:youonline/utils/assets.dart';
 import 'package:youonline/utils/color.dart';
 import 'package:youonline/utils/size_config.dart';
 import 'package:youonline/utils/styles.dart';

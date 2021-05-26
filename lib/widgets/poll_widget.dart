@@ -6,7 +6,6 @@ import 'package:youonline/provider/user_provider.dart';
 import 'package:youonline/utils/color.dart';
 import 'package:youonline/utils/size_config.dart';
 import 'package:youonline/utils/styles.dart';
-import 'package:http/http.dart' as http;
 
 class PollWidget extends StatefulWidget {
   final List<Options> options;

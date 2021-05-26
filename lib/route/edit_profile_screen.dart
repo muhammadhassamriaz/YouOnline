@@ -92,8 +92,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       Spacer(),
                       InkWell(
                         onTap: () async {
-                          ImagePicker.pickImage(source: ImageSource.gallery)
-                              .then((value) {
+                          ImagePicker.pickImage(
+                            source: ImageSource.gallery,
+                            imageQuality: 70,
+                          ).then((value) {
                             setState(() {
                               if (value != null) {
                                 profileAvatar = value;
@@ -184,8 +186,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           Spacer(),
                           InkWell(
                             onTap: () {
-                              ImagePicker.pickImage(source: ImageSource.gallery)
-                                  .then((value) {
+                              ImagePicker.pickImage(
+                                source: ImageSource.gallery,
+                                imageQuality: 70,
+                              ).then((value) {
                                 setState(() {
                                   if (value != null) {
                                     coverPhoto = value;

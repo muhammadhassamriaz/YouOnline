@@ -5,7 +5,6 @@ import 'package:youonline/model/timeline_data.dart';
 import 'package:youonline/model/user_profile_data.dart';
 import 'package:youonline/provider/timeline_provider.dart';
 import 'package:youonline/provider/user_provider.dart';
-import 'package:youonline/provider/widget_provider.dart';
 import 'package:youonline/utils/assets.dart';
 import 'package:youonline/utils/size_config.dart';
 import 'package:youonline/utils/styles.dart';
@@ -51,7 +50,7 @@ class _PostSectionState extends State<PostSection> {
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
-  ScrollController _bouncingScrollController, _smartRefresherController;
+  ScrollController _smartRefresherController;
   List<PostReaction> postReactions = [];
 
   int reactionIndex;
@@ -60,10 +59,8 @@ class _PostSectionState extends State<PostSection> {
     SizeConfig().init(context);
     double height = SizeConfig.kDefaultSize * 100 * 2;
     double width = SizeConfig.kDefaultSize * 100;
-    var _widgetProvider = Provider.of<WidgetProvider>(context);
     var _userProvider = Provider.of<UserProvider>(context);
     return Scaffold(
-      
       backgroundColor: Colors.white,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -210,7 +207,6 @@ class _PostSectionState extends State<PostSection> {
                                     shared = false;
                                   }
 
-                                  bool urlExist = false;
                                   List<Album> album = [];
 
                                   if (_userProvider
@@ -258,7 +254,6 @@ class _PostSectionState extends State<PostSection> {
                                     } else {
                                       imageURL = _userProvider.userTimelineData
                                           .posts.data[timelineIndex].postFile;
-                                      urlExist = true;
                                     }
                                   } else if (_userProvider
                                               .userTimelineData
@@ -277,7 +272,6 @@ class _PostSectionState extends State<PostSection> {
                                         .contains("mp4")) {
                                       videoURL = _userProvider.userTimelineData
                                           .posts.data[timelineIndex].postLink;
-                                      urlExist = true;
                                     } else if (_userProvider
                                                 .userTimelineData
                                                 .posts
@@ -295,11 +289,9 @@ class _PostSectionState extends State<PostSection> {
                                           .posts
                                           .data[timelineIndex]
                                           .postLinkImage;
-                                      urlExist = true;
                                     } else {
                                       imageURL = _userProvider.userTimelineData
                                           .posts.data[timelineIndex].postLink;
-                                      urlExist = true;
                                     }
                                   } else if (_userProvider
                                               .userTimelineData
@@ -315,7 +307,6 @@ class _PostSectionState extends State<PostSection> {
                                           .isNotEmpty) {
                                     iframe = _userProvider.userTimelineData
                                         .posts.data[timelineIndex].postYoutube;
-                                    urlExist = true;
                                   }
                                   if (_userProvider.userTimelineData.posts
                                               .data[timelineIndex].postText !=

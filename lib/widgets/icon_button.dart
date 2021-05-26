@@ -2,6 +2,7 @@ import 'package:youonline/utils/color.dart';
 import 'package:youonline/utils/size_config.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class YouOnlineIconButton extends StatelessWidget {
   final VoidCallback callback;
   final IconData icon;

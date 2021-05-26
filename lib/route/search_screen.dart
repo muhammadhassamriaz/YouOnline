@@ -1,12 +1,9 @@
 import 'dart:io';
 
-import 'package:youonline/model/search.dart';
 import 'package:youonline/provider/user_provider.dart';
-import 'package:youonline/provider/widget_provider.dart';
 import 'package:youonline/route/group_detail_screen.dart';
 import 'package:youonline/route/profile_screen.dart';
 import 'package:youonline/route/single_page_screen.dart';
-import 'package:youonline/utils/assets.dart';
 import 'package:youonline/utils/color.dart';
 import 'package:youonline/utils/size_config.dart';
 import 'package:youonline/utils/styles.dart';
@@ -42,7 +39,7 @@ class _SearchScreenState extends State<SearchScreen> {
     SizeConfig().init(context);
     double height = SizeConfig.kDefaultSize * 100 * 2;
     double width = SizeConfig.kDefaultSize * 100;
-    var _widgetProvider = Provider.of<WidgetProvider>(context);
+
     var _userProvider = Provider.of<UserProvider>(context);
     return Scaffold(
       body: SafeArea(

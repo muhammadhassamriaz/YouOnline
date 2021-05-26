@@ -3,16 +3,13 @@ import 'dart:io';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:youonline/component/post_header.dart';
 import 'package:youonline/provider/create_post_provider.dart';
-import 'package:youonline/provider/data_provider.dart';
 import 'package:youonline/provider/timeline_provider.dart';
 import 'package:youonline/provider/user_provider.dart';
 import 'package:youonline/provider/widget_provider.dart';
-import 'package:youonline/utils/assets.dart';
 import 'package:youonline/utils/color.dart';
 import 'package:youonline/utils/globals.dart';
 import 'package:youonline/utils/size_config.dart';
 import 'package:youonline/utils/styles.dart';
-import 'package:youonline/widgets/menu_tile.dart';
 import 'package:youonline/widgets/you_online_button.dart';
 import 'package:auto_size_text_field/auto_size_text_field.dart';
 import 'package:flutter/material.dart';
@@ -24,12 +21,10 @@ shareBottomSheet(
 }) {
   TextEditingController _postTextEditingController = TextEditingController();
 
-  int selectedIndex = 5;
   SizeConfig().init(context);
   var _widgetProvider = Provider.of<WidgetProvider>(context, listen: false);
   double height = SizeConfig.kDefaultSize * 100 * 2;
   double width = SizeConfig.kDefaultSize * 100;
-  var _dataProvider = Provider.of<DataProvider>(context, listen: false);
 
   Provider.of<PostProvider>(context, listen: false).feelings = null;
   var _timelineProvider = Provider.of<TimelineProvider>(context, listen: false);
@@ -47,13 +42,6 @@ shareBottomSheet(
       return SafeArea(
         child: StatefulBuilder(
           builder: (context, setState) {
-            List<String> containerColor = [
-              Assets.CIRCLE_2,
-              Assets.CIRCLE_3,
-              Assets.CIRCLE_4,
-              Assets.CIRCLE_5,
-              Assets.CIRCLE_6,
-            ];
             return Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: width * .04,

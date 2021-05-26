@@ -6,6 +6,7 @@ import 'package:youonline/utils/styles.dart';
 import 'package:youonline/widgets/you_online_text_button2.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class PageHeader extends StatelessWidget {
   final String fullname, profileAvatar, profileCover, username;
   final int pageId;

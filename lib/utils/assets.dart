@@ -164,7 +164,7 @@ final String groupFollowing = "assets/images/groupFollowing.png";
 final String happy = 'assets/images/happy.png';
 final String loved = 'assets/images/loved.png';
 final String sad = 'assets/images/sad.png';
-final String so_sad = 'assets/images/so_sad.png';
+final String soSad = 'assets/images/so_sad.png';
 final String angry = 'assets/images/angry.png';
 final String confused = 'assets/images/confused.png';
 final String smirk = 'assets/images/smirk.png';
@@ -205,7 +205,7 @@ final List<String> feelings = [
   happy,
   loved,
   sad,
-  so_sad,
+  soSad,
   angry,
   confused,
   smirk,

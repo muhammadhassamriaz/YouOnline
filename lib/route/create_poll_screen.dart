@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:youonline/component/post_header.dart';
 import 'package:youonline/provider/create_post_provider.dart';
-import 'package:youonline/provider/data_provider.dart';
 import 'package:youonline/provider/timeline_provider.dart';
 import 'package:youonline/utils/color.dart';
 import 'package:youonline/utils/size_config.dart';

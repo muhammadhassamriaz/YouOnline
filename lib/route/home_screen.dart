@@ -55,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
-  ScrollController _bouncingScrollController, _smartRefresherController;
+  ScrollController _smartRefresherController;
 
   Future<StoryModel> initStoryData;
 
@@ -625,7 +625,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                             shared = false;
                                           }
 
-                                          bool urlExist = false;
                                           List<Album> album = [];
 
                                           if (shared) {
@@ -746,17 +745,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           timelineIndex]
                                                       .sharedBy
                                                       .postLinkImage;
-                                                  urlExist = true;
                                                 } else {
                                                   imageURL = _timelineProvider
                                                       .timelineData[
                                                           timelineIndex]
                                                       .sharedBy
                                                       .postLink;
-                                                  urlExist = true;
                                                 }
-
-                                                urlExist = true;
                                               }
                                             } else if (_timelineProvider
                                                         .timelineData[
@@ -773,7 +768,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   .timelineData[timelineIndex]
                                                   .sharedBy
                                                   .postYoutube;
-                                              urlExist = true;
                                             }
                                           } else {
                                             if (_timelineProvider
@@ -824,7 +818,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 imageURL = _timelineProvider
                                                     .timelineData[timelineIndex]
                                                     .postFile;
-                                                urlExist = true;
                                               }
                                             } else if (_timelineProvider
                                                         .timelineData[
@@ -842,7 +835,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 videoURL = _timelineProvider
                                                     .timelineData[timelineIndex]
                                                     .postLink;
-                                                urlExist = true;
                                               } else if (_timelineProvider
                                                           .timelineData[
                                                               timelineIndex]
@@ -856,12 +848,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 imageURL = _timelineProvider
                                                     .timelineData[timelineIndex]
                                                     .postLinkImage;
-                                                urlExist = true;
                                               } else {
                                                 imageURL = _timelineProvider
                                                     .timelineData[timelineIndex]
                                                     .postLink;
-                                                urlExist = true;
                                               }
                                             } else if (_timelineProvider
                                                         .timelineData[
@@ -875,7 +865,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                               iframe = _timelineProvider
                                                   .timelineData[timelineIndex]
                                                   .postYoutube;
-                                              urlExist = true;
                                             }
                                             if (_timelineProvider
                                                         .timelineData[

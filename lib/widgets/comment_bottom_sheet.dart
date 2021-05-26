@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:provider/provider.dart';
-import 'package:youonline/model/postComments.dart';
 import 'package:youonline/model/timeline_data.dart';
 import 'package:youonline/provider/timeline_provider.dart';
 import 'package:youonline/provider/user_provider.dart';
@@ -794,11 +793,24 @@ commentBottomSheet(
                                                     reply.user = user;
 
                                                     reply.text = value;
-                                                    setState(() {
-                                                      comments[index]
-                                                          .replies
-                                                          .add(reply);
-                                                    });
+                                                    if (comments[index]
+                                                            .replies !=
+                                                        null) {
+                                                      setState(() {
+                                                        comments[index]
+                                                            .replies
+                                                            .add(reply);
+                                                      });
+                                                    } else {
+                                                      List<Replies> replies =
+                                                          [];
+                                                      setState(() {
+                                                        replies.add(reply);
+                                                        comments[index]
+                                                            .replies = replies;
+                                                      });
+                                                    }
+                                                    print(comments);
                                                     print(comments[index]
                                                         .replies);
                                                     Provider.of<TimelineProvider>(
@@ -912,7 +924,7 @@ commentBottomSheet(
                                           com.user = user;
                                           user.avatar =
                                               _userProvider.user.avatar;
-
+                                          print(comments);
                                           setState(() {
                                             comments.add(com);
                                             _commentTextEditingController.text =
@@ -964,8 +976,9 @@ commentBottomSheet(
 
                                       // });
                                       await ImagePicker.pickImage(
-                                              source: ImageSource.gallery)
-                                          .then((value) async {
+                                        source: ImageSource.gallery,
+                                        imageQuality: 70,
+                                      ).then((value) async {
                                         setState(() {
                                           user.userId =
                                               _userProvider.user.userId;
@@ -982,6 +995,7 @@ commentBottomSheet(
                                           com.imageFile = value;
                                           comments.add(com);
                                         });
+
                                         await uploader.enqueue(
                                           url:
                                               "https://api.youonline.site/api/add-comment",
@@ -1044,6 +1058,7 @@ commentBottomSheet(
                                               "";
                                           comment = "";
                                         });
+                                        print(comments);
 
                                         BotToast.showText(
                                           text: "Comments updated!",

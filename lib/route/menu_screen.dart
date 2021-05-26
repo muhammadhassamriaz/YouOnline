@@ -4,15 +4,11 @@ import 'package:youonline/model/post_reaction.dart';
 import 'package:youonline/provider/user_provider.dart';
 import 'package:youonline/route/login_registration_route.dart';
 import 'package:youonline/route/profile_screen.dart';
-import 'package:youonline/route/search_screen.dart';
-import 'package:youonline/route/settings_screen.dart';
 import 'package:youonline/utils/assets.dart';
 import 'package:youonline/utils/globals.dart';
 import 'package:youonline/utils/prefs.dart';
 import 'package:youonline/utils/size_config.dart';
 import 'package:youonline/utils/styles.dart';
-import 'package:youonline/widgets/expandable_settings_panel.dart';
-import 'package:youonline/widgets/icon_button.dart';
 import 'package:youonline/widgets/settings_route_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:bot_toast/bot_toast.dart';
@@ -26,8 +22,6 @@ class _MenuScreenState extends State<MenuScreen> {
   List<PostReaction> postReactions = [];
 
   int reactionIndex;
-
-  TextEditingController _postTextEditingController = TextEditingController();
 
   String likeReaction;
 

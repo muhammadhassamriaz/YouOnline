@@ -4,18 +4,14 @@ import 'dart:io';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter_uploader/flutter_uploader.dart';
 import 'package:provider/provider.dart';
-import 'package:youonline/helper/api_client.dart';
 import 'package:youonline/model/colors.dart';
 import 'package:youonline/model/page.dart';
 import 'package:youonline/model/timeline_data.dart';
 import 'package:youonline/model/uploader.dart';
 import 'package:youonline/provider/timeline_provider.dart';
 import 'package:youonline/provider/user_provider.dart';
-import 'package:youonline/utils/globals.dart';
 import 'package:youonline/utils/size_config.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:youonline/utils/styles.dart';
-import 'package:youonline/widgets/comment_bottom_sheet.dart';
 import 'package:youonline/widgets/poll_widget.dart';
 import 'package:youonline/widgets/post_actions.dart';
 import 'package:youonline/widgets/post_card_header.dart';
@@ -28,14 +24,13 @@ import 'package:youonline/widgets/post_single_picture.dart';
 import 'package:youonline/widgets/video_player_widget.dart';
 import 'package:youonline/widgets/youtube_player.dart';
 import 'package:flutter/material.dart';
-import 'package:file_picker/src/file_picker_result.dart';
 
-import 'package:youonline/utils/assets.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:universal_html/html.dart' as html;
 import 'package:path/path.dart' as path;
 
+// ignore: must_be_immutable
 class HomePostWidget extends StatefulWidget {
   final String description;
   final String imageURL;
@@ -330,7 +325,8 @@ class _HomePostWidgetState extends State<HomePostWidget> {
                   album: widget.album,
                 )
               else if (widget.videoURL != null &&
-                  !widget.postType.contains("poll"))
+                  !widget.postType.contains("poll") &&
+                  widget.videoURL.isNotEmpty)
                 Container(
                   child: Padding(
                     padding: EdgeInsets.symmetric(
@@ -443,8 +439,10 @@ class _HomePostWidgetState extends State<HomePostWidget> {
             //     .then((value) async {
 
             // });
-            await ImagePicker.pickImage(source: ImageSource.gallery)
-                .then((value) async {
+            await ImagePicker.pickImage(
+              source: ImageSource.gallery,
+              imageQuality: 70,
+            ).then((value) async {
               setState(() {
                 user.userId = _userProvider.user.userId;
                 user.firstName = _userProvider.user.firstName;

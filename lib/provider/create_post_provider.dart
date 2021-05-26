@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +10,6 @@ import 'package:youonline/model/timeline_data.dart';
 import 'package:youonline/provider/timeline_provider.dart';
 import 'package:youonline/provider/user_provider.dart';
 import 'package:http/http.dart' as http;
-import 'package:youonline/route/main_screen.dart';
 import 'package:youonline/utils/styles.dart';
 
 class PostProvider with ChangeNotifier {
@@ -55,7 +53,6 @@ class PostProvider with ChangeNotifier {
   }) async {
     var _userAuthToken = Provider.of<UserProvider>(context, listen: false)
         .userAuthenticationToken;
-    double width = MediaQuery.of(context).size.width;
     Map body;
     if (postColorID != null && !postColorID.contains("null")) {
       if (feeling != null)
@@ -118,7 +115,6 @@ class PostProvider with ChangeNotifier {
   }) async {
     var _userAuthToken = Provider.of<UserProvider>(context, listen: false)
         .userAuthenticationToken;
-    double width = MediaQuery.of(context).size.width;
     Map body;
     if (postColorID != null) {
       body = {
@@ -166,7 +162,6 @@ class PostProvider with ChangeNotifier {
   }) async {
     var _userAuthToken = Provider.of<UserProvider>(context, listen: false)
         .userAuthenticationToken;
-    double width = MediaQuery.of(context).size.width;
 
     if (_userAuthToken != null) {
       BotToast.showLoading();
@@ -204,7 +199,6 @@ class PostProvider with ChangeNotifier {
       @required String feeling}) async {
     var _userAuthToken = Provider.of<UserProvider>(context, listen: false)
         .userAuthenticationToken;
-    double width = MediaQuery.of(context).size.width;
 
     if (_userAuthToken != null) {
       BotToast.showLoading();
@@ -282,7 +276,6 @@ class PostProvider with ChangeNotifier {
     @required String postId,
     @required String optionId,
   }) async {
-    List<Options> options = [];
     int percentage;
     BotToast.showLoading();
     var _userProvider = Provider.of<UserProvider>(context, listen: false);

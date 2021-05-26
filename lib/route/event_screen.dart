@@ -8,6 +8,7 @@ import 'package:youonline/utils/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class EventScreen extends StatelessWidget {
   List<String> categories = [
     "Art",

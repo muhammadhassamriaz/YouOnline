@@ -3,14 +3,11 @@ import 'package:youonline/provider/user_provider.dart';
 import 'package:youonline/provider/widget_provider.dart';
 import 'package:youonline/route/create_user_story.dart';
 import 'package:youonline/route/edit_profile_screen.dart';
-import 'package:youonline/route/profile_settings_screen.dart';
-import 'package:youonline/utils/assets.dart';
 import 'package:youonline/utils/color.dart';
 import 'package:youonline/utils/size_config.dart';
 import 'package:youonline/utils/styles.dart';
 import 'package:youonline/widgets/you_online_button.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:provider/provider.dart';
 
 class ProfileHeader extends StatefulWidget {

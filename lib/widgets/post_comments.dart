@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 
 import 'comment_bottom_sheet.dart';
 
+// ignore: must_be_immutable
 class PostCommentsWidget extends StatefulWidget {
   final String comment;
   final String username;

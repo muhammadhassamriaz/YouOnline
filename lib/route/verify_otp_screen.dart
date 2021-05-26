@@ -6,6 +6,7 @@ import 'package:youonline/widgets/you_online_button.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
+// ignore: must_be_immutable
 class PinVerificationScreen extends StatelessWidget {
   TextEditingController _pinTextEditingController = TextEditingController();
   String pin = "";

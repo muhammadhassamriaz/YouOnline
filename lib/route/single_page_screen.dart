@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:youonline/component/profile_header.dart';
 import 'package:youonline/model/post_reaction.dart';
 import 'package:youonline/model/timeline_data.dart';
 import 'package:youonline/provider/timeline_provider.dart';
 import 'package:youonline/provider/user_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:youonline/route/search_screen.dart';
 import 'package:youonline/utils/assets.dart';
 import 'package:youonline/utils/size_config.dart';
 import 'package:youonline/utils/styles.dart';
 import 'package:youonline/widgets/comment_bottom_sheet.dart';
 import 'package:youonline/widgets/home_post_card.dart';
-import 'package:youonline/widgets/icon_button.dart';
 import 'package:youonline/widgets/page_header.dart';
 import 'package:youonline/widgets/post_card_menu.dart';
 import 'package:youonline/widgets/share_bottom_sheet.dart';
@@ -154,7 +151,6 @@ class _SinglePageScreenState extends State<SinglePageScreen> {
                                     shared = false;
                                   }
 
-                                  bool urlExist = false;
                                   List<Album> album = [];
 
                                   if (shared) {
@@ -243,15 +239,11 @@ class _SinglePageScreenState extends State<SinglePageScreen> {
                                           imageURL = timelineData[timelineIndex]
                                               .sharedBy
                                               .postLinkImage;
-                                          urlExist = true;
                                         } else {
                                           imageURL = timelineData[timelineIndex]
                                               .sharedBy
                                               .postLink;
-                                          urlExist = true;
                                         }
-
-                                        urlExist = true;
                                       }
                                     } else if (timelineData[timelineIndex]
                                                 .sharedBy
@@ -264,7 +256,6 @@ class _SinglePageScreenState extends State<SinglePageScreen> {
                                       iframe = timelineData[timelineIndex]
                                           .sharedBy
                                           .postYoutube;
-                                      urlExist = true;
                                     }
                                   } else {
                                     if (timelineData[timelineIndex]
@@ -297,7 +288,6 @@ class _SinglePageScreenState extends State<SinglePageScreen> {
                                       } else {
                                         imageURL = timelineData[timelineIndex]
                                             .postFile;
-                                        urlExist = true;
                                       }
                                     } else if (timelineData[timelineIndex]
                                                 .postLink !=
@@ -310,7 +300,6 @@ class _SinglePageScreenState extends State<SinglePageScreen> {
                                           .contains("mp4")) {
                                         videoURL = timelineData[timelineIndex]
                                             .postLink;
-                                        urlExist = true;
                                       } else if (timelineData[timelineIndex]
                                                   .postLinkImage !=
                                               null &&
@@ -319,11 +308,9 @@ class _SinglePageScreenState extends State<SinglePageScreen> {
                                               .isNotEmpty) {
                                         imageURL = timelineData[timelineIndex]
                                             .postLinkImage;
-                                        urlExist = true;
                                       } else {
                                         imageURL = timelineData[timelineIndex]
                                             .postLink;
-                                        urlExist = true;
                                       }
                                     } else if (timelineData[timelineIndex]
                                                 .postYoutube !=
@@ -333,7 +320,6 @@ class _SinglePageScreenState extends State<SinglePageScreen> {
                                             .isNotEmpty) {
                                       iframe = timelineData[timelineIndex]
                                           .postYoutube;
-                                      urlExist = true;
                                     }
                                     if (timelineData[timelineIndex].postText !=
                                             null &&
@@ -671,7 +657,6 @@ class _SinglePageScreenState extends State<SinglePageScreen> {
                                       );
                                     },
                                   );
-                                
                                 },
                               ),
                             ),

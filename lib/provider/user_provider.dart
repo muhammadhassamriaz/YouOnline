@@ -1,9 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
 
+// ignore: implementation_imports
+import 'package:async/src/delegate/stream.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+
 import 'package:youonline/helper/api_client.dart';
 import 'package:youonline/model/all_pages.dart';
 import 'package:youonline/model/follower.dart';
@@ -24,10 +28,6 @@ import 'package:youonline/route/single_page_screen.dart';
 import 'package:youonline/route/verify_otp_screen.dart';
 import 'package:youonline/utils/prefs.dart';
 import 'package:youonline/utils/styles.dart';
-import 'package:provider/provider.dart';
-import 'package:async/src/delegate/stream.dart';
-import 'package:path/path.dart' as path;
-import 'package:uuid/uuid.dart';
 
 class UserProvider with ChangeNotifier {
   //AUTHENTICATE USER WHICH IS PROVIDED BY THE ADMIN PANEL
@@ -395,7 +395,10 @@ class UserProvider with ChangeNotifier {
       print("Item form is statuscode 200");
       print(res.body);
       var responseDecode = json.decode(res.body);
-      BotToast.closeAllLoading();
+
+      Provider.of<TimelineProvider>(context, listen: false)
+          .changeTimelineData([]);
+      await getAllUserStories();
       BotToast.showText(
         text: "User Story Created",
         textStyle: labelTextStyle.copyWith(
@@ -404,8 +407,8 @@ class UserProvider with ChangeNotifier {
         ),
         contentColor: Colors.white,
       );
-      Provider.of<TimelineProvider>(context, listen: false)
-          .changeTimelineData([]);
+      BotToast.closeAllLoading();
+
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
@@ -418,6 +421,16 @@ class UserProvider with ChangeNotifier {
       } else {
         return res.body;
       }
+    } else {
+      BotToast.closeAllLoading();
+      BotToast.showText(
+        text: "Something went wrong",
+        textStyle: labelTextStyle.copyWith(
+          fontSize: 12,
+          color: Colors.white,
+        ),
+        contentColor: Colors.red,
+      );
     }
   }
 

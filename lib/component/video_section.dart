@@ -14,6 +14,7 @@ import 'package:youonline/widgets/home_post_card.dart';
 import 'package:youonline/widgets/post_card_menu.dart';
 import 'package:youonline/widgets/share_bottom_sheet.dart';
 
+// ignore: must_be_immutable
 class VideoSection extends StatefulWidget {
   bool isView;
 
@@ -104,20 +105,16 @@ class _VideoSectionState extends State<VideoSection> {
 
                           bool shared = false;
 
-                          if (timelineData[timelineIndex].sharedBy !=
-                              null) {
+                          if (timelineData[timelineIndex].sharedBy != null) {
                             shared = true;
                           } else {
                             shared = false;
                           }
 
-                          bool urlExist = false;
                           List<Album> album = [];
 
                           if (shared) {
-                            if (timelineData[timelineIndex]
-                                        .sharedBy
-                                        .postText !=
+                            if (timelineData[timelineIndex].sharedBy.postText !=
                                     null &&
                                 timelineData[timelineIndex]
                                     .sharedBy
@@ -140,22 +137,17 @@ class _VideoSectionState extends State<VideoSection> {
                                   .sharedBy
                                   .postYoutube;
                             }
-                            if (timelineData[timelineIndex]
-                                        .sharedBy
-                                        .album !=
+                            if (timelineData[timelineIndex].sharedBy.album !=
                                     null &&
                                 timelineData[timelineIndex]
                                         .sharedBy
                                         .album
                                         .length >
                                     0) {
-                              album = timelineData[timelineIndex]
-                                  .sharedBy
-                                  .album;
+                              album =
+                                  timelineData[timelineIndex].sharedBy.album;
                             }
-                            if (timelineData[timelineIndex]
-                                        .sharedBy
-                                        .postFile !=
+                            if (timelineData[timelineIndex].sharedBy.postFile !=
                                     null &&
                                 timelineData[timelineIndex]
                                     .sharedBy
@@ -200,15 +192,11 @@ class _VideoSectionState extends State<VideoSection> {
                                   imageURL = timelineData[timelineIndex]
                                       .sharedBy
                                       .postLinkImage;
-                                  urlExist = true;
                                 } else {
                                   imageURL = timelineData[timelineIndex]
                                       .sharedBy
                                       .postLink;
-                                  urlExist = true;
                                 }
-
-                                urlExist = true;
                               }
                             } else if (timelineData[timelineIndex]
                                         .sharedBy
@@ -221,7 +209,6 @@ class _VideoSectionState extends State<VideoSection> {
                               iframe = timelineData[timelineIndex]
                                   .sharedBy
                                   .postYoutube;
-                              urlExist = true;
                             }
                           } else {
                             if (timelineData[timelineIndex].postYoutube !=
@@ -229,31 +216,24 @@ class _VideoSectionState extends State<VideoSection> {
                                 timelineData[timelineIndex]
                                     .postYoutube
                                     .isNotEmpty) {
-                              iframe =
-                                  timelineData[timelineIndex].postYoutube;
+                              iframe = timelineData[timelineIndex].postYoutube;
                             }
                             if (timelineData[timelineIndex].album != null &&
-                                timelineData[timelineIndex].album.length >
-                                    0) {
+                                timelineData[timelineIndex].album.length > 0) {
                               album = timelineData[timelineIndex].album;
                             }
-                            if (timelineData[timelineIndex].postFile !=
-                                    null &&
+                            if (timelineData[timelineIndex].postFile != null &&
                                 timelineData[timelineIndex]
                                     .postFile
                                     .isNotEmpty) {
                               if (timelineData[timelineIndex]
                                   .postFile
                                   .contains("mp4")) {
-                                videoURL =
-                                    timelineData[timelineIndex].postFile;
+                                videoURL = timelineData[timelineIndex].postFile;
                               } else {
-                                imageURL =
-                                    timelineData[timelineIndex].postFile;
-                                urlExist = true;
+                                imageURL = timelineData[timelineIndex].postFile;
                               }
-                            } else if (timelineData[timelineIndex]
-                                        .postLink !=
+                            } else if (timelineData[timelineIndex].postLink !=
                                     null &&
                                 timelineData[timelineIndex]
                                     .postLink
@@ -261,22 +241,17 @@ class _VideoSectionState extends State<VideoSection> {
                               if (timelineData[timelineIndex]
                                   .postLink
                                   .contains("mp4")) {
-                                videoURL =
-                                    timelineData[timelineIndex].postLink;
-                                urlExist = true;
+                                videoURL = timelineData[timelineIndex].postLink;
                               } else if (timelineData[timelineIndex]
                                           .postLinkImage !=
                                       null &&
                                   timelineData[timelineIndex]
                                       .postLinkImage
                                       .isNotEmpty) {
-                                imageURL = timelineData[timelineIndex]
-                                    .postLinkImage;
-                                urlExist = true;
-                              } else {
                                 imageURL =
-                                    timelineData[timelineIndex].postLink;
-                                urlExist = true;
+                                    timelineData[timelineIndex].postLinkImage;
+                              } else {
+                                imageURL = timelineData[timelineIndex].postLink;
                               }
                             } else if (timelineData[timelineIndex]
                                         .postYoutube !=
@@ -284,28 +259,22 @@ class _VideoSectionState extends State<VideoSection> {
                                 timelineData[timelineIndex]
                                     .postYoutube
                                     .isNotEmpty) {
-                              iframe =
-                                  timelineData[timelineIndex].postYoutube;
-                              urlExist = true;
+                              iframe = timelineData[timelineIndex].postYoutube;
                             }
-                            if (timelineData[timelineIndex].postText !=
-                                    null &&
+                            if (timelineData[timelineIndex].postText != null &&
                                 timelineData[timelineIndex]
                                     .postText
                                     .isNotEmpty) {
-                              postText =
-                                  timelineData[timelineIndex].postText;
+                              postText = timelineData[timelineIndex].postText;
                             }
                           }
 
                           List<Reactions> reactions = [];
 
-                          if (timelineData[timelineIndex].reactions !=
-                                  null &&
+                          if (timelineData[timelineIndex].reactions != null &&
                               timelineData[timelineIndex].reactions.length >
                                   0) {
-                            reactions =
-                                timelineData[timelineIndex].reactions;
+                            reactions = timelineData[timelineIndex].reactions;
                             likeReaction =
                                 reactions[reactionIndex ?? 0].reaction;
                           } else {
@@ -341,20 +310,16 @@ class _VideoSectionState extends State<VideoSection> {
                                         SizeConfig.kDefaultSize * 18,
                                       ),
                                     ),
-                                    clipBehavior:
-                                        Clip.antiAliasWithSaveLayer,
+                                    clipBehavior: Clip.antiAliasWithSaveLayer,
                                     titlePadding: EdgeInsets.all(0),
                                     content: Container(
                                       height: SizeConfig.kDefaultSize * 20,
-                                      width: MediaQuery.of(context)
-                                              .size
-                                              .width -
+                                      width: MediaQuery.of(context).size.width -
                                           20,
                                       decoration: BoxDecoration(
                                         color: Colors.white,
                                       ),
-                                      clipBehavior:
-                                          Clip.antiAliasWithSaveLayer,
+                                      clipBehavior: Clip.antiAliasWithSaveLayer,
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceEvenly,
@@ -365,25 +330,20 @@ class _VideoSectionState extends State<VideoSection> {
                                               onTap: () async {
                                                 if (reactions == null) {
                                                   reactions = [];
-                                                } else if (reactions
-                                                        .length >
+                                                } else if (reactions.length >
                                                     0) {
-                                                  reactions
-                                                      .forEach((element) {
+                                                  reactions.forEach((element) {
                                                     if (element.postId ==
                                                             timelineData[
                                                                     timelineIndex]
                                                                 .id &&
-                                                        element.user
-                                                                .userId ==
+                                                        element.user.userId ==
                                                             _userProvider
-                                                                .user
-                                                                .userId) {
+                                                                .user.userId) {
                                                       setState(() {
                                                         reactionIndex =
-                                                            reactions
-                                                                .indexOf(
-                                                                    element);
+                                                            reactions.indexOf(
+                                                                element);
                                                       });
                                                     }
                                                   });
@@ -392,44 +352,39 @@ class _VideoSectionState extends State<VideoSection> {
                                                     Reactions();
                                                 User user = User();
                                                 reaction.postId =
-                                                    timelineData[
-                                                            timelineIndex]
+                                                    timelineData[timelineIndex]
                                                         .id;
-                                                user.userId = _userProvider
-                                                    .user.userId;
-                                                user.email = _userProvider
-                                                    .user.email;
+                                                user.userId =
+                                                    _userProvider.user.userId;
+                                                user.email =
+                                                    _userProvider.user.email;
 
-                                                user.avatar = _userProvider
-                                                    .user.avatar;
+                                                user.avatar =
+                                                    _userProvider.user.avatar;
                                                 user.username =
-                                                    _userProvider
-                                                        .user.username;
-                                                if (_userProvider.user
-                                                            .firstName !=
+                                                    _userProvider.user.username;
+                                                if (_userProvider
+                                                            .user.firstName !=
                                                         null &&
-                                                    _userProvider.user
-                                                            .lastName !=
+                                                    _userProvider
+                                                            .user.lastName !=
                                                         null) {
-                                                  user.firstName =
-                                                      _userProvider
-                                                          .user.firstName;
-                                                  user.lastName =
-                                                      _userProvider
-                                                          .user.lastName;
+                                                  user.firstName = _userProvider
+                                                      .user.firstName;
+                                                  user.lastName = _userProvider
+                                                      .user.lastName;
                                                 }
 
                                                 reaction.user = user;
-                                                reaction.reaction = emojis[
-                                                        emojiIndex]
-                                                    .replaceAll(
-                                                        "assets/images/",
-                                                        "")
-                                                    .replaceAll(".gif", "");
+                                                reaction.reaction =
+                                                    emojis[emojiIndex]
+                                                        .replaceAll(
+                                                            "assets/images/",
+                                                            "")
+                                                        .replaceAll(".gif", "");
 
                                                 if (reactionIndex != null) {
-                                                  if (reactions.length >
-                                                      0) {
+                                                  if (reactions.length > 0) {
                                                     setState(() {
                                                       reactions.removeAt(
                                                           reactionIndex);
@@ -443,8 +398,7 @@ class _VideoSectionState extends State<VideoSection> {
                                                     });
                                                   } else {
                                                     setState(() {
-                                                      reactions
-                                                          .add(reaction);
+                                                      reactions.add(reaction);
                                                       timelineData[
                                                                   timelineIndex]
                                                               .reactions =
@@ -454,10 +408,8 @@ class _VideoSectionState extends State<VideoSection> {
                                                 } else {
                                                   setState(() {
                                                     reactions.add(reaction);
-                                                    timelineData[
-                                                                timelineIndex]
-                                                            .reactions =
-                                                        reactions;
+                                                    timelineData[timelineIndex]
+                                                        .reactions = reactions;
                                                   });
                                                 }
                                                 Navigator.pop(context);
@@ -468,17 +420,15 @@ class _VideoSectionState extends State<VideoSection> {
                                                   context,
                                                   postID: reaction.postId
                                                       .toString(),
-                                                  reaction:
-                                                      reaction.reaction,
+                                                  reaction: reaction.reaction,
                                                 );
                                               },
                                               child: SizedBox(
-                                                width: SizeConfig
-                                                        .kDefaultSize *
+                                                width: SizeConfig.kDefaultSize *
                                                     10,
-                                                height: SizeConfig
-                                                        .kDefaultSize *
-                                                    10,
+                                                height:
+                                                    SizeConfig.kDefaultSize *
+                                                        10,
                                                 child: Image.asset(
                                                   emojis[emojiIndex],
                                                 ),
@@ -509,8 +459,7 @@ class _VideoSectionState extends State<VideoSection> {
                                 totalLikes: reactions.length,
                               );
                             },
-                            feelings:
-                                timelineData[timelineIndex].postFeeling,
+                            feelings: timelineData[timelineIndex].postFeeling,
                             timelineIndex: timelineIndex,
                             shareButtonCallback: () {
                               shareBottomSheet(
@@ -522,28 +471,24 @@ class _VideoSectionState extends State<VideoSection> {
                             },
                             postSticker:
                                 timelineData[timelineIndex].postSticker,
-                            postID:
-                                timelineData[timelineIndex].id.toString(),
+                            postID: timelineData[timelineIndex].id.toString(),
                             moreButtonCallback: () {
                               showPostMenuBottomSheet(
                                 context,
-                                postID: timelineData[timelineIndex]
-                                    .id
-                                    .toString(),
+                                postID:
+                                    timelineData[timelineIndex].id.toString(),
                                 timelineData: timelineData[timelineIndex],
                               );
                             },
-                            reactionCount: reactions.length == 0
-                                ? null
-                                : reactions.length,
+                            reactionCount:
+                                reactions.length == 0 ? null : reactions.length,
                             description: postText,
                             iframe: iframe,
                             album: album,
                             videoURL: videoURL,
-                            imageURL:
-                                timelineData[timelineIndex].album != null
-                                    ? imageURL
-                                    : null,
+                            imageURL: timelineData[timelineIndex].album != null
+                                ? imageURL
+                                : null,
                             name: timelineData[timelineIndex].page != null
                                 ? timelineData[timelineIndex].page.pageTitle
                                 : timelineData[timelineIndex].user != null
@@ -571,20 +516,15 @@ class _VideoSectionState extends State<VideoSection> {
                                                 .username
                                             : " "
                                     : " ",
-                            profileAvatar: timelineData[timelineIndex]
-                                        .page !=
+                            profileAvatar: timelineData[timelineIndex].page !=
                                     null
                                 ? timelineData[timelineIndex].page.avatar
                                 : timelineData[timelineIndex].user != null
-                                    ? timelineData[timelineIndex]
-                                        .user
-                                        .avatar
+                                    ? timelineData[timelineIndex].user.avatar
                                     : null,
                             reaction: likeReaction,
-                            postType:
-                                timelineData[timelineIndex].type ?? "",
-                            option:
-                                timelineData[timelineIndex].options ?? [],
+                            postType: timelineData[timelineIndex].type ?? "",
+                            option: timelineData[timelineIndex].options ?? [],
                             showCommentBottomSheet: () {
                               commentBottomSheet(
                                 context,

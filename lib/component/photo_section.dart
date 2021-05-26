@@ -5,12 +5,8 @@ import 'package:youonline/model/timeline_data.dart';
 import 'package:youonline/provider/timeline_provider.dart';
 import 'package:youonline/provider/user_provider.dart';
 
-import 'package:youonline/route/album_screen.dart';
-import 'package:youonline/route/media_screen.dart';
 import 'package:youonline/utils/assets.dart';
-import 'package:youonline/utils/color.dart';
 import 'package:youonline/utils/size_config.dart';
-import 'package:youonline/utils/styles.dart';
 import 'package:provider/provider.dart';
 import 'package:youonline/widgets/comment_bottom_sheet.dart';
 import 'package:youonline/widgets/home_post_card.dart';
@@ -115,7 +111,6 @@ class _PhotosSectionState extends State<PhotosSection> {
                             shared = false;
                           }
 
-                          bool urlExist = false;
                           List<Album> album = [];
 
                           if (shared) {
@@ -197,15 +192,11 @@ class _PhotosSectionState extends State<PhotosSection> {
                                   imageURL = timelineData[timelineIndex]
                                       .sharedBy
                                       .postLinkImage;
-                                  urlExist = true;
                                 } else {
                                   imageURL = timelineData[timelineIndex]
                                       .sharedBy
                                       .postLink;
-                                  urlExist = true;
                                 }
-
-                                urlExist = true;
                               }
                             } else if (timelineData[timelineIndex]
                                         .sharedBy
@@ -218,7 +209,6 @@ class _PhotosSectionState extends State<PhotosSection> {
                               iframe = timelineData[timelineIndex]
                                   .sharedBy
                                   .postYoutube;
-                              urlExist = true;
                             }
                           } else {
                             if (timelineData[timelineIndex].postYoutube !=
@@ -242,7 +232,6 @@ class _PhotosSectionState extends State<PhotosSection> {
                                 videoURL = timelineData[timelineIndex].postFile;
                               } else {
                                 imageURL = timelineData[timelineIndex].postFile;
-                                urlExist = true;
                               }
                             } else if (timelineData[timelineIndex].postLink !=
                                     null &&
@@ -253,7 +242,6 @@ class _PhotosSectionState extends State<PhotosSection> {
                                   .postLink
                                   .contains("mp4")) {
                                 videoURL = timelineData[timelineIndex].postLink;
-                                urlExist = true;
                               } else if (timelineData[timelineIndex]
                                           .postLinkImage !=
                                       null &&
@@ -262,10 +250,8 @@ class _PhotosSectionState extends State<PhotosSection> {
                                       .isNotEmpty) {
                                 imageURL =
                                     timelineData[timelineIndex].postLinkImage;
-                                urlExist = true;
                               } else {
                                 imageURL = timelineData[timelineIndex].postLink;
-                                urlExist = true;
                               }
                             } else if (timelineData[timelineIndex]
                                         .postYoutube !=
@@ -274,7 +260,6 @@ class _PhotosSectionState extends State<PhotosSection> {
                                     .postYoutube
                                     .isNotEmpty) {
                               iframe = timelineData[timelineIndex].postYoutube;
-                              urlExist = true;
                             }
                             if (timelineData[timelineIndex].postText != null &&
                                 timelineData[timelineIndex]

@@ -4,6 +4,7 @@ import 'package:youonline/route/image_full_screen.dart';
 import 'package:youonline/utils/size_config.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class PostMultipleImages extends StatelessWidget {
   final Function shareButtonCallback;
   final Function commentButtonCallback;

@@ -2,14 +2,11 @@ import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:youonline/bloc/connectivity.dart';
 import 'package:youonline/provider/user_provider.dart';
-import 'package:youonline/provider/widget_provider.dart';
 import 'package:youonline/route/blog_screen.dart';
 import 'package:youonline/route/event_screen.dart';
 import 'package:youonline/route/friend_request_screen.dart';
 import 'package:youonline/route/group_screen.dart';
-import 'package:youonline/route/home_screen.dart';
 import 'package:youonline/route/page_screen.dart';
-import 'package:youonline/route/profile_screen.dart';
 import 'package:youonline/route/save_post_screen.dart';
 import 'package:youonline/route/videos_screen.dart';
 import 'package:youonline/utils/size_config.dart';
@@ -218,6 +215,7 @@ final List<String> settingTitles = [
 ];
 
 class Globals {
+  // ignore: close_sinks
   static BlocClass blocClass;
 
   static playShareNowNotificationSound() async {
@@ -232,7 +230,7 @@ class Globals {
     @required VoidCallback callback,
   }) async {
     SizeConfig().init(context);
-    var _widgetProvider = Provider.of<WidgetProvider>(context, listen: false);
+
     List<String> emojis = [
       likeGIF,
       loveGIF,

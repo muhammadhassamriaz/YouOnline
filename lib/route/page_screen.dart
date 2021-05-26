@@ -1,12 +1,8 @@
-import 'package:youonline/model/all_pages.dart';
 import 'package:youonline/provider/user_provider.dart';
-import 'package:youonline/route/create_page_screen.dart';
-import 'package:youonline/route/liked_pages_screen.dart';
 import 'package:youonline/route/single_page_screen.dart';
 import 'package:youonline/utils/color.dart';
 import 'package:youonline/utils/size_config.dart';
 import 'package:youonline/utils/styles.dart';
-import 'package:youonline/widgets/page_create_button.dart';
 import 'package:youonline/widgets/users_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +17,7 @@ class _PageScreenState extends State<PageScreen> {
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
-  ScrollController _bouncingScrollController, _smartRefresherController;
+  ScrollController  _smartRefresherController;
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);

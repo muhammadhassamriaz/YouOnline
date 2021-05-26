@@ -1,15 +1,14 @@
 import 'dart:io';
 
 import 'package:youonline/model/timeline_data.dart';
-import 'package:youonline/provider/widget_provider.dart';
 import 'package:youonline/utils/assets.dart';
 import 'package:youonline/utils/size_config.dart';
 import 'package:youonline/utils/styles.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class ImageFullScreen extends StatefulWidget {
   final VoidCallback likedButtonOnPressed;
   final VoidCallback commentButtonCallback;
@@ -42,7 +41,7 @@ class _ImageFullScreenState extends State<ImageFullScreen> {
     SizeConfig().init(context);
     double height = SizeConfig.kDefaultSize * 100 * 2;
     double width = SizeConfig.kDefaultSize * 100;
-    var _widgetProvider = Provider.of<WidgetProvider>(context);
+
     Orientation orientation = MediaQuery.of(context).orientation;
     return Scaffold(
       backgroundColor: Colors.black,

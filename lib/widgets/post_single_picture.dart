@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:youonline/route/image_full_screen.dart';
 import 'package:youonline/utils/assets.dart';
-import 'package:youonline/utils/size_config.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class PostSinglePicture extends StatelessWidget {
   final Function shareButtonCallback;
   final Function commentButtonCallback;

@@ -6,7 +6,6 @@ import 'package:youonline/provider/user_provider.dart';
 import 'package:youonline/provider/data_provider.dart';
 import 'package:youonline/provider/widget_provider.dart';
 import 'package:youonline/services/navigation_service.dart';
-import 'package:youonline/utils/assets.dart';
 import 'package:youonline/utils/color.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
@@ -58,22 +57,27 @@ class MyApp extends StatelessWidget {
         child: StreamBuilder<bool>(
           stream: globals.myBloc,
           builder: (context, snapshot) {
-            return MaterialApp(
-              title: 'You Online',
-              builder: BotToastInit(),
-              navigatorObservers: [
-                BotToastNavigatorObserver(),
-              ],
-              theme: ThemeData(
-                primaryColor: primaryColor,
-                primarySwatch: primarySwatchColor,
-                appBarTheme: AppBarTheme(
-                  brightness: Brightness.light,
+            return GestureDetector(
+              onTap: () {
+                WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
+              },
+              child: MaterialApp(
+                title: 'You Online',
+                builder: BotToastInit(),
+                navigatorObservers: [
+                  BotToastNavigatorObserver(),
+                ],
+                theme: ThemeData(
+                  primaryColor: primaryColor,
+                  primarySwatch: primarySwatchColor,
+                  appBarTheme: AppBarTheme(
+                    brightness: Brightness.light,
+                  ),
                 ),
+                onGenerateRoute: AppRoute.generateRoute,
+                initialRoute: AppRoute.splashScreen,
+                navigatorKey: locator<NavigationService>().navigatorKey,
               ),
-              onGenerateRoute: AppRoute.generateRoute,
-              initialRoute: AppRoute.splashScreen,
-              navigatorKey: locator<NavigationService>().navigatorKey,
             );
           },
         ),

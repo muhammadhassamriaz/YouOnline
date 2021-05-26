@@ -1,5 +1,4 @@
 import 'package:youonline/utils/assets.dart';
-import 'package:youonline/utils/color.dart';
 import 'package:flutter/material.dart';
 
 class WidgetProvider with ChangeNotifier {
