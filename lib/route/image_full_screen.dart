@@ -4,9 +4,9 @@ import 'package:youonline/model/timeline_data.dart';
 import 'package:youonline/utils/assets.dart';
 import 'package:youonline/utils/size_config.dart';
 import 'package:youonline/utils/styles.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 // ignore: must_be_immutable
 class ImageFullScreen extends StatefulWidget {
@@ -116,12 +116,10 @@ class _ImageFullScreenState extends State<ImageFullScreen> {
                                   //     ? height * .7
                                   //     : height * .2,
                                   width: double.infinity,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: CachedNetworkImageProvider(
-                                          widget.album[index].imageURL),
-                                      // fit: BoxFit.cover,
-                                    ),
+                                  decoration: BoxDecoration(),
+                                  child: FadeInImage.memoryNetwork(
+                                    image: widget.album[index].imageURL,
+                                    placeholder: kTransparentImage,
                                   ),
                                 );
                               },
@@ -162,19 +160,15 @@ class _ImageFullScreenState extends State<ImageFullScreen> {
                               //     ? height * .7
                               //     : height * .28,
                               width: double.infinity,
-                              decoration: BoxDecoration(
-                                image: widget.imageURL.contains("http")
-                                    ? DecorationImage(
-                                        image: CachedNetworkImageProvider(
-                                          widget.imageURL,
-                                        ),
-                                        // fit: BoxFit.cover,
-                                      )
-                                    : DecorationImage(
-                                        image: AssetImage(widget.imageURL),
-                                        // fit: BoxFit.cover,
-                                      ),
-                              ),
+
+                              child: widget.imageURL.contains("http")
+                                  ? FadeInImage.memoryNetwork(
+                                      image: widget.imageURL,
+                                      placeholder: kTransparentImage,
+                                      // fit: BoxFit.cover,
+                                    )
+                                  : Image.asset(widget.imageURL),
+                              // fit: BoxFit.cover,
                             );
                           },
                         ),

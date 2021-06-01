@@ -3,7 +3,7 @@ import 'package:youonline/utils/size_config.dart';
 import 'package:youonline/utils/styles.dart';
 import 'package:youonline/widgets/you_online_text_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class GroupCard extends StatelessWidget {
   final String groupName, groupMembers, groupAvatar;
@@ -48,9 +48,9 @@ class GroupCard extends StatelessWidget {
             SizedBox(
               height: SizeConfig.kDefaultSize * 50,
               width: double.infinity,
-              child: CachedNetworkImage(
-                imageUrl: groupAvatar ?? groupCover,
-                fit: BoxFit.fill,
+              child: FadeInImage.memoryNetwork(
+                image: groupAvatar ?? groupCover,
+                placeholder: kTransparentImage,
               ),
             ),
             SizedBox(

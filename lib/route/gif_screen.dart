@@ -5,7 +5,7 @@ import 'package:youonline/utils/color.dart';
 import 'package:youonline/utils/size_config.dart';
 import 'package:youonline/utils/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 // ignore: must_be_immutable
 class SelectGIFScreen extends StatelessWidget {
@@ -134,9 +134,10 @@ class SelectGIFScreen extends StatelessWidget {
                           child: SizedBox(
                             width: width * .42,
                             height: width * .42,
-                            child: CachedNetworkImage(
-                              imageUrl: _postProvider.gifs.gifs.data[index]
-                                  .images.fixedWidthDownsampled.url,
+                            child: FadeInImage.memoryNetwork(
+                              image: _postProvider.gifs.gifs.data[index].images
+                                  .fixedWidthDownsampled.url,
+                              placeholder: kTransparentImage,
                             ),
                           ),
                         );

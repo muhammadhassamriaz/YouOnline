@@ -15,8 +15,7 @@ import 'package:youonline/widgets/post_card_menu.dart';
 import 'package:youonline/widgets/share_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-
+import 'package:transparent_image/transparent_image.dart';
 class GroupDetailScreen extends StatefulWidget {
   final String groupTitle, groupAvatar, groupCoverPhoto, groupInfo;
 
@@ -136,9 +135,10 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
                     SizedBox(
                       height: height * .25,
                       width: double.infinity,
-                      child: CachedNetworkImage(
-                        imageUrl: widget.groupCoverPhoto ?? groupCover,
+                      child: FadeInImage.memoryNetwork(
+                        image: widget.groupCoverPhoto ?? groupCover,
                         fit: BoxFit.cover,
+                        placeholder: kTransparentImage,
                       ),
                     ),
                     Padding(

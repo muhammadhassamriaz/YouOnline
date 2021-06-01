@@ -1,7 +1,5 @@
 import 'package:video_player/video_player.dart';
-import 'package:youonline/utils/color.dart';
-
-import 'package:flick_video_player/flick_video_player.dart';
+import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 
 class VideoPlayerWidget extends StatefulWidget {
@@ -17,50 +15,77 @@ class VideoPlayerWidget extends StatefulWidget {
 }
 
 class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
-  FlickManager flickManager;
+  VideoPlayerController videoPlayerController;
+  ChewieController chewieController;
+  Future<VideoPlayerController> _future;
+
   @override
   void initState() {
     super.initState();
-    if (widget.videoURL != null) {
-      if (widget.videoURL.isNotEmpty) {
-        flickManager = FlickManager(
-          videoPlayerController: VideoPlayerController.network(
-            widget.videoURL,
-          ),
-          autoPlay: false,
-        );
-      }
-    }
+    videoPlayerController = VideoPlayerController.network(widget.videoURL);
+    _future = initVideoPlayer();
+    // if (widget.videoURL != null) {
+    //   if (widget.videoURL.isNotEmpty) {
+    //     videoPlayerController = VideoPlayerController.network(
+    //       widget.videoURL,
+    //     )
+    //       ..initialize().then((value) {
+    //         setState(() {
+    //           videoPlayerController.seekTo(Duration(seconds: 3));
+    //           videoPlayerController.play();
+    //           videoPlayerController.setVolume(0);
+    //         });
+    //       })
+    //       ..videoPlayerOptions;
+    //     chewieController = ChewieController(
+    //       autoInitialize: true,
+    //       videoPlayerController: videoPlayerController,
+    //       autoPlay: true,
+    //       looping: false,
+    //     );
+    //   }
+    // }
   }
 
   @override
   void dispose() {
-    flickManager.flickControlManager.pause();
-    flickManager.dispose();
-
+    videoPlayerController?.dispose();
+    chewieController?.dispose();
     super.dispose();
-    flickManager.flickControlManager.pause();
-    flickManager.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: FlickVideoPlayer(
-        flickManager: flickManager,
-        flickVideoWithControls: FlickVideoWithControls(
-          controls: IconTheme(
-            data: IconThemeData(color: Colors.white),
-            child: FlickPortraitControls(
-              progressBarSettings: FlickProgressBarSettings(
-                bufferedColor: primaryColor.withOpacity(0.2),
-                playedColor: primaryColor,
-                handleColor: primaryColor,
-              ),
-            ),
-          ),
-        ),
-      ),
+    return FutureBuilder<VideoPlayerController>(
+      future: _future,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        return Center(
+            child: videoPlayerController.value.initialized
+                ? AspectRatio(
+                    aspectRatio: videoPlayerController.value.aspectRatio,
+                    child: Chewie(
+                      controller: chewieController,
+                    ),
+                  )
+                : CircularProgressIndicator());
+      },
     );
+  }
+
+  Future<VideoPlayerController> initVideoPlayer() async {
+    await videoPlayerController.initialize();
+    chewieController = ChewieController(
+      videoPlayerController: videoPlayerController,
+      aspectRatio: videoPlayerController.value.aspectRatio,
+      //aspectRatio: 16 / 9,
+      autoInitialize: true,
+      autoPlay: false,
+
+      looping: false,
+      errorBuilder: (context, errorMessage) {
+        return Center(child: Text(errorMessage));
+      },
+    );
+    return videoPlayerController;
   }
 }

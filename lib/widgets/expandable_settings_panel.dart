@@ -115,6 +115,15 @@ class _ExpandableSettingsPanelState extends State<ExpandableSettingsPanel> {
                           ),
                           textScaleFactor: 1,
                         ),
+                        Spacer(),
+                        Text(
+                          "       Launch Soon",
+                          style: labelTextStyle.copyWith(
+                            fontSize: SizeConfig.kDefaultSize * 3,
+                            color: hintTextColor,
+                          ),
+                          textScaleFactor: 1,
+                        ),
                       ],
                     ),
                   );

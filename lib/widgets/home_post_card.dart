@@ -117,10 +117,10 @@ class _HomePostWidgetState extends State<HomePostWidget> {
       print("progress: ${progress.progress} , tag: ${progress.tag}");
       if (task == null) return;
       if (task.isCompleted()) return;
-      setState(() {
-        _tasks[progress.tag] =
-            task.copyWith(progress: progress.progress, status: progress.status);
-      });
+      // setState(() {
+      _tasks[progress.tag] =
+          task.copyWith(progress: progress.progress, status: progress.status);
+      // });
     });
     _resultSubscription = uploader.result.listen((result) {
       print(
@@ -130,9 +130,9 @@ class _HomePostWidgetState extends State<HomePostWidget> {
       final task = _tasks[result.tag];
       if (task == null) return;
 
-      setState(() {
-        _tasks[result.tag] = task.copyWith(status: result.status);
-      });
+      // setState(() {
+      _tasks[result.tag] = task.copyWith(status: result.status);
+      // });
     }, onError: (ex, stacktrace) {
       print("exception: $ex");
       print("stacktrace: $stacktrace" ?? "no stacktrace");
@@ -140,9 +140,9 @@ class _HomePostWidgetState extends State<HomePostWidget> {
       final task = _tasks[exp.tag];
       if (task == null) return;
 
-      setState(() {
-        _tasks[exp.tag] = task.copyWith(status: exp.status);
-      });
+      // setState(() {
+      _tasks[exp.tag] = task.copyWith(status: exp.status);
+      // });
     });
   }
 
@@ -167,7 +167,7 @@ class _HomePostWidgetState extends State<HomePostWidget> {
     SizeConfig().init(context);
     var _timelineProvider = Provider.of<TimelineProvider>(context);
     var _userProvider = Provider.of<UserProvider>(context);
-    print(_timelineProvider.timelineData);
+    double height = MediaQuery.of(context).size.height;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -204,7 +204,7 @@ class _HomePostWidgetState extends State<HomePostWidget> {
                         widget.postColor.color2.replaceAll("#", "0xff"))),
                     textColor: Color(int.tryParse(
                         widget.postColor.textColor.replaceAll("#", "0xff"))),
-                    description: widget.description,
+                    description: _parseHtmlString(widget.description),
                   )
                 else if (!widget.postType.contains("poll"))
                   Padding(
@@ -328,6 +328,7 @@ class _HomePostWidgetState extends State<HomePostWidget> {
                   !widget.postType.contains("poll") &&
                   widget.videoURL.isNotEmpty)
                 Container(
+                  height: height * .4,
                   child: Padding(
                     padding: EdgeInsets.symmetric(
                       vertical: SizeConfig.kDefaultSize * 5,
@@ -371,10 +372,6 @@ class _HomePostWidgetState extends State<HomePostWidget> {
                   widget.likedButtonOnPressed();
                 },
                 isView: widget.isView,
-              ),
-              Divider(
-                color: Colors.grey[300],
-                height: SizeConfig.kDefaultSize * .03,
               ),
               if (widget.comment?.text != null)
                 SizedBox(
@@ -420,102 +417,102 @@ class _HomePostWidgetState extends State<HomePostWidget> {
             ],
           ),
         ),
-        PostCommentSection(
-          imageURL: _userProvider.user.avatar,
-          isView: widget.isView,
-          commentTextEditingController: commentTextEditingController,
-          postID: widget.postID,
-          onChangedCallback: (value) {
-            setState(() {
-              comment = value;
-            });
-          },
-          imageUploadCallback: () async {
-            TimelinePostComments com = TimelinePostComments();
+        // PostCommentSection(
+        //   imageURL: _userProvider.user.avatar,
+        //   isView: widget.isView,
+        //   commentTextEditingController: commentTextEditingController,
+        //   postID: widget.postID,
+        //   onChangedCallback: (value) {
+        //     setState(() {
+        //       comment = value;
+        //     });
+        //   },
+        //   imageUploadCallback: () async {
+        //     TimelinePostComments com = TimelinePostComments();
 
-            User user = User();
+        //     User user = User();
 
-            // await ImagePicker.pickImage(source: ImageSource.gallery)
-            //     .then((value) async {
+        //     // await ImagePicker.pickImage(source: ImageSource.gallery)
+        //     //     .then((value) async {
 
-            // });
-            await ImagePicker.pickImage(
-              source: ImageSource.gallery,
-              imageQuality: 70,
-            ).then((value) async {
-              setState(() {
-                user.userId = _userProvider.user.userId;
-                user.firstName = _userProvider.user.firstName;
-                user.lastName = _userProvider.user.lastName;
-                user.username = _userProvider.user.username;
-                user.email = _userProvider.user.email;
-                user.avatar = _userProvider.user.avatar;
-                com.user = user;
-                com.imageFile = value;
-                widget.comments.add(com);
-              });
-              await uploader.enqueue(
-                url: "https://api.youonline.site/api/add-comment",
-                files: [
-                  FileItem(
-                    filename: path.basename(value.path),
-                    savedDir: path.dirname(value.path),
-                    fieldname: "image",
-                  )
-                ],
-                method: UploadMethod.POST,
-                headers: <String, String>{
-                  "Accept": "application/json",
-                  "Authorization":
-                      "Bearer ${_userProvider.userAuthenticationToken}",
-                },
-                data: {
-                  "post_id": widget.postID,
-                  "text": "",
-                },
-                showNotification: true,
-                tag: "Uploading Image",
-              );
-            });
-          },
-          comment: comment,
-          onSubmitCallback: (value) {
-            TimelinePostComments com = TimelinePostComments();
-            if (value.isNotEmpty) {
-              com.text = value;
-              User user = User();
-              user.userId = _userProvider.user.userId;
-              user.firstName = _userProvider.user.firstName;
-              user.lastName = _userProvider.user.lastName;
-              user.username = _userProvider.user.username;
-              user.email = _userProvider.user.email;
-              user.avatar = _userProvider.user.avatar;
-              com.user = user;
+        //     // });
+        //     await ImagePicker.pickImage(
+        //       source: ImageSource.gallery,
+        //       imageQuality: 70,
+        //     ).then((value) async {
+        //       setState(() {
+        //         user.userId = _userProvider.user.userId;
+        //         user.firstName = _userProvider.user.firstName;
+        //         user.lastName = _userProvider.user.lastName;
+        //         user.username = _userProvider.user.username;
+        //         user.email = _userProvider.user.email;
+        //         user.avatar = _userProvider.user.avatar;
+        //         com.user = user;
+        //         com.imageFile = value;
+        //         widget.comments.add(com);
+        //       });
+        //       await uploader.enqueue(
+        //         url: "https://api.youonline.site/api/add-comment",
+        //         files: [
+        //           FileItem(
+        //             filename: path.basename(value.path),
+        //             savedDir: path.dirname(value.path),
+        //             fieldname: "image",
+        //           )
+        //         ],
+        //         method: UploadMethod.POST,
+        //         headers: <String, String>{
+        //           "Accept": "application/json",
+        //           "Authorization":
+        //               "Bearer ${_userProvider.userAuthenticationToken}",
+        //         },
+        //         data: {
+        //           "post_id": widget.postID,
+        //           "text": "",
+        //         },
+        //         showNotification: true,
+        //         tag: "Uploading Image",
+        //       );
+        //     });
+        //   },
+        //   comment: comment,
+        //   onSubmitCallback: (value) {
+        //     TimelinePostComments com = TimelinePostComments();
+        //     if (value.isNotEmpty) {
+        //       com.text = value;
+        //       User user = User();
+        //       user.userId = _userProvider.user.userId;
+        //       user.firstName = _userProvider.user.firstName;
+        //       user.lastName = _userProvider.user.lastName;
+        //       user.username = _userProvider.user.username;
+        //       user.email = _userProvider.user.email;
+        //       user.avatar = _userProvider.user.avatar;
+        //       com.user = user;
 
-              setState(() {
-                widget.comments.add(com);
-                commentTextEditingController.text = "";
-                comment = "";
-              });
+        //       setState(() {
+        //         widget.comments.add(com);
+        //         commentTextEditingController.text = "";
+        //         comment = "";
+        //       });
 
-              BotToast.showText(
-                text: "Comments are updated!",
-                textStyle: labelTextStyle.copyWith(
-                  fontSize: 12,
-                  color: Colors.black,
-                ),
-                contentColor: Colors.white,
-              );
-              _timelineProvider.addComment(
-                context: context,
-                comment: com.text,
-                postID: widget.postID,
-                userID: _userProvider.user.userId.toString(),
-              );
-              widget.showCommentBottomSheet();
-            }
-          },
-        ),
+        //       BotToast.showText(
+        //         text: "Comments are updated!",
+        //         textStyle: labelTextStyle.copyWith(
+        //           fontSize: 12,
+        //           color: Colors.black,
+        //         ),
+        //         contentColor: Colors.white,
+        //       );
+        //       _timelineProvider.addComment(
+        //         context: context,
+        //         comment: com.text,
+        //         postID: widget.postID,
+        //         userID: _userProvider.user.userId.toString(),
+        //       );
+        //       widget.showCommentBottomSheet();
+        //     }
+        //   },
+        // ),
       ],
     );
   }

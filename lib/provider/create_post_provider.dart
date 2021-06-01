@@ -10,6 +10,7 @@ import 'package:youonline/model/timeline_data.dart';
 import 'package:youonline/provider/timeline_provider.dart';
 import 'package:youonline/provider/user_provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:youonline/route/main_screen.dart';
 import 'package:youonline/utils/styles.dart';
 
 class PostProvider with ChangeNotifier {
@@ -53,6 +54,8 @@ class PostProvider with ChangeNotifier {
   }) async {
     var _userAuthToken = Provider.of<UserProvider>(context, listen: false)
         .userAuthenticationToken;
+    var _timelineProvider =
+        Provider.of<TimelineProvider>(context, listen: false);
     Map body;
     if (postColorID != null && !postColorID.contains("null")) {
       if (feeling != null)
@@ -83,6 +86,14 @@ class PostProvider with ChangeNotifier {
     }
     print(body);
     if (_userAuthToken != null) {
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (_) => MainScreen(
+              isMainScreen: false,
+            ),
+          ),
+          (route) => false);
       await http
           .post(
         ApiNetwork.BASE_URL + ApiNetwork().createPost,
@@ -95,15 +106,32 @@ class PostProvider with ChangeNotifier {
           .then((value) {
         var response = jsonDecode(value.body);
         print(response);
+
+        if (response['success'] != null && response['success']) {
+          TimelineData post = TimelineData.fromJson(response['post']);
+          _timelineProvider.timelineData.insert(0, post);
+          _timelineProvider.changeTimelineData(_timelineProvider.timelineData);
+          print(_timelineProvider.timelineData);
+
+          BotToast.showText(
+            text: "Post successfully created.",
+            contentColor: Colors.white,
+            textStyle: labelTextStyle.copyWith(
+              fontSize: 12,
+              color: Colors.black,
+            ),
+          );
+        } else {
+          BotToast.showText(
+            text: "Server Error.",
+            contentColor: Colors.red,
+            textStyle: labelTextStyle.copyWith(
+              fontSize: 12,
+              color: Colors.white,
+            ),
+          );
+        }
       });
-      BotToast.showText(
-        text: "Post successfully created.",
-        contentColor: Colors.white,
-        textStyle: labelTextStyle.copyWith(
-          fontSize: 12,
-          color: Colors.black,
-        ),
-      );
     }
   }
 
@@ -115,6 +143,8 @@ class PostProvider with ChangeNotifier {
   }) async {
     var _userAuthToken = Provider.of<UserProvider>(context, listen: false)
         .userAuthenticationToken;
+    var _timelineProvider =
+        Provider.of<TimelineProvider>(context, listen: false);
     Map body;
     if (postColorID != null) {
       body = {
@@ -131,6 +161,14 @@ class PostProvider with ChangeNotifier {
       };
     }
     if (_userAuthToken != null) {
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (_) => MainScreen(
+              isMainScreen: false,
+            ),
+          ),
+          (route) => false);
       await http
           .post(
         ApiNetwork.BASE_URL + ApiNetwork().createPost,
@@ -143,15 +181,30 @@ class PostProvider with ChangeNotifier {
           .then((value) {
         var response = jsonDecode(value.body);
         print(response);
+        if (response['success'] != null && response['success']) {
+          TimelineData post = TimelineData.fromJson(response['post']);
+          _timelineProvider.timelineData.insert(0, post);
+          _timelineProvider.changeTimelineData(_timelineProvider.timelineData);
+
+          BotToast.showText(
+            text: "Post successfully created.",
+            contentColor: Colors.white,
+            textStyle: labelTextStyle.copyWith(
+              fontSize: 12,
+              color: Colors.black,
+            ),
+          );
+        } else {
+          BotToast.showText(
+            text: "Server Error.",
+            contentColor: Colors.red,
+            textStyle: labelTextStyle.copyWith(
+              fontSize: 12,
+              color: Colors.white,
+            ),
+          );
+        }
       });
-      BotToast.showText(
-        text: "Post successfully created.",
-        contentColor: Colors.white,
-        textStyle: labelTextStyle.copyWith(
-          fontSize: 12,
-          color: Colors.black,
-        ),
-      );
     }
   }
 
@@ -162,9 +215,17 @@ class PostProvider with ChangeNotifier {
   }) async {
     var _userAuthToken = Provider.of<UserProvider>(context, listen: false)
         .userAuthenticationToken;
-
+    var _timelineProvider =
+        Provider.of<TimelineProvider>(context, listen: false);
     if (_userAuthToken != null) {
-      BotToast.showLoading();
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (_) => MainScreen(
+              isMainScreen: false,
+            ),
+          ),
+          (route) => false);
       await http.post(
         ApiNetwork.BASE_URL + ApiNetwork().createPost,
         headers: <String, String>{
@@ -180,15 +241,30 @@ class PostProvider with ChangeNotifier {
       }).then((value) {
         var response = jsonDecode(value.body);
         print(response);
+        if (response['success'] != null && response['success']) {
+          TimelineData post = TimelineData.fromJson(response['post']);
+          _timelineProvider.timelineData.insert(0, post);
+          _timelineProvider.changeTimelineData(_timelineProvider.timelineData);
+
+          BotToast.showText(
+            text: "Post successfully created.",
+            contentColor: Colors.white,
+            textStyle: labelTextStyle.copyWith(
+              fontSize: 12,
+              color: Colors.black,
+            ),
+          );
+        } else {
+          BotToast.showText(
+            text: "Server Error.",
+            contentColor: Colors.red,
+            textStyle: labelTextStyle.copyWith(
+              fontSize: 12,
+              color: Colors.white,
+            ),
+          );
+        }
       });
-      BotToast.showText(
-        text: "Post successfully created.",
-        contentColor: Colors.white,
-        textStyle: labelTextStyle.copyWith(
-          fontSize: 12,
-          color: Colors.black,
-        ),
-      );
     }
   }
 
@@ -201,7 +277,14 @@ class PostProvider with ChangeNotifier {
         .userAuthenticationToken;
 
     if (_userAuthToken != null) {
-      BotToast.showLoading();
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (_) => MainScreen(
+              isMainScreen: false,
+            ),
+          ),
+          (route) => false);
       await http.post(
         ApiNetwork.BASE_URL + ApiNetwork().createPost,
         headers: <String, String>{
@@ -216,16 +299,32 @@ class PostProvider with ChangeNotifier {
         },
       ).then((value) {
         var response = jsonDecode(value.body);
-        print(response);
+        var _timelineProvider =
+            Provider.of<TimelineProvider>(context, listen: false);
+        if (response['success'] != null && response['success']) {
+          TimelineData post = TimelineData.fromJson(response['post']);
+          _timelineProvider.timelineData.insert(0, post);
+          _timelineProvider.changeTimelineData(_timelineProvider.timelineData);
+
+          BotToast.showText(
+            text: "Post successfully created.",
+            contentColor: Colors.white,
+            textStyle: labelTextStyle.copyWith(
+              fontSize: 12,
+              color: Colors.black,
+            ),
+          );
+        } else {
+          BotToast.showText(
+            text: "Server Error.",
+            contentColor: Colors.red,
+            textStyle: labelTextStyle.copyWith(
+              fontSize: 12,
+              color: Colors.white,
+            ),
+          );
+        }
       });
-      BotToast.showText(
-        text: "Post successfully created.",
-        contentColor: Colors.white,
-        textStyle: labelTextStyle.copyWith(
-          fontSize: 12,
-          color: Colors.black,
-        ),
-      );
     }
   }
 
@@ -253,6 +352,14 @@ class PostProvider with ChangeNotifier {
     }
 
     if (_userProvider.userAuthenticationToken != null) {
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (_) => MainScreen(
+              isMainScreen: false,
+            ),
+          ),
+          (route) => false);
       await http
           .post(
         ApiNetwork.BASE_URL + ApiNetwork().createPost,
@@ -266,7 +373,31 @@ class PostProvider with ChangeNotifier {
         print(err.toString());
       }).then((value) {
         var response = json.decode(value.body);
-        print(response);
+        var _timelineProvider =
+            Provider.of<TimelineProvider>(context, listen: false);
+        if (response['success'] != null && response['success']) {
+          TimelineData post = TimelineData.fromJson(response['post']);
+          _timelineProvider.timelineData.insert(0, post);
+          _timelineProvider.changeTimelineData(_timelineProvider.timelineData);
+
+          BotToast.showText(
+            text: "Post successfully created.",
+            contentColor: Colors.white,
+            textStyle: labelTextStyle.copyWith(
+              fontSize: 12,
+              color: Colors.black,
+            ),
+          );
+        } else {
+          BotToast.showText(
+            text: "Server Error.",
+            contentColor: Colors.red,
+            textStyle: labelTextStyle.copyWith(
+              fontSize: 12,
+              color: Colors.white,
+            ),
+          );
+        }
       });
     }
   }
@@ -404,6 +535,7 @@ class PostProvider with ChangeNotifier {
             .userAuthenticationToken;
     if (_userAuthenticationToken != null) {
       BotToast.showLoading();
+
       await http.post(ApiNetwork.BASE_URL + ApiNetwork().hidePost,
           headers: <String, String>{
             "Accept": "application/json",

@@ -8,7 +8,7 @@ import 'package:youonline/widgets/share_bottom_sheet.dart';
 import 'package:youonline/widgets/you_online_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'package:transparent_image/transparent_image.dart';
 import 'comment_bottom_sheet.dart';
 
 class ReviewPostWidget extends StatefulWidget {
@@ -84,10 +84,12 @@ class _ReviewPostWidgetState extends State<ReviewPostWidget> {
                           width: SizeConfig.kDefaultSize * 15,
                           height: SizeConfig.kDefaultSize * 15,
                           child: widget.profileAvatar != null
-                              ? FadeInImage.assetNetwork(
-                                  placeholder: Assets.PROFILE_AVATAR,
+                              ? FadeInImage.memoryNetwork(
+                                  placeholder: kTransparentImage,
                                   image: widget.profileAvatar,
                                   fit: BoxFit.cover,
+                                  imageScale: 0.5,
+                                  excludeFromSemantics: true,
                                 )
                               : Image.asset(
                                   Assets.PROFILE_AVATAR,
@@ -191,10 +193,12 @@ class _ReviewPostWidgetState extends State<ReviewPostWidget> {
                 SizedBox(
                   width: double.infinity,
                   height: SizeConfig.kDefaultSize * 60,
-                  child: FadeInImage.assetNetwork(
-                    placeholder: Assets.POST_PICTURE_PLACEHOLDER,
+                  child: FadeInImage.memoryNetwork(
+                    placeholder: kTransparentImage,
                     image: widget.imageURL,
                     fit: BoxFit.cover,
+                    imageScale: 0.5,
+                    excludeFromSemantics: true,
                   ),
                 )
               else if (widget.iframe != null)

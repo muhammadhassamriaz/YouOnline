@@ -58,8 +58,8 @@ class TimelineData {
   String postText;
   TimelinePage page;
   Group group;
-  Null event;
-  Null pageEvent;
+  // Null event;
+  // Null pageEvent;
   String postLink;
   String postLinkTitle;
   String postLinkImage;
@@ -142,8 +142,8 @@ class TimelineData {
       this.postText,
       this.page,
       this.group,
-      this.event,
-      this.pageEvent,
+      // this.event,
+      // this.pageEvent,
       this.postLink,
       this.postLinkTitle,
       this.postLinkImage,
@@ -224,8 +224,8 @@ class TimelineData {
     postText = json['postText'];
     page = json['page'] != null ? new TimelinePage.fromJson(json['page']) : null;
     group = json['group'] != null ? new Group.fromJson(json['group']) : null;
-    event = json['event'];
-    pageEvent = json['page_event'];
+    // event = json['event'];
+    // pageEvent = json['page_event'];
     postLink = json['postLink'] ?? "";
     postLinkTitle = json['postLinkTitle'] ?? "";
     postLinkImage = json['postLinkImage'] ?? "";
@@ -342,8 +342,8 @@ class TimelineData {
     data['postText'] = this.postText;
     data['page'] = this.page;
     data['group'] = this.group;
-    data['event'] = this.event;
-    data['page_event'] = this.pageEvent;
+    // data['event'] = this.event;
+    // data['page_event'] = this.pageEvent;
     data['postLink'] = this.postLink;
     data['postLinkTitle'] = this.postLinkTitle;
     data['postLinkImage'] = this.postLinkImage;

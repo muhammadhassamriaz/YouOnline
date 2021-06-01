@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:provider/provider.dart';
 import 'package:youonline/provider/create_post_provider.dart';
 import 'package:youonline/provider/user_provider.dart';
@@ -6,6 +5,7 @@ import 'package:youonline/utils/assets.dart';
 import 'package:youonline/utils/size_config.dart';
 import 'package:youonline/utils/styles.dart';
 import 'package:flutter/material.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class PostHeader extends StatefulWidget {
   PostHeader({Key key}) : super(key: key);
@@ -50,19 +50,20 @@ class _PostHeaderState extends State<PostHeader> {
         Container(
           width: SizeConfig.kDefaultSize * 18,
           height: SizeConfig.kDefaultSize * 18,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            image: DecorationImage(
-              image: _userProvider.user?.avatar != null
-                  ? CachedNetworkImageProvider(
-                      _userProvider.user.avatar,
-                    )
-                  : AssetImage(
-                      Assets.PROFILE_AVATAR,
-                    ),
-              fit: BoxFit.cover,
-            ),
-          ),
+          child: _userProvider.user?.avatar != null
+              ? ClipOval(
+                  child: FadeInImage.memoryNetwork(
+                    image: _userProvider.user.avatar,
+                    fit: BoxFit.cover,
+                    placeholder: kTransparentImage,
+                  ),
+                )
+              : ClipOval(
+                  child: Image.asset(
+                    Assets.PROFILE_AVATAR,
+                    fit: BoxFit.cover,
+                  ),
+                ),
         ),
         SizedBox(
           width: SizeConfig.kDefaultSize * 3,

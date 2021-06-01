@@ -11,6 +11,7 @@ import 'package:youonline/utils/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bot_toast/bot_toast.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 // ignore: must_be_immutable
 class PostCardHeader extends StatelessWidget {
@@ -106,10 +107,12 @@ class PostCardHeader extends StatelessWidget {
                   width: SizeConfig.kDefaultSize * 15,
                   height: SizeConfig.kDefaultSize * 15,
                   child: profileAvatar != null
-                      ? FadeInImage.assetNetwork(
-                          placeholder: Assets.PROFILE_AVATAR,
+                      ? FadeInImage.memoryNetwork(
+                          placeholder: kTransparentImage,
                           image: profileAvatar,
                           fit: BoxFit.cover,
+                          imageScale: 0.5,
+                          excludeFromSemantics: true,
                         )
                       : Image.asset(
                           Assets.PROFILE_AVATAR,
@@ -125,51 +128,98 @@ class PostCardHeader extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Row(
-                        children: [
-                          Flexible(
-                            child: Text(
-                              name.replaceFirst(" ", "") ??
-                                  'YouOnline Prizes Egypt',
-                              style: labelTextStyle.copyWith(
-                                fontSize: SizeConfig.kDefaultSize * 4,
-                                fontWeight: FontWeight.bold,
+                GestureDetector(
+                  onTap: () async {
+                    if (user != null) {
+                      BotToast.showLoading();
+                      await _userProvider.getFollowingList(
+                          userId: user.userId.toString());
+                      await _userProvider.getFollowersList(
+                          userId: user.userId.toString());
+                      BotToast.closeAllLoading();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => ProfileScreen(
+                            userId: user.userId.toString(),
+                            profileCover: user.cover,
+                            fullName: user.firstName + " " + user.lastName,
+                            profileAvatar: user.avatar,
+                            username: user.username,
+                          ),
+                        ),
+                      );
+                    } else if (group != null) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => GroupDetailScreen(
+                            groupTitle: group.groupTitle,
+                            groupAvatar: group.avatar,
+                            groupCoverPhoto: group.cover,
+                            groupInfo: group.about,
+                            groupId: group.id,
+                          ),
+                        ),
+                      );
+                    } else if (page != null) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => SinglePageScreen(
+                            pageId: page.pageId.toString(),
+                            pageName: page.pageTitle,
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Row(
+                          children: [
+                            Flexible(
+                              child: Text(
+                                name.replaceFirst(" ", "") ??
+                                    'YouOnline Prizes Egypt',
+                                style: labelTextStyle.copyWith(
+                                  fontSize: SizeConfig.kDefaultSize * 4,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                maxLines: 1,
+                                textScaleFactor: 1,
                               ),
-                              maxLines: 1,
-                              textScaleFactor: 1,
                             ),
-                          ),
-                          SizedBox(
-                            width: SizeConfig.kDefaultSize * 1,
-                          ),
-                          Flexible(
-                            child: SizedBox(
-                              width: SizeConfig.kDefaultSize * 04,
-                              height: SizeConfig.kDefaultSize * 04,
-                              child: Image.asset(
-                                Assets.VERIFIED_ICON,
+                            SizedBox(
+                              width: SizeConfig.kDefaultSize * 1,
+                            ),
+                            Flexible(
+                              child: SizedBox(
+                                width: SizeConfig.kDefaultSize * 04,
+                                height: SizeConfig.kDefaultSize * 04,
+                                child: Image.asset(
+                                  Assets.VERIFIED_ICON,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        callback();
-                      },
-                      child: SizedBox(
-                        width: SizeConfig.kDefaultSize * 04,
-                        height: SizeConfig.kDefaultSize * 04,
-                        child: Image.asset(
-                          Assets.OPTION_ICON,
+                          ],
                         ),
                       ),
-                    ),
-                  ],
+                      InkWell(
+                        onTap: () {
+                          callback();
+                        },
+                        child: SizedBox(
+                          width: SizeConfig.kDefaultSize * 04,
+                          height: SizeConfig.kDefaultSize * 04,
+                          child: Image.asset(
+                            Assets.OPTION_ICON,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 if (feelings != null && feelings.isNotEmpty)
                   Row(

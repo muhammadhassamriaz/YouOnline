@@ -110,13 +110,13 @@ class ViewAsScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    'Manners maketh man',
-                    style: hintTextStyle.copyWith(
-                      fontSize: SizeConfig.kDefaultSize * 3.5,
-                    ),
-                    textScaleFactor: 1,
-                  ),
+                  // Text(
+                  //   'Manners maketh man',
+                  //   style: hintTextStyle.copyWith(
+                  //     fontSize: SizeConfig.kDefaultSize * 3.5,
+                  //   ),
+                  //   textScaleFactor: 1,
+                  // ),
                 ],
               ),
               SizedBox(

@@ -11,7 +11,6 @@ import 'package:youonline/utils/globals.dart';
 import 'package:youonline/utils/size_config.dart';
 import 'package:youonline/utils/styles.dart';
 import 'package:youonline/widgets/you_online_button.dart';
-import 'package:auto_size_text_field/auto_size_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -144,7 +143,7 @@ shareBottomSheet(
                           data: MediaQuery.of(context).copyWith(
                             textScaleFactor: 1,
                           ),
-                          child: AutoSizeTextField(
+                          child: TextField(
                             controller: _postTextEditingController,
                             maxLines: 3,
                             decoration: InputDecoration(

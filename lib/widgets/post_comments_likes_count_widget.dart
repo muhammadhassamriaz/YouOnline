@@ -4,7 +4,7 @@ import 'package:youonline/utils/size_config.dart';
 import 'package:youonline/utils/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 // ignore: must_be_immutable
 class PostCommentsLikesWidget extends StatelessWidget {
@@ -79,11 +79,11 @@ class PostCommentsLikesWidget extends StatelessWidget {
               height: SizeConfig.kDefaultSize * 05,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                image: DecorationImage(
-                  image: CachedNetworkImageProvider(
-                    _userProvider.user.avatar,
-                    
-                  ),
+              ),
+              child: ClipOval(
+                child: FadeInImage.memoryNetwork(
+                  placeholder: kTransparentImage,
+                  image: _userProvider.user.avatar,
                 ),
               ),
             ),

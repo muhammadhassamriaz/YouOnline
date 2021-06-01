@@ -179,6 +179,7 @@ final String shocked = 'assets/images/shocked.png';
 final String sleepy = 'assets/images/sleepy.png';
 final String pretty = 'assets/images/pretty.png';
 final String bored = 'assets/images/bored.png';
+final String loadingPlaceholder = "assets/images/loadingPlaceholder.png";
 
 var feeling = [
   'happy',

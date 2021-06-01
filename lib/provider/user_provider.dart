@@ -21,6 +21,7 @@ import 'package:youonline/model/timeline_data.dart';
 import 'package:youonline/model/user.dart';
 import 'package:youonline/model/user_profile_data.dart';
 import 'package:youonline/provider/timeline_provider.dart';
+import 'package:youonline/provider/widget_provider.dart';
 import 'package:youonline/route/group_detail_screen.dart';
 import 'package:youonline/route/login_screen.dart';
 import 'package:youonline/route/main_screen.dart';
@@ -208,6 +209,10 @@ class UserProvider with ChangeNotifier {
               BotToast.closeAllLoading();
               Provider.of<TimelineProvider>(context, listen: false)
                   .changeTimelineData([]);
+              Provider.of<WidgetProvider>(context, listen: false)
+                  .changeReaction(null);
+              Provider.of<WidgetProvider>(context, listen: false)
+                  .changePageNo(1);
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
@@ -216,6 +221,7 @@ class UserProvider with ChangeNotifier {
                 (route) => false,
               );
             } else {
+              BotToast.closeAllLoading();
               BotToast.showText(
                 text: 'Something went wrong.',
                 textStyle: labelTextStyle.copyWith(
@@ -312,6 +318,10 @@ class UserProvider with ChangeNotifier {
                   Future.delayed(Duration(seconds: 1), () {
                     Provider.of<TimelineProvider>(context, listen: false)
                         .changeTimelineData([]);
+                    Provider.of<WidgetProvider>(context, listen: false)
+                        .changeReaction(null);
+                    Provider.of<WidgetProvider>(context, listen: false)
+                        .changePageNo(1);
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
@@ -408,7 +418,8 @@ class UserProvider with ChangeNotifier {
         contentColor: Colors.white,
       );
       BotToast.closeAllLoading();
-
+      Provider.of<WidgetProvider>(context, listen: false).changeReaction(null);
+      Provider.of<WidgetProvider>(context, listen: false).changePageNo(1);
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
@@ -598,11 +609,11 @@ class UserProvider with ChangeNotifier {
       }).then((value) {
         try {
           var response = json.decode(value.body);
+          print(response);
 
           try {
             singlePageTimeline = SinglePageTimeline.fromJson(response);
             print(singlePageTimeline);
-            notifyListeners();
           } catch (ex) {
             print(ex);
             throw ex;
@@ -734,6 +745,9 @@ class UserProvider with ChangeNotifier {
           );
           Provider.of<TimelineProvider>(context, listen: false)
               .changeTimelineData([]);
+          Provider.of<WidgetProvider>(context, listen: false)
+              .changeReaction(null);
+          Provider.of<WidgetProvider>(context, listen: false).changePageNo(1);
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
@@ -787,6 +801,9 @@ class UserProvider with ChangeNotifier {
           );
           Provider.of<TimelineProvider>(context, listen: false)
               .changeTimelineData([]);
+          Provider.of<WidgetProvider>(context, listen: false)
+              .changeReaction(null);
+          Provider.of<WidgetProvider>(context, listen: false).changePageNo(1);
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
@@ -931,6 +948,8 @@ class UserProvider with ChangeNotifier {
         ),
         contentColor: Colors.white,
       );
+      Provider.of<WidgetProvider>(context, listen: false).changeReaction(null);
+      Provider.of<WidgetProvider>(context, listen: false).changePageNo(1);
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(

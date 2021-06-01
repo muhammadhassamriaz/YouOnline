@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:youonline/provider/user_provider.dart';
 import 'package:youonline/utils/size_config.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:youonline/utils/styles.dart';
 import 'package:youonline/widgets/you_online_text_button2.dart';
 import 'package:provider/provider.dart';
@@ -27,14 +26,14 @@ class PageHeader extends StatelessWidget {
     double width = SizeConfig.kDefaultSize * 100;
     Orientation orientation = MediaQuery.of(context).orientation;
     var _userProvider = Provider.of<UserProvider>(context);
-    if (_userProvider.allPages.pages != null &&
+    if (_userProvider.allPages?.pages != null &&
         _userProvider.allPages.pages.length > 0) {
       _userProvider.allPages.pages.forEach((element) {
         if (element.page.pageId == pageId) {
           isFollowed = true;
         }
       });
-    } else if (_userProvider.allPages.suggestions != null &&
+    } else if (_userProvider.allPages?.suggestions != null &&
         _userProvider.allPages.suggestions.length > 0) {
       _userProvider.allPages.suggestions.forEach((element) {
         if (element.page.pageId == pageId) {
@@ -63,7 +62,7 @@ class PageHeader extends StatelessWidget {
                   width: double.infinity,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: CachedNetworkImageProvider(
+                      image: NetworkImage(
                         profileCover,
                       ),
                       fit: BoxFit.fill,
@@ -85,7 +84,7 @@ class PageHeader extends StatelessWidget {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       image: DecorationImage(
-                        image: CachedNetworkImageProvider(
+                        image: NetworkImage(
                           profileAvatar,
                         ),
                         fit: BoxFit.cover,

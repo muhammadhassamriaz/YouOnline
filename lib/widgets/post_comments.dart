@@ -1,5 +1,4 @@
 import 'package:bot_toast/bot_toast.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:provider/provider.dart';
 import 'package:youonline/model/timeline_data.dart';
 import 'package:youonline/provider/timeline_provider.dart';
@@ -9,7 +8,7 @@ import 'package:youonline/utils/color.dart';
 import 'package:youonline/utils/size_config.dart';
 import 'package:youonline/utils/styles.dart';
 import 'package:flutter/material.dart';
-
+import 'package:transparent_image/transparent_image.dart';
 import 'comment_bottom_sheet.dart';
 
 // ignore: must_be_immutable
@@ -83,17 +82,26 @@ class _PostCommentsWidgetState extends State<PostCommentsWidget> {
             height: SizeConfig.kDefaultSize * 15,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              image: DecorationImage(
-                image: widget.imageURL != null
-                    ? CachedNetworkImageProvider(
-                        widget.imageURL,
-                      )
-                    : AssetImage(
-                        Assets.PROFILE_AVATAR,
-                      ),
-                fit: BoxFit.cover,
-              ),
             ),
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            child: widget.imageURL != null
+                ?
+                // CachedNetworkImageProvider(
+                //     widget.imageURL,
+                //   )
+                ClipOval(
+                    child: FadeInImage.memoryNetwork(
+                      placeholder: kTransparentImage,
+                      image: widget.imageURL,
+                      fit: BoxFit.cover,
+                      imageScale: 0.5,
+                      excludeFromSemantics: true,
+                    ),
+                  )
+                : Image.asset(
+                    Assets.PROFILE_AVATAR,
+                    fit: BoxFit.cover,
+                  ),
           ),
           SizedBox(
             width: SizeConfig.kDefaultSize * 03,
@@ -140,8 +148,15 @@ class _PostCommentsWidgetState extends State<PostCommentsWidget> {
                           Container(
                             width: SizeConfig.kDefaultSize * 40,
                             height: SizeConfig.kDefaultSize * 40,
-                            child: CachedNetworkImage(
-                              imageUrl: widget.postComment.cFile,
+                            child:
+                                // CachedNetworkImage(
+                                //   imageUrl: widget.postComment.cFile,
+                                // ),
+                                FadeInImage.memoryNetwork(
+                              placeholder: kTransparentImage,
+                              image: widget.postComment.cFile,
+                              imageScale: 0.5,
+                              excludeFromSemantics: true,
                             ),
                           )
                         else if (widget.postComment.imageFile != null)
@@ -368,17 +383,25 @@ class _PostCommentsWidgetState extends State<PostCommentsWidget> {
                         height: SizeConfig.kDefaultSize * 10,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          image: DecorationImage(
-                            image: widget.replies[0].user != null
-                                ? CachedNetworkImageProvider(
-                                    widget.replies[0].user.avatar,
-                                  )
-                                : AssetImage(
-                                    Assets.PROFILE_AVATAR,
-                                  ),
-                            fit: BoxFit.cover,
-                          ),
                         ),
+                        child: widget.replies[0].user != null
+                            ?
+                            // CachedNetworkImageProvider(
+                            //     widget.replies[0].user.avatar,
+                            //   )
+                            ClipOval(
+                                child: FadeInImage.memoryNetwork(
+                                  placeholder: kTransparentImage,
+                                  image: widget.replies[0].user.avatar,
+                                  fit: BoxFit.cover,
+                                  imageScale: 0.5,
+                                  excludeFromSemantics: true,
+                                ),
+                              )
+                            : Image.asset(
+                                Assets.PROFILE_AVATAR,
+                                fit: BoxFit.cover,
+                              ),
                       ),
                       SizedBox(
                         width: SizeConfig.kDefaultSize * 03,

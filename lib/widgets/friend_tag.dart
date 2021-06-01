@@ -3,7 +3,7 @@ import 'package:youonline/utils/color.dart';
 import 'package:youonline/utils/size_config.dart';
 import 'package:youonline/utils/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class FriendTag extends StatelessWidget {
   final String imageURL;
@@ -27,20 +27,19 @@ class FriendTag extends StatelessWidget {
         Container(
           width: width * .2,
           height: width * .2,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: imageURL != null
-                  ? CachedNetworkImage(
-                      imageUrl: imageURL,
-                    )
-                  : AssetImage(friendProfileAvatar),
-              fit: BoxFit.cover,
-            ),
-            shape: BoxShape.circle,
-            // borderRadius: BorderRadius.circular(
-            //   width * .05,
-            // ),
-          ),
+          child: imageURL != null
+              ? ClipOval(
+                  child: FadeInImage.memoryNetwork(
+                    image: imageURL,
+                    placeholder: kTransparentImage,
+                    fit: BoxFit.cover,
+                  ),
+                )
+              : ClipOval(
+                  child: Image.asset(
+                    friendProfileAvatar,
+                  ),
+                ),
         ),
         SizedBox(
           height: height * .01,

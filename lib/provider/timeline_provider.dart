@@ -27,6 +27,7 @@ class TimelineProvider with ChangeNotifier {
             .userAuthenticationToken;
 
     if (userAuthenticationToken != null) {
+      // print(pageNo);
       await http.get(
         ApiNetwork.BASE_URL + ApiNetwork().getTimeline + pageNo.toString(),
         headers: <String, String>{
@@ -35,7 +36,7 @@ class TimelineProvider with ChangeNotifier {
         },
       ).catchError((err) {
         _isError = true;
-        print(err.toString());
+        // print(err.toString());
       }).then((value) {
         if (!_isError) {
           var response = jsonDecode(value.body);
@@ -47,7 +48,7 @@ class TimelineProvider with ChangeNotifier {
                   if (!timelineData.contains(post)) {
                     timelineData.add(post);
                   }
-                  changeTimelineData(timelineData);
+                  // changeTimelineData(timelineData);
                 } catch (ex) {
                   print(ex);
                   throw ex;
@@ -262,6 +263,4 @@ class TimelineProvider with ChangeNotifier {
       print(response);
     });
   }
-
-  
 }

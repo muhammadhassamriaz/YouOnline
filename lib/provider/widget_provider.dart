@@ -14,6 +14,18 @@ class WidgetProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  int pageNo = 0;
+  changePageNo(int _index) {
+    pageNo = _index;
+    notifyListeners();
+  }
+
+  int reactionIndex;
+  changeReactionIndex(int _index) {
+    reactionIndex = _index;
+    notifyListeners();
+  }
+
   bool twoFactorAuthenticationValue = false;
   changeTwoFactorAuthenticationValue(bool value) {
     twoFactorAuthenticationValue = value;

@@ -8,7 +8,6 @@ import 'package:youonline/utils/size_config.dart';
 import 'package:youonline/utils/styles.dart';
 import 'package:youonline/widgets/poll_duration.dart';
 import 'package:youonline/widgets/you_online_button.dart';
-import 'package:auto_size_text_field/auto_size_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bot_toast/bot_toast.dart';
@@ -80,13 +79,9 @@ class _CreatePollScreenState extends State<CreatePollScreen> {
                     clipBehavior: Clip.antiAliasWithSaveLayer,
                     child: YouOnlineButton(
                       callback: () async {
-                        var _timelineProvider = Provider.of<TimelineProvider>(
-                            context,
-                            listen: false);
-
                         if (polls.length >= 3 &&
                             _postTextEditingController.text.isNotEmpty) {
-                          BotToast.showLoading();
+                          // BotToast.showLoading();
 
                           await _postProvider.createPoll(
                             context: context,
@@ -95,18 +90,7 @@ class _CreatePollScreenState extends State<CreatePollScreen> {
                             feeling:
                                 Provider.of<PostProvider>(context).feelings,
                           );
-                          _timelineProvider.changeTimelineData([]);
-                          await _timelineProvider.getTimeLinePosts(
-                            context: context,
-                            pageNo: 1,
-                          );
-                          BotToast.closeAllLoading();
-                          Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => MainScreen(),
-                              ),
-                              (route) => false);
+                          // _timelineProvider.changeTimelineData([]);
                         } else {
                           BotToast.showText(
                             text: "Please enter 3 polls",
@@ -161,7 +145,7 @@ class _CreatePollScreenState extends State<CreatePollScreen> {
                             data: MediaQuery.of(context).copyWith(
                               textScaleFactor: 1,
                             ),
-                            child: AutoSizeTextField(
+                            child: TextField(
                               controller: _postTextEditingController,
                               maxLines: 3,
                               decoration: InputDecoration(

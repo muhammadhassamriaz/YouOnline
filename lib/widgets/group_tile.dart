@@ -3,7 +3,7 @@ import 'package:youonline/utils/size_config.dart';
 import 'package:youonline/utils/styles.dart';
 import 'package:youonline/widgets/you_online_text_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class GroupTile extends StatelessWidget {
   final String groupTitle, groupAvatar;
@@ -30,17 +30,20 @@ class GroupTile extends StatelessWidget {
             borderRadius: BorderRadius.circular(
               SizeConfig.kDefaultSize * 5,
             ),
-            image: DecorationImage(
-              image: groupAvatar == null
-                  ? AssetImage(
-                      Assets.STORY_CARD_IMAGE_PLACEHOLDER,
-                    )
-                  : CachedNetworkImage(
-                      imageUrl: groupAvatar,
-                    ),
-              fit: BoxFit.fill,
-            ),
+            // image: DecorationImage(
+            //   image: ,
+            //   fit: BoxFit.fill,
+            // ),
           ),
+          clipBehavior: Clip.antiAliasWithSaveLayer,
+          child: groupAvatar == null
+              ? Image.asset(
+                  Assets.STORY_CARD_IMAGE_PLACEHOLDER,
+                )
+              : FadeInImage.memoryNetwork(
+                  image: groupAvatar,
+                  placeholder: kTransparentImage,
+                ),
         ),
         SizedBox(
           width: SizeConfig.kDefaultSize * 2,

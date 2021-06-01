@@ -39,34 +39,32 @@ dev_dependencies:
   textfield_tags: ^1.1.1
   flutter_snake_navigationbar: ^0.5.0
   dotted_decoration: ^2.0.0
-  auto_size_text_field: ^0.1.7
   http: 
   shared_preferences: 
   bot_toast: ^4.0.1
   file_picker: ^3.0.1
-  html_unescape: ^2.0.0
   universal_html: any
   youtube_player_flutter: ^8.0.0
   audioplayers: any
   expandable: ^5.0.1
   pin_code_fields: ^7.0.0
   flutter_swiper: ^1.1.6
-  flick_video_player: ^0.2.0
-  video_player: ^2.1.0
+  video_player: 
   auto_size_text: ^2.1.0
-  cached_network_image: 
   bloc: ^6.1.1
   connectivity: 
   pull_to_refresh: ^1.6.5
   flutter_uploader: ^1.2.1
   flutter_image_compress: ^1.0.0
-  dio: 
   async:
-  wakelock: ^0.5.1+1
   image_picker: 
   flutter_story_list: ^1.0.4
   story: ^0.5.1
-  
+  transparent_image: ^2.0.0
+  flutter_displaymode: ^0.3.0-nullsafety.0
+  chewie: any
+
+
 
 
 # For information on the generic Dart part of this file, see the

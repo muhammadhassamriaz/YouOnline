@@ -3,7 +3,7 @@ import 'package:youonline/utils/size_config.dart';
 import 'package:youonline/utils/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:youonline/widgets/you_online_text_button2.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class UserPage extends StatelessWidget {
   final String pageName;
@@ -32,10 +32,11 @@ class UserPage extends StatelessWidget {
           height: width * .14,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            image: DecorationImage(
-              image: CachedNetworkImageProvider(
-                imageURL,
-              ),
+          ),
+          child: ClipOval(
+            child: FadeInImage.memoryNetwork(
+              placeholder: kTransparentImage,
+              image: imageURL,
             ),
           ),
         ),

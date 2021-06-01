@@ -1,5 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:provider/provider.dart';
+import 'package:transparent_image/transparent_image.dart';
 import 'package:youonline/provider/user_provider.dart';
 import 'package:youonline/route/create_user_story.dart';
 import 'package:youonline/utils/assets.dart';
@@ -61,18 +61,11 @@ class ProfileStoryRow extends StatelessWidget {
                             Container(
                               height: SizeConfig.kDefaultSize * 36,
                               width: SizeConfig.kDefaultSize * 32,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: _userProvider.user?.avatar != null
-                                      ? CachedNetworkImageProvider(
-                                          _userProvider.user.avatar,
-                                        )
-                                      : AssetImage(
-                                          Assets.PROFILE_AVATAR_2,
-                                        ),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
+                              decoration: BoxDecoration(),
+                              child: FadeInImage.memoryNetwork(
+                                  placeholder: kTransparentImage,
+                                  image: _userProvider.user?.avatar,
+                                  fit: BoxFit.cover),
                             ),
                             Spacer(),
                             Padding(

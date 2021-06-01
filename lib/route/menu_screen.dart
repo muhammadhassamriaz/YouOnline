@@ -1,17 +1,19 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:provider/provider.dart';
 import 'package:youonline/model/post_reaction.dart';
 import 'package:youonline/provider/user_provider.dart';
 import 'package:youonline/route/login_registration_route.dart';
 import 'package:youonline/route/profile_screen.dart';
+import 'package:youonline/route/settings_screen.dart';
 import 'package:youonline/utils/assets.dart';
 import 'package:youonline/utils/globals.dart';
 import 'package:youonline/utils/prefs.dart';
 import 'package:youonline/utils/size_config.dart';
 import 'package:youonline/utils/styles.dart';
+import 'package:youonline/widgets/expandable_settings_panel.dart';
 import 'package:youonline/widgets/settings_route_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:bot_toast/bot_toast.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class MenuScreen extends StatefulWidget {
   @override
@@ -129,17 +131,20 @@ class _MenuScreenState extends State<MenuScreen> {
                       height: SizeConfig.kDefaultSize * 15,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        image: DecorationImage(
-                          image: _userProvider.user?.avatar != null
-                              ? CachedNetworkImageProvider(
-                                  _userProvider.user.avatar,
-                                )
-                              : AssetImage(
-                                  Assets.PROFILE_AVATAR,
-                                ),
-                          fit: BoxFit.cover,
-                        ),
                       ),
+                      child: _userProvider.user?.avatar != null
+                          ? ClipOval(
+                              child: FadeInImage.memoryNetwork(
+                                image: _userProvider.user.avatar,
+                                placeholder: kTransparentImage,
+                                fit: BoxFit.cover,
+                              ),
+                            )
+                          : ClipOval(
+                              child: Image.asset(
+                                Assets.PROFILE_AVATAR,
+                              ),
+                            ),
                     ),
                     SizedBox(
                       width: SizeConfig.kDefaultSize * 3,
@@ -169,13 +174,13 @@ class _MenuScreenState extends State<MenuScreen> {
                             ),
                             textScaleFactor: 1,
                           ),
-                        Text(
-                          'Manners maketh man',
-                          style: hintTextStyle.copyWith(
-                            fontSize: SizeConfig.kDefaultSize * 3.5,
-                          ),
-                          textScaleFactor: 1,
-                        )
+                        // Text(
+                        //   'Manners maketh man',
+                        //   style: hintTextStyle.copyWith(
+                        //     fontSize: SizeConfig.kDefaultSize * 3.5,
+                        //   ),
+                        //   textScaleFactor: 1,
+                        // )
                       ],
                     ),
                   ],
@@ -248,7 +253,7 @@ class _MenuScreenState extends State<MenuScreen> {
                               title: titles[index],
                               imageURL: images[index],
                               color: colors[index],
-                              // isNew: index == 4 ? true : false,
+                              // isNew: index == 4 ? true : ,
                               comingSoonText: text,
                             );
                           },
@@ -258,36 +263,25 @@ class _MenuScreenState extends State<MenuScreen> {
                     SizedBox(
                       height: SizeConfig.kDefaultSize * 5,
                     ),
-                    // ExpandableSettingsPanel(),
+                    ExpandableSettingsPanel(),
                     SizedBox(
                       height: SizeConfig.kDefaultSize * 2,
                     ),
                     ListTile(
-                      title: Row(
-                        children: [
-                          Text(
-                            'Settings',
-                            textScaleFactor: 1,
-                            style: labelTextStyle.copyWith(
-                              fontSize: SizeConfig.kDefaultSize * 4,
-                            ),
-                          ),
-                          Text(
-                            '       Coming Soon',
-                            textScaleFactor: 1,
-                            style: labelTextStyle.copyWith(
-                              fontSize: SizeConfig.kDefaultSize * 2,
-                            ),
-                          ),
-                        ],
+                      title: Text(
+                        'Settings',
+                        textScaleFactor: 1,
+                        style: labelTextStyle.copyWith(
+                          fontSize: SizeConfig.kDefaultSize * 4,
+                        ),
                       ),
                       onTap: () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (_) => SettingsScreen(),
-                        //   ),
-                        // );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => SettingsScreen(),
+                          ),
+                        );
                       },
                     ),
                     // ListTile(

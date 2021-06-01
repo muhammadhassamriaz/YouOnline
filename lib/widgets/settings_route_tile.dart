@@ -66,9 +66,10 @@ class SettingsTile extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    "      " + comingSoonText,
+                    "         Launch Soon",
                     style: labelTextStyle.copyWith(
-                      fontSize: SizeConfig.kDefaultSize * 2,
+                      fontSize: SizeConfig.kDefaultSize * 3,
+                      color: hintTextColor,
                     ),
                     textScaleFactor: 1,
                   ),

@@ -1,9 +1,10 @@
 import 'dart:math';
 
 import 'package:youonline/model/timeline_data.dart';
+import 'package:youonline/utils/assets.dart';
 import 'package:youonline/utils/size_config.dart';
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class PhotoGrid extends StatefulWidget {
   final int maxImages;
@@ -42,9 +43,12 @@ class _PhotoGridState extends State<PhotoGrid> {
                 child: SizedBox(
                   width: SizeConfig.kDefaultSize * 49.5,
                   height: SizeConfig.kDefaultSize * 65,
-                  child: CachedNetworkImage(
-                    imageUrl: widget.imageUrls[0].thumbnail,
+                  child: FadeInImage.memoryNetwork(
+                    placeholder: kTransparentImage,
+                    image: widget.imageUrls[0].thumbnail,
                     fit: BoxFit.cover,
+                    imageScale: 0.5,
+                    excludeFromSemantics: true,
                   ),
                 ),
               ),
@@ -56,9 +60,12 @@ class _PhotoGridState extends State<PhotoGrid> {
                 child: SizedBox(
                   width: SizeConfig.kDefaultSize * 49.5,
                   height: SizeConfig.kDefaultSize * 65,
-                  child: CachedNetworkImage(
-                    imageUrl: widget.imageUrls[1].thumbnail,
+                  child: FadeInImage.memoryNetwork(
+                    placeholder: kTransparentImage,
+                    image: widget.imageUrls[1].thumbnail,
                     fit: BoxFit.cover,
+                    imageScale: 0.5,
+                    excludeFromSemantics: true,
                   ),
                 ),
               ),
@@ -79,9 +86,12 @@ class _PhotoGridState extends State<PhotoGrid> {
                   child: SizedBox(
                     width: SizeConfig.kDefaultSize * 48,
                     height: SizeConfig.kDefaultSize * 33,
-                    child: CachedNetworkImage(
-                      imageUrl: widget.imageUrls[0].thumbnail,
+                    child: FadeInImage.memoryNetwork(
+                      placeholder: kTransparentImage,
+                      image: widget.imageUrls[0].thumbnail,
                       fit: BoxFit.cover,
+                      imageScale: 0.5,
+                      excludeFromSemantics: true,
                     ),
                   ),
                 ),
@@ -95,9 +105,12 @@ class _PhotoGridState extends State<PhotoGrid> {
                   child: SizedBox(
                     width: SizeConfig.kDefaultSize * 48,
                     height: SizeConfig.kDefaultSize * 33,
-                    child: CachedNetworkImage(
-                      imageUrl: widget.imageUrls[1].thumbnail,
+                    child: FadeInImage.memoryNetwork(
+                      placeholder: kTransparentImage,
+                      image: widget.imageUrls[1].thumbnail,
                       fit: BoxFit.cover,
+                      imageScale: 0.5,
+                      excludeFromSemantics: true,
                     ),
                   ),
                 ),
@@ -116,9 +129,12 @@ class _PhotoGridState extends State<PhotoGrid> {
                     child: SizedBox(
                       width: SizeConfig.kDefaultSize * 49.5,
                       height: SizeConfig.kDefaultSize * 34,
-                      child: CachedNetworkImage(
-                        imageUrl: widget.imageUrls[2].thumbnail,
+                      child: FadeInImage.memoryNetwork(
+                        placeholder: kTransparentImage,
+                        image: widget.imageUrls[2].thumbnail,
                         fit: BoxFit.cover,
+                        imageScale: 0.5,
+                        excludeFromSemantics: true,
                       ),
                     ),
                   ),
@@ -136,8 +152,12 @@ class _PhotoGridState extends State<PhotoGrid> {
         child: Container(
           width: double.infinity,
           height: SizeConfig.kDefaultSize * 70,
-          child: CachedNetworkImage(
-            imageUrl: widget.imageUrls[0].thumbnail,
+          child: FadeInImage.memoryNetwork(
+            placeholder: kTransparentImage,
+            image: widget.imageUrls[0].thumbnail,
+            fit: BoxFit.cover,
+            imageScale: 0.5,
+            excludeFromSemantics: true,
           ),
         ),
       );
@@ -168,9 +188,12 @@ class _PhotoGridState extends State<PhotoGrid> {
             child: Container(
               width: 100,
               height: 100,
-              child: CachedNetworkImage(
-                imageUrl: imageUrl,
+              child: FadeInImage.memoryNetwork(
+                placeholder: kTransparentImage,
+                image: imageUrl,
                 fit: BoxFit.cover,
+                imageScale: 0.5,
+                excludeFromSemantics: true,
               ),
             ),
             onTap: () => widget.onImageClicked(index),
@@ -185,9 +208,12 @@ class _PhotoGridState extends State<PhotoGrid> {
                   Container(
                     width: 100,
                     height: 100,
-                    child: CachedNetworkImage(
-                      imageUrl: imageUrl,
+                    child: FadeInImage.memoryNetwork(
+                      image: imageUrl,
+                      placeholder: kTransparentImage,
                       fit: BoxFit.cover,
+                      imageScale: 0.5,
+                      excludeFromSemantics: true,
                     ),
                   ),
                   Positioned.fill(
@@ -214,9 +240,12 @@ class _PhotoGridState extends State<PhotoGrid> {
           child: Container(
             width: 100,
             height: 100,
-            child: CachedNetworkImage(
-              imageUrl: imageUrl,
+            child: FadeInImage.memoryNetwork(
+              placeholder: kTransparentImage,
+              image: imageUrl,
               fit: BoxFit.cover,
+              imageScale: 0.5,
+              excludeFromSemantics: true,
             ),
           ),
           onTap: () => widget.onImageClicked(index),

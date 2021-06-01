@@ -2,7 +2,7 @@ import 'package:youonline/utils/assets.dart';
 import 'package:youonline/utils/size_config.dart';
 import 'package:youonline/utils/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class GroupCategory extends StatelessWidget {
   final String title;
@@ -29,8 +29,8 @@ class GroupCategory extends StatelessWidget {
               ? AssetImage(
                   Assets.STORY_CARD_IMAGE_PLACEHOLDER,
                 )
-              : CachedNetworkImage(
-                  imageUrl: groupAvatar,
+              : NetworkImage(
+                  groupAvatar,
                 ),
           fit: BoxFit.cover,
         ),

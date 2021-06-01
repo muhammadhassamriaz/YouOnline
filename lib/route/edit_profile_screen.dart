@@ -11,7 +11,7 @@ import 'package:youonline/widgets/you_online_text.dart';
 import 'package:youonline/widgets/you_online_textfield.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class EditProfileScreen extends StatefulWidget {
   @override
@@ -124,11 +124,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         height: SizeConfig.kDefaultSize * 40,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          image: DecorationImage(
-                            image: CachedNetworkImageProvider(
-                              _userProvider.user.avatar,
-                            ),
-                            fit: BoxFit.cover,
+                        ),
+                        child: ClipOval(
+                          child: FadeInImage.memoryNetwork(
+                            placeholder: kTransparentImage,
+                            image: _userProvider.user.avatar,
                           ),
                         ),
                       ),
@@ -219,12 +219,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             borderRadius: BorderRadius.circular(
                               SizeConfig.kDefaultSize * 3,
                             ),
-                            image: DecorationImage(
-                              image: CachedNetworkImageProvider(
-                                _userProvider.user.cover,
-                              ),
-                              fit: BoxFit.cover,
-                            ),
+                          ),
+                          child: FadeInImage.memoryNetwork(
+                            placeholder: kTransparentImage,
+                            image: _userProvider.user.cover,
+                            fit: BoxFit.cover,
                           ),
                         )
                       else if (coverPhoto != null)

@@ -17,14 +17,15 @@ import 'package:provider/provider.dart';
 import 'assets.dart';
 
 final List<Color> colors = [
-  // Color(0xffFDF4FF),
+  Color(0xffFDF4FF),
   Color(0xffECFBF0),
-  // Color(0xffECFBF0),
+  Color(0xffECFBF0),
   Color(0xffFEF8EE),
   Color(0xffEDFAFC),
-  // Color(0xffECF0FA),
-  // Color(0xffECFBF0),
-  // Color(0xffFEEBEB),
+  Color(0xffECF0FA),
+  Color(0xffECFBF0),
+  Color(0xffFEEBEB),
+  Color(0xffFEEBEB),
 ];
 
 Future menuRoute({
@@ -89,15 +90,15 @@ Future menuRoute({
 BlocClass myBloc;
 
 final List<String> titles = [
-  // "Events",
+  "Events",
   "Groups",
-  // "Friends",
-  // "Blog",
+  "Friends",
+  "Blog",
   "View Profile",
   "Pages",
-  // "Videos",
-  // "Saved Posts",
-  // "News Feed",
+  "Videos",
+  "Market Place",
+  "News Feed",
 ];
 
 final List<String> feelingsText = [
@@ -122,15 +123,15 @@ final List<String> feelingsText = [
 ];
 
 final List<String> images = [
-  // calendarIcon,
+  calendarIcon,
   groupsIcon,
-  // friendsIcon,
-  // blogIcon2,
+  friendsIcon,
+  blogIcon2,
   profileIcon,
   pageIcon2,
-  // videoIcon2,
-  // savedPostsIcon,
-  // newsFeedIcon,
+  videoIcon2,
+  savedPostsIcon,
+  newsFeedIcon,
 ];
 
 final List<String> images2 = [

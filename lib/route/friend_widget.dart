@@ -46,13 +46,13 @@ class FriendWidget extends StatelessWidget {
               ),
               textScaleFactor: 1,
             ),
-            Text(
-              'Manners maketh man',
-              style: hintTextStyle.copyWith(
-                fontSize: SizeConfig.kDefaultSize * 3,
-              ),
-              textScaleFactor: 1,
-            ),
+            // Text(
+            //   'Manners maketh man',
+            //   style: hintTextStyle.copyWith(
+            //     fontSize: SizeConfig.kDefaultSize * 3,
+            //   ),
+            //   textScaleFactor: 1,
+            // ),
           ],
         ),
         Spacer(),

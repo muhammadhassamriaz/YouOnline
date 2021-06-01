@@ -15,6 +15,13 @@ import 'create_post_screen.dart';
 import 'notification_alerts_screen.dart';
 
 class MainScreen extends StatefulWidget {
+  final bool isMainScreen;
+
+  const MainScreen({
+    Key key,
+    this.isMainScreen = true,
+  }) : super(key: key);
+
   @override
   _MainScreenState createState() => _MainScreenState();
 }
@@ -39,20 +46,7 @@ class _MainScreenState extends State<MainScreen> {
     Color(0xFFF4E4CE),
   ];
 
-  List<Widget> widgets = [
-    HomeScreen(),
-    Container(
-      child: Center(
-        child: Text(
-          'Page yet to construct',
-          textScaleFactor: 1,
-        ),
-      ),
-    ),
-    Scaffold(),
-    NotificationAlertScreen(),
-    MenuScreen(),
-  ];
+  List<Widget> widgets;
   Widget selectedWidget = Scaffold();
   initialiseData() async {
     // await Provider.of<UserProvider>(context, listen: false).getAllUserStories();
@@ -67,6 +61,22 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
+    widgets = [
+      HomeScreen(
+        isMainScreen: widget.isMainScreen,
+      ),
+      Container(
+        child: Center(
+          child: Text(
+            'Page yet to construct',
+            textScaleFactor: 1,
+          ),
+        ),
+      ),
+      Scaffold(),
+      NotificationAlertScreen(),
+      MenuScreen(),
+    ];
     initialiseData();
   }
 

@@ -1,9 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:youonline/utils/assets.dart';
 import 'package:youonline/utils/color.dart';
 import 'package:youonline/utils/size_config.dart';
 import 'package:youonline/utils/styles.dart';
 import 'package:flutter/material.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 // ignore: must_be_immutable
 class PostCommentSection extends StatefulWidget {
@@ -50,17 +50,20 @@ class _PostCommentSectionState extends State<PostCommentSection> {
               height: SizeConfig.kDefaultSize * 15,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                image: DecorationImage(
-                  image: widget.imageURL != null
-                      ? CachedNetworkImageProvider(
-                          widget.imageURL,
-                        )
-                      : AssetImage(
-                          Assets.PROFILE_AVATAR,
-                        ),
-                  fit: BoxFit.cover,
-                ),
               ),
+              child: widget.imageURL != null
+                  ? ClipOval(
+                      child: FadeInImage.memoryNetwork(
+                        placeholder: kTransparentImage,
+                        image: widget.imageURL,
+                        fit: BoxFit.cover,imageScale: 0.5,
+                    excludeFromSemantics: true,
+                      ),
+                    )
+                  : Image.asset(
+                      Assets.PROFILE_AVATAR,
+                      fit: BoxFit.cover,
+                    ),
             ),
             SizedBox(
               width: SizeConfig.kDefaultSize * 03,

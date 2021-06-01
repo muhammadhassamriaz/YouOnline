@@ -7,11 +7,11 @@ import 'package:async/async.dart';
 import 'package:http/http.dart' as http;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_uploader/flutter_uploader.dart';
-import 'package:wakelock/wakelock.dart';
 // import 'package:http/http.dart';
 // import 'package:http/http.dart';
 import 'package:youonline/component/post_header.dart';
 import 'package:youonline/helper/api_client.dart';
+import 'package:youonline/model/timeline_data.dart';
 import 'package:youonline/model/uploader.dart';
 import 'package:youonline/provider/create_post_provider.dart';
 import 'package:youonline/provider/data_provider.dart';
@@ -27,7 +27,6 @@ import 'package:youonline/utils/color.dart';
 import 'package:youonline/utils/size_config.dart';
 import 'package:youonline/utils/styles.dart';
 import 'package:youonline/widgets/app_header.dart';
-import 'package:auto_size_text_field/auto_size_text_field.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -99,7 +98,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       final task = _tasks[result.tag];
       Provider.of<TimelineProvider>(context, listen: false)
           .changeTimelineData([]);
-      BotToast.closeAllLoading();
+      // BotToast.closeAllLoading();
       BotToast.showText(
         text: "Post created",
         textStyle: labelTextStyle.copyWith(
@@ -108,12 +107,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         ),
         contentColor: Colors.white,
       );
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (_) => MainScreen(),
-          ),
-          (route) => false);
       if (task == null) return;
 
       setState(() {
@@ -181,91 +174,35 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                     } else if (_postTextEditingController.text.isNotEmpty &&
                         _postProvider.gifURL != null) {
                       if (_postProvider.feelings != null) {
-                        BotToast.showLoading();
                         await _postProvider.createGIFPostwithFeelings(
                           postText: _postTextEditingController.text ?? "",
                           gifURL: _postProvider.gifURL,
                           context: context,
                           feeling: _postProvider.feelings,
                         );
-                        _timelineProvider.changeTimelineData([]);
-
-                        await _timelineProvider.getTimeLinePosts(
-                          context: context,
-                          pageNo: 1,
-                        );
-                        BotToast.closeAllLoading();
-                        Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => MainScreen(),
-                            ),
-                            (route) => false);
                       } else if (_postTextEditingController.text.isNotEmpty &&
                           _postProvider.feelings != null) {
-                        BotToast.showLoading();
                         await _postProvider.createFeelingsWithPosts(
                           postText: _postTextEditingController.text,
                           postColorID: selectedColorId.toString(),
                           context: context,
                           feelings: _postProvider.feelings,
                         );
-                        _timelineProvider.changeTimelineData([]);
-
-                        await _timelineProvider.getTimeLinePosts(
-                          context: context,
-                          pageNo: 1,
-                        );
-                        BotToast.closeAllLoading();
-                        Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => MainScreen(),
-                            ),
-                            (route) => false);
                       } else {
                         await _postProvider.createGIFPost(
                           postText: _postTextEditingController.text,
                           gifURL: _postProvider.gifURL,
                           context: context,
                         );
-                        _timelineProvider.changeTimelineData([]);
-
-                        await _timelineProvider.getTimeLinePosts(
-                          context: context,
-                          pageNo: 1,
-                        );
-                        BotToast.closeAllLoading();
-                        Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => MainScreen(),
-                            ),
-                            (route) => false);
                       }
                     } else if (_postTextEditingController.text.isNotEmpty) {
-                      BotToast.showLoading();
                       await _postProvider.createPost(
                         postText: _postTextEditingController.text,
                         postColorID: selectedColorId.toString(),
                         context: context,
                         feeling: _postProvider.feelings,
                       );
-                      _timelineProvider.changeTimelineData([]);
-                      await _timelineProvider.getTimeLinePosts(
-                        context: context,
-                        pageNo: 1,
-                      );
-                      BotToast.closeAllLoading();
-                      Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => MainScreen(),
-                          ),
-                          (route) => false);
                     } else {
-                      BotToast.closeAllLoading();
-
                       BotToast.showText(
                         text: 'Please write something.',
                         textStyle: labelTextStyle.copyWith(
@@ -311,7 +248,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                             data: MediaQuery.of(context).copyWith(
                               textScaleFactor: 1,
                             ),
-                            child: AutoSizeTextField(
+                            child: TextField(
                               controller: _postTextEditingController,
                               maxLines: 3,
                               decoration: InputDecoration(
@@ -470,7 +407,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                     if (bottomSheetItemTitle[index]
                                         .toLowerCase()
                                         .contains("image")) {
-                                      Wakelock.enable();
                                       try {
                                         await FilePicker.platform
                                             .pickFiles(
@@ -536,7 +472,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                           );
                                         });
 
-                                        BotToast.showLoading();
+                                        // BotToast.showLoading();
                                         await uploader.enqueue(
                                           url: ApiNetwork.BASE_URL +
                                               ApiNetwork().createPost,
@@ -554,6 +490,12 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                           showNotification: true,
                                           tag: "Uploading Video",
                                         );
+                                        Navigator.pushAndRemoveUntil(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (_) => MainScreen(),
+                                            ),
+                                            (route) => false);
                                       }
                                     } else if (bottomSheetItemTitle[index]
                                         .toLowerCase()
@@ -646,49 +588,54 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     @required String feelings,
   }) async {
     var uri = Uri.parse(ApiNetwork.BASE_URL + ApiNetwork().createPost);
-
+    var _timelineProvider =
+        Provider.of<TimelineProvider>(context, listen: false);
     var request = new http.MultipartRequest("POST", uri);
 
-    BotToast.showLoading();
     for (var file in files) {
       String fileName = file.path.split("/").last;
       var stream = new http.ByteStream(DelegatingStream.typed(file.openRead()));
       var length = await file.length();
       print("File lenght - $length");
       print("fileName - $fileName");
-      var multipartFileSign = new http.MultipartFile(
-          'postPhotos[]', stream, length,
+      var multipartFileSign;
+      multipartFileSign = new http.MultipartFile('postPhotos[]', stream, length,
           filename: fileName);
 
       print(multipartFileSign);
 
       request.files.add(multipartFileSign);
     }
-    request.fields['postText'] = text;
+    if (text != null && text.isNotEmpty) {
+      request.fields['postText'] = text;
+    }
     if (feelings != null && feelings.isNotEmpty) {
       request.fields["feeling_type"] = "feelings";
       request.fields["feeling"] = feelings;
     }
+    print(request.fields);
 
     Map<String, String> headers = {
       "Accept": "application/json",
       "Authorization": "Bearer $authenticationToken"
     };
     request.headers.addAll(headers);
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (_) => MainScreen(
+            isMainScreen: false,
+          ),
+        ),
+        (route) => false);
 
     var response = await request.send();
 
-    print(response.statusCode);
-
     var res = await http.Response.fromStream(response);
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      print("Item form is statuscode 200");
-      print(res.body);
-      var responseDecode = json.decode(res.body);
-      Provider.of<TimelineProvider>(context, listen: false)
-          .changeTimelineData([]);
 
-      BotToast.closeAllLoading();
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      var responseDecode = json.decode(res.body);
+
       BotToast.showText(
         text: "Image Uploaded",
         textStyle: labelTextStyle.copyWith(
@@ -697,20 +644,22 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         ),
         contentColor: Colors.white,
       );
-      Provider.of<TimelineProvider>(context, listen: false)
-          .changeTimelineData([]);
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (_) => MainScreen(),
-          ),
-          (route) => false);
 
-      if (responseDecode['status'] == true) {
-        return res.body;
-      } else {
-        return res.body;
+      if (responseDecode['success'] != null && responseDecode['success']) {
+        TimelineData post = TimelineData.fromJson(responseDecode['post']);
+        _timelineProvider.timelineData.insert(0, post);
+        _timelineProvider.changeTimelineData(_timelineProvider.timelineData);
+
+        BotToast.showText(
+          text: "Post successfully created.",
+          contentColor: Colors.white,
+          textStyle: labelTextStyle.copyWith(
+            fontSize: 12,
+            color: Colors.black,
+          ),
+        );
       }
+      return res.body;
     }
   }
 }

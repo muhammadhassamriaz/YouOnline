@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:transparent_image/transparent_image.dart';
 import 'package:youonline/provider/user_provider.dart';
 import 'package:youonline/provider/widget_provider.dart';
 import 'package:youonline/route/create_user_story.dart';
@@ -65,12 +65,6 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                     height: height * .25,
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: CachedNetworkImageProvider(
-                          widget.profileCover,
-                        ),
-                        fit: BoxFit.fill,
-                      ),
                       borderRadius: BorderRadius.circular(
                         orientation == Orientation.portrait
                             ? width * .03
@@ -78,6 +72,11 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                       ),
                     ),
                     clipBehavior: Clip.antiAliasWithSaveLayer,
+                    child: FadeInImage.memoryNetwork(
+                      placeholder: kTransparentImage,
+                      image: widget.profileCover,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                   Positioned(
                     bottom: 0,
@@ -87,14 +86,16 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                     child: Container(
                       width: width * .4,
                       height: width * .4,
+                      child: ClipOval(
+                        child: FadeInImage.memoryNetwork(
+                          placeholder: kTransparentImage,
+                          fit: BoxFit.cover,
+                          imageScale: 0.5,
+                          image: widget.profileAvatar,
+                        ),
+                      ),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        image: DecorationImage(
-                          image: CachedNetworkImageProvider(
-                            widget.profileAvatar,
-                          ),
-                          fit: BoxFit.cover,
-                        ),
                         border: Border.all(
                           width: width * .015,
                           color: Colors.white,
@@ -105,6 +106,9 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                 ],
               ),
             ),
+          ),
+          SizedBox(
+            height: height * .01,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -119,21 +123,24 @@ class _ProfileHeaderState extends State<ProfileHeader> {
               )
             ],
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Manners maketh man',
-                style: hintTextStyle.copyWith(
-                  fontSize: SizeConfig.kDefaultSize * 3.5,
-                ),
-                textScaleFactor: 1,
-              ),
-            ],
-          ),
           SizedBox(
-            height: height * .03,
+            height: height * .01,
           ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: [
+          //     Text(
+          //       'Manners maketh man',
+          //       style: hintTextStyle.copyWith(
+          //         fontSize: SizeConfig.kDefaultSize * 3.5,
+          //       ),
+          //       textScaleFactor: 1,
+          //     ),
+          //   ],
+          // ),
+          // SizedBox(
+          //   height: height * .03,
+          // ),
           Padding(
             padding: EdgeInsets.symmetric(
               horizontal: width * .04,

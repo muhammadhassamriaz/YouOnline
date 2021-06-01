@@ -30,6 +30,7 @@ class _YouTubeVideoPlayerState extends State<YouTubeVideoPlayer> {
           flags: YoutubePlayerFlags(
             autoPlay: false,
             hideControls: false,
+            enableCaption: false,
           ),
         );
       }
@@ -38,20 +39,11 @@ class _YouTubeVideoPlayerState extends State<YouTubeVideoPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      height: SizeConfig.kDefaultSize * 70,
-      child: Container(
-        width: double.infinity,
-        height: SizeConfig.kDefaultSize * 70,
-        child: YoutubePlayer(
-          controller: _youtubePlayerController,
-          showVideoProgressIndicator: false,
-          onReady: () {},
-          bufferIndicator: Center(
-            child: CupertinoActivityIndicator(),
-          ),
-        ),
+    return YoutubePlayer(
+      controller: _youtubePlayerController,
+      showVideoProgressIndicator: false,
+      bufferIndicator: Center(
+        child: CupertinoActivityIndicator(),
       ),
     );
   }
