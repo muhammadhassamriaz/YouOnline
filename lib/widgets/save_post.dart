@@ -18,7 +18,7 @@ class SavePostTile extends StatelessWidget {
           decoration: BoxDecoration(
             image: DecorationImage(
               image: AssetImage(
-                videoThumbnail,
+                vehiclePlacholder,
               ),
             ),
           ),

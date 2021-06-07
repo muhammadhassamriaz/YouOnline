@@ -12,7 +12,6 @@ import 'package:flutter_uploader/flutter_uploader.dart';
 import 'package:youonline/component/post_header.dart';
 import 'package:youonline/helper/api_client.dart';
 import 'package:youonline/model/timeline_data.dart';
-import 'package:youonline/model/uploader.dart';
 import 'package:youonline/provider/create_post_provider.dart';
 import 'package:youonline/provider/data_provider.dart';
 import 'package:youonline/provider/timeline_provider.dart';
@@ -30,7 +29,6 @@ import 'package:youonline/widgets/app_header.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:path/path.dart' as path;
 
 import 'main_screen.dart';
 
@@ -41,10 +39,7 @@ class CreatePostScreen extends StatefulWidget {
 
 class _CreatePostScreenState extends State<CreatePostScreen> {
   TextEditingController _postTextEditingController = TextEditingController();
-  FlutterUploader uploader = FlutterUploader();
-  StreamSubscription _progressSubscription;
-  StreamSubscription _resultSubscription;
-  Map<String, UploadItem> _tasks = {};
+
   int selectedIndex = 5;
 
   List<FileItem> imageFiles = [];
@@ -78,61 +73,15 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   @override
   void initState() {
     super.initState();
-    _progressSubscription = uploader.progress.listen((progress) {
-      final task = _tasks[progress.tag];
-      print("progress: ${progress.progress} , tag: ${progress.tag}");
-
-      if (task == null) return;
-      if (task.isCompleted()) {
-        return;
-      }
-      setState(() {
-        _tasks[progress.tag] =
-            task.copyWith(progress: progress.progress, status: progress.status);
-      });
-    });
-    _resultSubscription = uploader.result.listen((result) {
-      print(
-          "id: ${result.taskId}, status: ${result.status}, response: ${result.response}, statusCode: ${result.statusCode}, tag: ${result.tag}, headers: ${result.headers}");
-
-      final task = _tasks[result.tag];
-      Provider.of<TimelineProvider>(context, listen: false)
-          .changeTimelineData([]);
-      // BotToast.closeAllLoading();
-      BotToast.showText(
-        text: "Post created",
-        textStyle: labelTextStyle.copyWith(
-          fontSize: 12,
-          color: Colors.black,
-        ),
-        contentColor: Colors.white,
-      );
-      if (task == null) return;
-
-      setState(() {
-        _tasks[result.tag] = task.copyWith(status: result.status);
-      });
-    }, onError: (ex, stacktrace) {
-      final exp = ex as UploadException;
-      final task = _tasks[exp.tag];
-      BotToast.closeAllLoading();
-
-      if (task == null) return;
-
-      setState(() {
-        _tasks[exp.tag] = task.copyWith(status: exp.status);
-      });
-    });
   }
 
   @override
   void dispose() {
     super.dispose();
-    _progressSubscription?.cancel();
-    _resultSubscription?.cancel();
   }
 
-  List<File> files = [];
+  List files = [];
+  List videoFiles = [];
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -162,7 +111,32 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                   callback: () async {
                     var _timelineProvider =
                         Provider.of<TimelineProvider>(context, listen: false);
-                    if (files != null && files.length > 0) {
+                    if (videoFiles != null && videoFiles.length > 0) {
+                      BotToast.showText(
+                        text: "Video will be uploaded shortly. Please wait...",
+                        textStyle: labelTextStyle.copyWith(
+                          fontSize: 12,
+                          color: Colors.black,
+                        ),
+                        contentColor: Colors.white,
+                      );
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => MainScreen(
+                              isMainScreen: false,
+                            ),
+                          ),
+                          (route) => false);
+                      await videoUploader(
+                        files: videoFiles,
+                        authenticationToken:
+                            _userProvider.userAuthenticationToken,
+                        context: context,
+                        text: _postTextEditingController.text,
+                        feelings: _postProvider.feelings,
+                      );
+                    } else if (files != null && files.length > 0) {
                       await uploadMultipleImage(
                         files: files,
                         authenticationToken:
@@ -422,30 +396,29 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                             });
 
                                             if (files != null &&
-                                                files.length > 0) {
-                                              files.length > 1
-                                                  ? BotToast.showText(
-                                                      text:
-                                                          "${files.length} image is selected.",
-                                                      textStyle: labelTextStyle
-                                                          .copyWith(
-                                                        fontSize: 12,
-                                                        color: Colors.black,
-                                                      ),
-                                                      contentColor:
-                                                          Colors.white,
-                                                    )
-                                                  : BotToast.showText(
-                                                      text:
-                                                          "${files.length} images are selected.",
-                                                      textStyle: labelTextStyle
-                                                          .copyWith(
-                                                        fontSize: 12,
-                                                        color: Colors.black,
-                                                      ),
-                                                      contentColor:
-                                                          Colors.white,
-                                                    );
+                                                files.length == 1) {
+                                              BotToast.showText(
+                                                text:
+                                                    "${files.length} image is selected.",
+                                                textStyle:
+                                                    labelTextStyle.copyWith(
+                                                  fontSize: 12,
+                                                  color: Colors.black,
+                                                ),
+                                                contentColor: Colors.white,
+                                              );
+                                            } else if (files != null &&
+                                                files.length > 1) {
+                                              BotToast.showText(
+                                                text:
+                                                    "${files.length} images are selected.",
+                                                textStyle:
+                                                    labelTextStyle.copyWith(
+                                                  fontSize: 12,
+                                                  color: Colors.black,
+                                                ),
+                                                contentColor: Colors.white,
+                                              );
                                             }
                                           }
                                         });
@@ -455,47 +428,46 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                     } else if (bottomSheetItemTitle[index]
                                         .toLowerCase()
                                         .contains("video")) {
-                                      FilePickerResult result =
-                                          await FilePicker.platform.pickFiles(
-                                        allowCompression: true,
-                                        allowMultiple: false,
-                                        type: FileType.video,
-                                      );
-                                      if (result != null) {
-                                        setState(() {
-                                          videoFile = FileItem(
-                                            filename: path
-                                                .basename(result.files[0].path),
-                                            savedDir: path
-                                                .dirname(result.files[0].path),
-                                            fieldname: "postVideo",
-                                          );
-                                        });
-
-                                        // BotToast.showLoading();
-                                        await uploader.enqueue(
-                                          url: ApiNetwork.BASE_URL +
-                                              ApiNetwork().createPost,
-                                          files: [videoFile],
-                                          method: UploadMethod.POST,
-                                          headers: <String, String>{
-                                            "Accept": "application/json",
-                                            "Authorization":
-                                                "Bearer ${_userProvider.userAuthenticationToken}",
-                                          },
-                                          data: {
-                                            "postText":
-                                                _postTextEditingController.text,
-                                          },
-                                          showNotification: true,
-                                          tag: "Uploading Video",
+                                      var result;
+                                      try {
+                                        result =
+                                            await FilePicker.platform.pickFiles(
+                                          allowCompression: true,
+                                          allowMultiple: false,
+                                          type: FileType.video,
                                         );
-                                        Navigator.pushAndRemoveUntil(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (_) => MainScreen(),
-                                            ),
-                                            (route) => false);
+                                        print(result);
+                                      } catch (e) {
+                                        throw e;
+                                      }
+                                      if (result != null &&
+                                          result.files != null &&
+                                          result.files.length > 0) {
+                                        if (result.files != null) {
+                                          try {
+                                            setState(() {
+                                              videoFiles = result.paths
+                                                  .map((path) => File(path))
+                                                  .toList();
+                                            });
+                                          } catch (e) {
+                                            throw e;
+                                          }
+
+                                          if (videoFiles != null &&
+                                              videoFiles.length > 0) {
+                                            BotToast.showText(
+                                              text:
+                                                  "${videoFiles.length} video is selected.",
+                                              textStyle:
+                                                  labelTextStyle.copyWith(
+                                                fontSize: 12,
+                                                color: Colors.black,
+                                              ),
+                                              contentColor: Colors.white,
+                                            );
+                                          }
+                                        }
                                       }
                                     } else if (bottomSheetItemTitle[index]
                                         .toLowerCase()
@@ -580,7 +552,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     );
   }
 
-  static Future<void> uploadMultipleImage({
+  Future<void> uploadMultipleImage({
     @required List<File> files,
     @required String authenticationToken,
     @required BuildContext context,
@@ -658,6 +630,71 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             color: Colors.black,
           ),
         );
+      }
+      return res.body;
+    }
+  }
+
+  Future<void> videoUploader({
+    @required List files,
+    @required String authenticationToken,
+    @required BuildContext context,
+    @required String text,
+    @required String feelings,
+  }) async {
+    var uri = Uri.parse(ApiNetwork.BASE_URL + ApiNetwork().createPost);
+    var _timelineProvider =
+        Provider.of<TimelineProvider>(context, listen: false);
+    var request = new http.MultipartRequest("POST", uri);
+
+    for (var file in files) {
+      String fileName = file.path.split("/").last;
+      var stream = new http.ByteStream(DelegatingStream.typed(file.openRead()));
+      var length = await file.length();
+      print("File lenght - $length");
+      print("fileName - $fileName");
+      var multipartFileSign;
+      multipartFileSign = new http.MultipartFile('postVideo', stream, length,
+          filename: fileName);
+
+      print(multipartFileSign);
+
+      request.files.add(multipartFileSign);
+    }
+    if (text != null && text.isNotEmpty) {
+      request.fields['postText'] = text;
+    }
+    if (feelings != null && feelings.isNotEmpty) {
+      request.fields["feeling_type"] = "feelings";
+      request.fields["feeling"] = feelings;
+    }
+    print(request.fields);
+
+    Map<String, String> headers = {
+      "Accept": "application/json",
+      "Authorization": "Bearer $authenticationToken"
+    };
+    request.headers.addAll(headers);
+
+    var response = await request.send();
+
+    var res = await http.Response.fromStream(response);
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      var responseDecode = json.decode(res.body);
+
+      if (responseDecode['success'] != null && responseDecode['success']) {
+        BotToast.showText(
+          text: "Video is Uploaded",
+          textStyle: labelTextStyle.copyWith(
+            fontSize: 12,
+            color: Colors.black,
+          ),
+          contentColor: Colors.white,
+        );
+        TimelineData post = TimelineData.fromJson(responseDecode['post']);
+        _timelineProvider.timelineData.insert(0, post);
+        _timelineProvider.changeTimelineData(_timelineProvider.timelineData);
       }
       return res.body;
     }

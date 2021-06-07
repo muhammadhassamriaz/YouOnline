@@ -104,10 +104,10 @@ class _MenuScreenState extends State<MenuScreen> {
               child: GestureDetector(
                 onTap: () async {
                   BotToast.showLoading();
-                  await _userProvider.getFollowingList(
-                      userId: _userProvider.user.userId.toString());
-                  await _userProvider.getFollowersList(
-                      userId: _userProvider.user.userId.toString());
+                  await _userProvider.getTimelineUserProfile(
+                    userId: _userProvider.user.userId.toString(),
+                  );
+
                   BotToast.closeAllLoading();
                   Navigator.push(
                     context,
@@ -222,12 +222,13 @@ class _MenuScreenState extends State<MenuScreen> {
                                     .toLowerCase()
                                     .contains("profile")) {
                                   BotToast.showLoading();
-                                  await _userProvider.getFollowingList(
-                                      userId:
-                                          _userProvider.user.userId.toString());
-                                  await _userProvider.getFollowersList(
-                                      userId:
-                                          _userProvider.user.userId.toString());
+                                  BotToast.showLoading();
+                                  await _userProvider.getTimelineUserProfile(
+                                    userId:
+                                        _userProvider.user.userId.toString(),
+                                  );
+
+                                  BotToast.closeAllLoading();
                                   BotToast.closeAllLoading();
                                   Navigator.push(
                                     context,

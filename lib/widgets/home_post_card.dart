@@ -31,7 +31,7 @@ import 'package:universal_html/html.dart' as html;
 import 'package:path/path.dart' as path;
 
 // ignore: must_be_immutable
-class HomePostWidget extends StatefulWidget {
+class HomePostWidget extends StatelessWidget {
   final String description;
   final String imageURL;
   final String profileAvatar;
@@ -63,6 +63,7 @@ class HomePostWidget extends StatefulWidget {
   final User user;
   final TimelinePage page;
   final Group group;
+  final String videoThumbnail;
 
   HomePostWidget({
     Key key,
@@ -97,61 +98,8 @@ class HomePostWidget extends StatefulWidget {
     @required this.group,
     @required this.page,
     @required this.user,
+    @required this.videoThumbnail,
   }) : super(key: key);
-
-  @override
-  _HomePostWidgetState createState() => _HomePostWidgetState();
-}
-
-class _HomePostWidgetState extends State<HomePostWidget> {
-  FlutterUploader uploader = FlutterUploader();
-  StreamSubscription _progressSubscription;
-  StreamSubscription _resultSubscription;
-  Map<String, UploadItem> _tasks = {};
-
-  @override
-  void initState() {
-    super.initState();
-    _progressSubscription = uploader.progress.listen((progress) {
-      final task = _tasks[progress.tag];
-      print("progress: ${progress.progress} , tag: ${progress.tag}");
-      if (task == null) return;
-      if (task.isCompleted()) return;
-      // setState(() {
-      _tasks[progress.tag] =
-          task.copyWith(progress: progress.progress, status: progress.status);
-      // });
-    });
-    _resultSubscription = uploader.result.listen((result) {
-      print(
-          "id: ${result.taskId}, status: ${result.status}, response: ${result.response}, statusCode: ${result.statusCode}, tag: ${result.tag}, headers: ${result.headers}");
-      BotToast.showText(text: "Image Uploaded");
-
-      final task = _tasks[result.tag];
-      if (task == null) return;
-
-      // setState(() {
-      _tasks[result.tag] = task.copyWith(status: result.status);
-      // });
-    }, onError: (ex, stacktrace) {
-      print("exception: $ex");
-      print("stacktrace: $stacktrace" ?? "no stacktrace");
-      final exp = ex as UploadException;
-      final task = _tasks[exp.tag];
-      if (task == null) return;
-
-      // setState(() {
-      _tasks[exp.tag] = task.copyWith(status: exp.status);
-      // });
-    });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _progressSubscription?.cancel();
-    _resultSubscription?.cancel();
-  }
 
   String _parseHtmlString(String htmlString) {
     var text = html.Element.span()..appendHtml(htmlString);
@@ -159,16 +107,13 @@ class _HomePostWidgetState extends State<HomePostWidget> {
   }
 
   TextEditingController commentTextEditingController = TextEditingController();
-  String comment = "";
+  String commentt = "";
   File imageFile;
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
-    var _timelineProvider = Provider.of<TimelineProvider>(context);
-    var _userProvider = Provider.of<UserProvider>(context);
     double height = MediaQuery.of(context).size.height;
-
+    double width = MediaQuery.of(context).size.width;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -181,32 +126,31 @@ class _HomePostWidgetState extends State<HomePostWidget> {
             mainAxisSize: MainAxisSize.min,
             children: [
               PostCardHeader(
-                profileAvatar: widget.profileAvatar,
-                name: widget.name,
-                isView: widget.isView,
-                isPostShared: widget.isPostShared,
-                time: widget.time,
-                feelings: widget.feelings,
+                profileAvatar: profileAvatar,
+                name: name,
+                isView: isView,
+                isPostShared: isPostShared,
+                time: time,
+                feelings: feelings,
                 callback: () {
-                  widget.moreButtonCallback();
+                  moreButtonCallback();
                 },
-                page: widget.page,
-                group: widget.group,
-                user: widget.user,
+                page: page,
+                group: group,
+                user: user,
               ),
-              if (widget.description != null)
-                if (widget.postColor != null &&
-                    !widget.postType.contains("poll"))
+              if (description != null)
+                if (postColor != null && !postType.contains("poll"))
                   PostColorContainer(
-                    color1: Color(int.tryParse(
-                        widget.postColor.color1.replaceAll("#", "0xff"))),
-                    color2: Color(int.tryParse(
-                        widget.postColor.color2.replaceAll("#", "0xff"))),
+                    color1: Color(
+                        int.tryParse(postColor.color1.replaceAll("#", "0xff"))),
+                    color2: Color(
+                        int.tryParse(postColor.color2.replaceAll("#", "0xff"))),
                     textColor: Color(int.tryParse(
-                        widget.postColor.textColor.replaceAll("#", "0xff"))),
-                    description: _parseHtmlString(widget.description),
+                        postColor.textColor.replaceAll("#", "0xff"))),
+                    description: _parseHtmlString(description),
                   )
-                else if (!widget.postType.contains("poll"))
+                else if (!postType.contains("poll"))
                   Padding(
                     padding: EdgeInsets.symmetric(
                       horizontal: SizeConfig.kDefaultSize * 3,
@@ -215,7 +159,7 @@ class _HomePostWidgetState extends State<HomePostWidget> {
                       children: [
                         Flexible(
                           child: Text(
-                            _parseHtmlString(widget.description),
+                            _parseHtmlString(description),
                             style: labelTextStyle.copyWith(
                               fontSize: SizeConfig.kDefaultSize * 3.2,
                             ),
@@ -224,7 +168,7 @@ class _HomePostWidgetState extends State<HomePostWidget> {
                       ],
                     ),
                   )
-                else if (widget.postType.contains("poll"))
+                else if (postType.contains("poll"))
                   Padding(
                     padding: EdgeInsets.symmetric(
                       horizontal: SizeConfig.kDefaultSize * 3,
@@ -233,7 +177,7 @@ class _HomePostWidgetState extends State<HomePostWidget> {
                       children: [
                         Flexible(
                           child: Text(
-                            _parseHtmlString(widget.description),
+                            _parseHtmlString(description),
                             style: labelTextStyle.copyWith(
                               fontSize: SizeConfig.kDefaultSize * 5.2,
                             ),
@@ -244,89 +188,97 @@ class _HomePostWidgetState extends State<HomePostWidget> {
                   ),
               SizedBox(height: SizeConfig.kDefaultSize * 2),
               PollWidget(
-                options: widget.option,
+                options: option,
               ),
-              if (widget.imageURL != null && widget.description != null ||
-                  widget.description != null && widget.iframe != null ||
-                  widget.description != null && widget.isAlbum != null ||
-                  widget.videoURL != null &&
-                      widget.description != null &&
-                      !widget.postType.contains("poll") &&
-                      widget.postSticker != null)
+              if (imageURL != null && description != null ||
+                  description != null && iframe != null ||
+                  description != null && isAlbum != null ||
+                  videoURL != null &&
+                      description != null &&
+                      !postType.contains("poll") &&
+                      postSticker != null)
                 SizedBox(
                   height: SizeConfig.kDefaultSize * 2,
                 ),
-              if (widget.imageURL != null && !widget.postType.contains("poll"))
-                PostSinglePicture(
-                  shareButtonCallback: () {
-                    widget.shareButtonCallback();
-                  },
-                  commentButtonCallback: () {
-                    widget.commentButtonCallback();
-                  },
-                  likedButtonOnPressed: () {
-                    widget.likedButtonOnPressed();
-                  },
-                  reaction: widget.reaction,
-                  reactionCount: widget.reactionCount,
-                  commentCount: widget.comments != null
-                      ? widget.comments.length > 0
-                          ? widget.comments.length
-                          : 0
-                      : 0,
-                  imageURL: widget.imageURL,
+              if (imageURL != null && !postType.contains("poll"))
+                Container(
+                  height: height * .4,
+                  child: PostSinglePicture(
+                    shareButtonCallback: () {
+                      shareButtonCallback();
+                    },
+                    commentButtonCallback: () {
+                      commentButtonCallback();
+                    },
+                    likedButtonOnPressed: () {
+                      likedButtonOnPressed();
+                    },
+                    reaction: reaction,
+                    reactionCount: reactionCount,
+                    commentCount: comments != null
+                        ? comments.length > 0
+                            ? comments.length
+                            : 0
+                        : 0,
+                    imageURL: imageURL,
+                  ),
                 )
-              else if (widget.postSticker != null &&
-                  !widget.postType.contains("poll"))
-                PostSinglePicture(
-                  shareButtonCallback: () {
-                    widget.shareButtonCallback();
-                  },
-                  commentButtonCallback: () {
-                    widget.commentButtonCallback();
-                  },
-                  likedButtonOnPressed: () {
-                    widget.likedButtonOnPressed();
-                  },
-                  reaction: widget.reaction,
-                  reactionCount: widget.reactionCount,
-                  commentCount: widget.comments != null
-                      ? widget.comments.length > 0
-                          ? widget.comments.length
-                          : 0
-                      : 0,
-                  imageURL: widget.postSticker,
+              else if (postSticker != null && !postType.contains("poll"))
+                Container(
+                  height: height * .4,
+                  child: PostSinglePicture(
+                    shareButtonCallback: () {
+                      shareButtonCallback();
+                    },
+                    commentButtonCallback: () {
+                      commentButtonCallback();
+                    },
+                    likedButtonOnPressed: () {
+                      likedButtonOnPressed();
+                    },
+                    reaction: reaction,
+                    reactionCount: reactionCount,
+                    commentCount: comments != null
+                        ? comments.length > 0
+                            ? comments.length
+                            : 0
+                        : 0,
+                    imageURL: postSticker,
+                  ),
                 )
-              else if (widget.iframe != null &&
-                  !widget.postType.contains("poll"))
-                YouTubeVideoPlayer(
-                  iframe: widget.iframe,
+              else if (iframe != null && !postType.contains("poll"))
+                Container(
+                  child: YouTubeVideoPlayer(
+                    iframe: iframe,
+                  ),
                 )
-              else if (widget.album != null &&
-                  widget.album.length > 0 &&
-                  !widget.postType.contains("poll"))
-                PostMultipleImages(
-                  shareButtonCallback: () {
-                    widget.shareButtonCallback();
-                  },
-                  commentButtonCallback: () {
-                    widget.commentButtonCallback();
-                  },
-                  likedButtonOnPressed: () {
-                    widget.likedButtonOnPressed();
-                  },
-                  reaction: widget.reaction,
-                  reactionCount: widget.reactionCount,
-                  commentCount: widget.comments != null
-                      ? widget.comments.length > 0
-                          ? widget.comments.length
-                          : 0
-                      : 0,
-                  album: widget.album,
+              else if (album != null &&
+                  album.length > 0 &&
+                  !postType.contains("poll"))
+                Container(
+                  child: PostMultipleImages(
+                    shareButtonCallback: () {
+                      shareButtonCallback();
+                    },
+                    commentButtonCallback: () {
+                      commentButtonCallback();
+                    },
+                    likedButtonOnPressed: () {
+                      likedButtonOnPressed();
+                    },
+                    reaction: reaction,
+                    reactionCount: reactionCount,
+                    commentCount: comments != null
+                        ? comments.length > 0
+                            ? comments.length
+                            : 0
+                        : 0,
+                    album: album,
+                  ),
                 )
-              else if (widget.videoURL != null &&
-                  !widget.postType.contains("poll") &&
-                  widget.videoURL.isNotEmpty)
+              else if (videoURL != null &&
+                  !postType.contains("poll") &&
+                  videoURL.isNotEmpty)
                 Container(
                   height: height * .4,
                   child: Padding(
@@ -334,7 +286,8 @@ class _HomePostWidgetState extends State<HomePostWidget> {
                       vertical: SizeConfig.kDefaultSize * 5,
                     ),
                     child: VideoPlayerWidget(
-                      videoURL: widget.videoURL,
+                      videoURL: videoURL,
+                      videoThumbnail: videoThumbnail,
                     ),
                   ),
                 ),
@@ -342,15 +295,15 @@ class _HomePostWidgetState extends State<HomePostWidget> {
                 height: SizeConfig.kDefaultSize * 1.5,
               ),
               PostCommentsLikesWidget(
-                isView: widget.isView,
+                isView: isView,
                 commentButtonCallback: () {
-                  widget.commentButtonCallback();
+                  commentButtonCallback();
                 },
-                reaction: widget.reaction,
-                reactionCount: widget.reactionCount,
-                commentCount: widget.comments != null
-                    ? widget.comments.length > 0
-                        ? widget.comments.length
+                reaction: reaction,
+                reactionCount: reactionCount,
+                commentCount: comments != null
+                    ? comments.length > 0
+                        ? comments.length
                         : 0
                     : 0,
               ),
@@ -363,65 +316,68 @@ class _HomePostWidgetState extends State<HomePostWidget> {
               ),
               PostCallbackActions(
                 shareButtonCallback: () {
-                  widget.shareButtonCallback();
+                  shareButtonCallback();
                 },
                 commentButtonCallback: () {
-                  widget.commentButtonCallback();
+                  commentButtonCallback();
                 },
                 likedButtonOnPressed: () {
-                  widget.likedButtonOnPressed();
+                  likedButtonOnPressed();
                 },
-                isView: widget.isView,
+                isView: isView,
               ),
-              if (widget.comment?.text != null)
+              if (comment?.text != null)
                 SizedBox(
                   height: SizeConfig.kDefaultSize * 02,
                 ),
-              if (widget.comment != null)
-                if (widget.comment.text != null)
-                  if (widget.comment.user.firstName != null &&
-                      widget.comment.user.lastName != null)
+              if (comment != null)
+                if (comment.text != null)
+                  if (comment.user.firstName != null &&
+                      comment.user.lastName != null)
                     PostCommentsWidget(
-                      comment: widget.comment?.text,
-                      username: widget.comment.user.firstName +
-                          " " +
-                          widget.comment.user.lastName,
-                      replies: widget.comment.replies ?? [],
-                      commentID: widget.comment.id.toString(),
-                      imageURL: widget.comment.user.avatar,
-                      postComment: widget.comment,
-                      postId: int.tryParse(widget.postID),
-                      timelineIndex: widget.timelineIndex,
+                      comment: comment?.text,
+                      username:
+                          comment.user.firstName + " " + comment.user.lastName,
+                      replies: comment.replies ?? [],
+                      commentID: comment.id.toString(),
+                      imageURL: comment.user.avatar,
+                      postComment: comment,
+                      postId: int.tryParse(postID),
+                      timelineIndex: timelineIndex,
                       showCommentBottomSheet: () {
-                        widget.showCommentBottomSheet();
+                        showCommentBottomSheet();
                       },
                     )
                   else
                     PostCommentsWidget(
-                      comment: widget.comment?.text,
-                      username: widget.comment.user.username,
-                      replies: widget.comment.replies ?? [],
-                      commentID: widget.comment.id.toString(),
-                      imageURL: widget.comment.user.avatar,
-                      postComment: widget.comment,
-                      postId: int.tryParse(widget.postID),
-                      timelineIndex: widget.timelineIndex,
+                      comment: comment?.text,
+                      username: comment.user.username,
+                      replies: comment.replies ?? [],
+                      commentID: comment.id.toString(),
+                      imageURL: comment.user.avatar,
+                      postComment: comment,
+                      postId: int.tryParse(postID),
+                      timelineIndex: timelineIndex,
                       showCommentBottomSheet: () {
-                        widget.showCommentBottomSheet();
+                        showCommentBottomSheet();
                       },
                     ),
-              if (widget.comment?.text != null)
+              if (comment?.text != null)
                 SizedBox(
                   height: SizeConfig.kDefaultSize * 04,
                 ),
             ],
           ),
         ),
+        Divider(
+          color: Colors.grey[300],
+          thickness: 5,
+        ),
         // PostCommentSection(
         //   imageURL: _userProvider.user.avatar,
-        //   isView: widget.isView,
+        //   isView:  isView,
         //   commentTextEditingController: commentTextEditingController,
-        //   postID: widget.postID,
+        //   postID:  postID,
         //   onChangedCallback: (value) {
         //     setState(() {
         //       comment = value;
@@ -449,7 +405,7 @@ class _HomePostWidgetState extends State<HomePostWidget> {
         //         user.avatar = _userProvider.user.avatar;
         //         com.user = user;
         //         com.imageFile = value;
-        //         widget.comments.add(com);
+        //          comments.add(com);
         //       });
         //       await uploader.enqueue(
         //         url: "https://api.youonline.site/api/add-comment",
@@ -467,7 +423,7 @@ class _HomePostWidgetState extends State<HomePostWidget> {
         //               "Bearer ${_userProvider.userAuthenticationToken}",
         //         },
         //         data: {
-        //           "post_id": widget.postID,
+        //           "post_id":  postID,
         //           "text": "",
         //         },
         //         showNotification: true,
@@ -490,7 +446,7 @@ class _HomePostWidgetState extends State<HomePostWidget> {
         //       com.user = user;
 
         //       setState(() {
-        //         widget.comments.add(com);
+        //          comments.add(com);
         //         commentTextEditingController.text = "";
         //         comment = "";
         //       });
@@ -506,10 +462,10 @@ class _HomePostWidgetState extends State<HomePostWidget> {
         //       _timelineProvider.addComment(
         //         context: context,
         //         comment: com.text,
-        //         postID: widget.postID,
+        //         postID:  postID,
         //         userID: _userProvider.user.userId.toString(),
         //       );
-        //       widget.showCommentBottomSheet();
+        //        showCommentBottomSheet();
         //     }
         //   },
         // ),

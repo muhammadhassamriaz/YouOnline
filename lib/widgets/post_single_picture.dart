@@ -28,28 +28,48 @@ class PostSinglePicture extends StatelessWidget {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-    return Container(
-      height: height * .4,
-      width: double.infinity,
-      child: imageURL != null
-          ?
-          // CachedNetworkImage(
-          //     imageUrl: imageURL,
-          //     fit: BoxFit.cover,
-          //   )
-          FadeInImage.memoryNetwork(
-              width: width,
-              height: height * .4,
-              imageCacheWidth: width.toInt(),
-              imageCacheHeight: 400,
-              placeholder: kTransparentImage,
-              image: imageURL,
-              fit: BoxFit.cover,
-              imageScale: 0.5,
-            )
-          : Image.asset(
-              Assets.POST_PICTURE_PLACEHOLDER,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => ImageFullScreen(
+              commentCount: commentCount,
+              reactionCount: reactionCount,
+              reaction: reaction,
+              shareButtonCallback: () {
+                shareButtonCallback();
+              },
+              commentButtonCallback: () {
+                commentButtonCallback();
+              },
+              likedButtonOnPressed: () {
+                likedButtonOnPressed();
+              },
+              // album: album,
+              imageURL: imageURL ?? Assets.POST_PICTURE_PLACEHOLDER,
             ),
+          ),
+        );
+      },
+      child: Container(
+        height: height * .4,
+        width: double.infinity,
+        child: imageURL != null
+            ?
+            // CachedNetworkImage(
+            //     imageUrl: imageURL,
+            //     fit: BoxFit.cover,
+            //   )
+            FadeInImage.memoryNetwork(
+                placeholder: kTransparentImage,
+                image: imageURL,
+                fit: BoxFit.cover,
+              )
+            : Image.asset(
+                Assets.POST_PICTURE_PLACEHOLDER,
+              ),
+      ),
     );
   }
 }

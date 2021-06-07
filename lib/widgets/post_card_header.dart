@@ -54,10 +54,10 @@ class PostCardHeader extends StatelessWidget {
             onTap: () async {
               if (user != null) {
                 BotToast.showLoading();
-                await _userProvider.getFollowingList(
-                    userId: user.userId.toString());
-                await _userProvider.getFollowersList(
-                    userId: user.userId.toString());
+                await _userProvider.getTimelineUserProfile(
+                  userId: user.userId.toString(),
+                );
+
                 BotToast.closeAllLoading();
                 Navigator.push(
                   context,
@@ -132,10 +132,10 @@ class PostCardHeader extends StatelessWidget {
                   onTap: () async {
                     if (user != null) {
                       BotToast.showLoading();
-                      await _userProvider.getFollowingList(
-                          userId: user.userId.toString());
-                      await _userProvider.getFollowersList(
-                          userId: user.userId.toString());
+                      await _userProvider.getTimelineUserProfile(
+                        userId: _userProvider.user.userId.toString(),
+                      );
+
                       BotToast.closeAllLoading();
                       Navigator.push(
                         context,

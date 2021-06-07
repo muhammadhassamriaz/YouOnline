@@ -1008,10 +1008,12 @@ commentBottomSheet(
                                         //     .then((value) async {
 
                                         // });
-                                        await ImagePicker.pickImage(
+                                        await ImagePicker.platform
+                                            .pickImage(
                                           source: ImageSource.gallery,
                                           imageQuality: 70,
-                                        ).then((value) async {
+                                        )
+                                            .then((value) async {
                                           setState(() {
                                             user.userId =
                                                 _userProvider.user.userId;
@@ -1026,7 +1028,7 @@ commentBottomSheet(
                                             user.avatar =
                                                 _userProvider.user.avatar;
                                             com.user = user;
-                                            com.imageFile = value;
+                                            com.imageFile = File(value.path);
                                             comments.add(com);
                                           });
 

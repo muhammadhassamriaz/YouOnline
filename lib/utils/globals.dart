@@ -1,6 +1,4 @@
-import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:youonline/bloc/connectivity.dart';
 import 'package:youonline/provider/user_provider.dart';
 import 'package:youonline/route/blog_screen.dart';
 import 'package:youonline/route/event_screen.dart';
@@ -87,7 +85,6 @@ Future menuRoute({
   }
 }
 
-BlocClass myBloc;
 
 final List<String> titles = [
   "Events",
@@ -140,7 +137,7 @@ final List<String> images2 = [
   articleIcon,
   // classifiedIcon,
   // directoryIcon,
-  // automotiveIcon,
+  automotiveIcon,
   // popularPostsIcon,
   exploreIcon,
   commonThingsIcon,
@@ -209,7 +206,7 @@ final List<String> settingTitles = [
   "My Articles",
   // "Classifieds",
   // "Business Directory",
-  // "Automotives",
+  "Automotives",
   // "Popular Posts",
   "Explore",
   "Common Things",
@@ -217,7 +214,6 @@ final List<String> settingTitles = [
 
 class Globals {
   // ignore: close_sinks
-  static BlocClass blocClass;
 
   static playShareNowNotificationSound() async {
     AudioCache _audioCache = AudioCache(

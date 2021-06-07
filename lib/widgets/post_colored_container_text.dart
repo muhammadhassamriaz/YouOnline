@@ -1,6 +1,5 @@
 import 'package:youonline/utils/size_config.dart';
 import 'package:youonline/utils/styles.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 class PostColorContainer extends StatelessWidget {
@@ -19,10 +18,11 @@ class PostColorContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
     SizeConfig().init(context);
     return Container(
       width: double.infinity,
-      height: SizeConfig.kDefaultSize * 70,
+      height: height * .4,
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [color1, color2],
@@ -31,7 +31,7 @@ class PostColorContainer extends StatelessWidget {
       child: Center(
         child: Padding(
           padding: EdgeInsets.all(2.0),
-          child: AutoSizeText(
+          child: Text(
             description,
             textAlign: TextAlign.center,
             style: labelTextStyle.copyWith(

@@ -48,7 +48,7 @@ class FriendTag extends StatelessWidget {
           width: width * .2,
           child: Center(
             child: Text(
-              name != null ? name : username,
+              username != null ? username : name,
               maxLines: 1,
               style: labelTextStyle.copyWith(
                 color: hintTextColor,

@@ -46,9 +46,6 @@ class _PhotoGridState extends State<PhotoGrid> {
                   child: FadeInImage.memoryNetwork(
                     placeholder: kTransparentImage,
                     image: widget.imageUrls[0].thumbnail,
-                    fit: BoxFit.cover,
-                    imageScale: 0.5,
-                    excludeFromSemantics: true,
                   ),
                 ),
               ),
@@ -63,9 +60,6 @@ class _PhotoGridState extends State<PhotoGrid> {
                   child: FadeInImage.memoryNetwork(
                     placeholder: kTransparentImage,
                     image: widget.imageUrls[1].thumbnail,
-                    fit: BoxFit.cover,
-                    imageScale: 0.5,
-                    excludeFromSemantics: true,
                   ),
                 ),
               ),
@@ -89,9 +83,6 @@ class _PhotoGridState extends State<PhotoGrid> {
                     child: FadeInImage.memoryNetwork(
                       placeholder: kTransparentImage,
                       image: widget.imageUrls[0].thumbnail,
-                      fit: BoxFit.cover,
-                      imageScale: 0.5,
-                      excludeFromSemantics: true,
                     ),
                   ),
                 ),
@@ -108,9 +99,6 @@ class _PhotoGridState extends State<PhotoGrid> {
                     child: FadeInImage.memoryNetwork(
                       placeholder: kTransparentImage,
                       image: widget.imageUrls[1].thumbnail,
-                      fit: BoxFit.cover,
-                      imageScale: 0.5,
-                      excludeFromSemantics: true,
                     ),
                   ),
                 ),
@@ -132,9 +120,6 @@ class _PhotoGridState extends State<PhotoGrid> {
                       child: FadeInImage.memoryNetwork(
                         placeholder: kTransparentImage,
                         image: widget.imageUrls[2].thumbnail,
-                        fit: BoxFit.cover,
-                        imageScale: 0.5,
-                        excludeFromSemantics: true,
                       ),
                     ),
                   ),
@@ -155,9 +140,6 @@ class _PhotoGridState extends State<PhotoGrid> {
           child: FadeInImage.memoryNetwork(
             placeholder: kTransparentImage,
             image: widget.imageUrls[0].thumbnail,
-            fit: BoxFit.cover,
-            imageScale: 0.5,
-            excludeFromSemantics: true,
           ),
         ),
       );
@@ -191,9 +173,6 @@ class _PhotoGridState extends State<PhotoGrid> {
               child: FadeInImage.memoryNetwork(
                 placeholder: kTransparentImage,
                 image: imageUrl,
-                fit: BoxFit.cover,
-                imageScale: 0.5,
-                excludeFromSemantics: true,
               ),
             ),
             onTap: () => widget.onImageClicked(index),
@@ -211,9 +190,6 @@ class _PhotoGridState extends State<PhotoGrid> {
                     child: FadeInImage.memoryNetwork(
                       image: imageUrl,
                       placeholder: kTransparentImage,
-                      fit: BoxFit.cover,
-                      imageScale: 0.5,
-                      excludeFromSemantics: true,
                     ),
                   ),
                   Positioned.fill(
@@ -243,9 +219,6 @@ class _PhotoGridState extends State<PhotoGrid> {
             child: FadeInImage.memoryNetwork(
               placeholder: kTransparentImage,
               image: imageUrl,
-              fit: BoxFit.cover,
-              imageScale: 0.5,
-              excludeFromSemantics: true,
             ),
           ),
           onTap: () => widget.onImageClicked(index),

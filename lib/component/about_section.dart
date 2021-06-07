@@ -7,6 +7,7 @@ import 'package:youonline/utils/styles.dart';
 import 'package:youonline/widgets/friend_tag.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:bot_toast/bot_toast.dart';
 
 class AboutSection extends StatefulWidget {
   final String userId;
@@ -77,41 +78,9 @@ class _AboutSectionState extends State<AboutSection> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // PostRichTextSpan(
-                    //   firstText: "Founder at",
-                    //   secondText: " Hashed System",
-                    //   imageURL: workIcon,
-                    // ),
-                    // SizedBox(
-                    //   height: height * .01,
-                    // ),
-                    // PostRichTextSpan(
-                    //   firstText: "Lives in",
-                    //   secondText: " Dubai,UAE",
-                    //   imageURL: homeTownIcon,
-                    // ),
-                    // SizedBox(
-                    //   height: height * .01,
-                    // ),
-                    // PostRichTextSpan(
-                    //   firstText: "From",
-                    //   secondText: " Lahore, Pakistan",
-                    //   imageURL: migrationIcon,
-                    // ),
-                    // SizedBox(
-                    //   height: height * .01,
-                    // ),
-                    // PostRichTextSpan(
-                    //   firstText: "",
-                    //   secondText: "Married",
-                    //   imageURL: relationStatusIcon,
-                    // ),
-                    // SizedBox(
-                    //   height: height * .03,
-                    // ),
-                    if (_userProvider.followingData != null &&
-                        _userProvider.followingData.followings != null &&
-                        _userProvider.followingData.followings.length > 0)
+                    if (_userProvider.timelineUserProfile != null &&
+                        _userProvider.timelineUserProfile.following != null &&
+                        _userProvider.timelineUserProfile.following.length > 0)
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -151,7 +120,7 @@ class _AboutSectionState extends State<AboutSection> {
                                     vertical: SizeConfig.kDefaultSize * 1.5,
                                   ),
                                   child: Text(
-                                    "${_userProvider.followingData.followings.length}",
+                                    "${_userProvider.timelineUserProfile.following.length}",
                                     style: labelTextStyle.copyWith(
                                       fontSize: SizeConfig.kDefaultSize * 3,
                                       color: Colors.black,
@@ -173,23 +142,37 @@ class _AboutSectionState extends State<AboutSection> {
                             spacing: width * .035,
                             runSpacing: width * .02,
                             children: List.generate(
-                              _userProvider.followingData.followings.length > 5
-                                  ? _userProvider.followingData.followings
+                              _userProvider.timelineUserProfile.following
+                                          .length >
+                                      5
+                                  ? _userProvider.timelineUserProfile.following
                                       .sublist(0, 4)
                                       .length
                                   : _userProvider
-                                      .followingData.followings.length,
+                                      .timelineUserProfile.following.length,
                               (index) {
-                                return FriendTag(
-                                  imageURL: _userProvider
-                                      .followingData.followings[index].avatar,
-                                  name: _userProvider.followingData
-                                          .followings[index].firstName +
-                                      " " +
-                                      _userProvider.followingData
-                                          .followings[index].lastName,
-                                  username: _userProvider
-                                      .followingData.followings[index].username,
+                                return GestureDetector(
+                                  onTap: () async {
+                                    BotToast.showLoading();
+                                    await _userProvider.getTimelineUserProfile(
+                                      userId: _userProvider.timelineUserProfile
+                                          .following[index].userId
+                                          .toString(),
+                                    );
+
+                                    BotToast.closeAllLoading();
+                                  },
+                                  child: FriendTag(
+                                    imageURL: _userProvider.timelineUserProfile
+                                        .following[index].avatar,
+                                    name: _userProvider.timelineUserProfile
+                                            .following[index].firstName +
+                                        " " +
+                                        _userProvider.timelineUserProfile
+                                            .following[index].lastName,
+                                    username: _userProvider.timelineUserProfile
+                                        .following[index].username,
+                                  ),
                                 );
                               },
                             ),
@@ -199,8 +182,9 @@ class _AboutSectionState extends State<AboutSection> {
                     SizedBox(
                       height: height * .03,
                     ),
-                    if (_userProvider.followerData.followers != null &&
-                        _userProvider.followerData.followers.length > 0)
+                    if (_userProvider.timelineUserProfile != null &&
+                        _userProvider.timelineUserProfile.followers != null &&
+                        _userProvider.timelineUserProfile.followers.length > 0)
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -240,7 +224,7 @@ class _AboutSectionState extends State<AboutSection> {
                                     vertical: SizeConfig.kDefaultSize * 1.5,
                                   ),
                                   child: Text(
-                                    "${_userProvider.followerData.followers.length}",
+                                    "${_userProvider.timelineUserProfile.followers.length}",
                                     style: labelTextStyle.copyWith(
                                       fontSize: SizeConfig.kDefaultSize * 3,
                                       color: Colors.black,
@@ -262,22 +246,37 @@ class _AboutSectionState extends State<AboutSection> {
                             spacing: width * .035,
                             runSpacing: width * .02,
                             children: List.generate(
-                              _userProvider.followerData.followers.length > 5
-                                  ? _userProvider.followerData.followers
+                              _userProvider.timelineUserProfile.followers
+                                          .length >
+                                      5
+                                  ? _userProvider.timelineUserProfile.followers
                                       .sublist(0, 4)
                                       .length
-                                  : _userProvider.followerData.followers.length,
+                                  : _userProvider
+                                      .timelineUserProfile.followers.length,
                               (index) {
-                                return FriendTag(
-                                  imageURL: _userProvider
-                                      .followerData.followers[index].avatar,
-                                  username: _userProvider
-                                      .followerData.followers[index].username,
-                                  name: _userProvider.followerData
-                                          .followers[index].firstName +
-                                      " " +
-                                      _userProvider.followerData
-                                          .followers[index].lastName,
+                                return GestureDetector(
+                                  onTap: () async {
+                                    BotToast.showLoading();
+                                    await _userProvider.getTimelineUserProfile(
+                                      userId: _userProvider.timelineUserProfile
+                                          .following[index].userId
+                                          .toString(),
+                                    );
+
+                                    BotToast.closeAllLoading();
+                                  },
+                                  child: FriendTag(
+                                    imageURL: _userProvider.timelineUserProfile
+                                        .followers[index].avatar,
+                                    username: _userProvider.timelineUserProfile
+                                        .followers[index].username,
+                                    name: _userProvider.timelineUserProfile
+                                            .followers[index].firstName +
+                                        " " +
+                                        _userProvider.timelineUserProfile
+                                            .followers[index].lastName,
+                                  ),
                                 );
                               },
                             ),

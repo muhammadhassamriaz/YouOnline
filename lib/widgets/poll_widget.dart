@@ -7,44 +7,39 @@ import 'package:youonline/utils/color.dart';
 import 'package:youonline/utils/size_config.dart';
 import 'package:youonline/utils/styles.dart';
 
-class PollWidget extends StatefulWidget {
+class PollWidget extends StatelessWidget {
   final List<Options> options;
 
-  const PollWidget({
+  PollWidget({
     Key key,
     @required this.options,
   }) : super(key: key);
 
-  @override
-  _PollWidgetState createState() => _PollWidgetState();
-}
-
-class _PollWidgetState extends State<PollWidget> {
   int selectedIndex = -1;
   bool isPressed = false;
-  int percentage;
+  int percentage = 100;
 
   @override
   Widget build(BuildContext context) {
     var _postProvider = Provider.of<PostProvider>(context);
     var _userProvider = Provider.of<UserProvider>(context).user;
-    if (widget.options != null && widget.options.length > 0) {
-      widget.options.forEach((mainElement) {
-        if (mainElement.votes != null && mainElement.votes.length > 0) {
-          mainElement.votes.forEach((element) {
-            if (element.userId == _userProvider.userId) {
-              selectedIndex = widget.options.indexOf(mainElement);
-              isPressed = true;
-              if (mainElement.percentage != null) {
-                percentage = mainElement.percentage;
-              } else {
-                percentage = 100;
-              }
-            }
-          });
-        }
-      });
-    }
+    // if ( options != null &&  options.length > 0) {
+    //    options.forEach((mainElement) {
+    //     if (mainElement.votes != null && mainElement.votes.length > 0) {
+    //       mainElement.votes.forEach((element) {
+    //         if (element.userId == _userProvider.userId) {
+    //           selectedIndex =  options.indexOf(mainElement);
+    //           isPressed = true;
+    //           if (mainElement.percentage != null) {
+    //             percentage = mainElement.percentage;
+    //           } else {
+    //             percentage = 100;
+    //           }
+    //         }
+    //       });
+    //     }
+    //   });
+    // }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -53,21 +48,21 @@ class _PollWidgetState extends State<PollWidget> {
         ),
         Wrap(
           children: List.generate(
-            widget.options.length,
+            options.length,
             (index) {
               return TextButton(
                 onPressed: () async {
                   if (!isPressed) {
-                    setState(() {
-                      selectedIndex = index;
-                      isPressed = true;
-                    });
+                    // setState(() {
+                    //   selectedIndex = index;
+                    //   isPressed = true;
+                    // });
                     percentage = await _postProvider.createVote(
                       context: context,
-                      postId: widget.options[index].postId.toString(),
-                      optionId: widget.options[index].id.toString(),
+                      postId: options[index].postId.toString(),
+                      optionId: options[index].id.toString(),
                     );
-                    setState(() {});
+                    // setState(() {});
                   }
                 },
                 style: ButtonStyle(
@@ -111,7 +106,7 @@ class _PollWidgetState extends State<PollWidget> {
                       ),
                       Expanded(
                         child: Text(
-                          '${widget.options[index].text.capitalize()}',
+                          '${options[index].text.capitalize()}',
                           style: hintTextStyle.copyWith(
                             fontSize: SizeConfig.kDefaultSize * 04,
                             color: selectedIndex == index

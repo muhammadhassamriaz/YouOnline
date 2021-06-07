@@ -94,9 +94,9 @@ showPostMenuBottomSheet(
           //   height: height * .02,
           // ),
           InkWell(
-            onTap: () {
+            onTap: () async {
               print(timelineData);
-              Provider.of<PostProvider>(context, listen: false).hidePost(
+              await Provider.of<PostProvider>(context, listen: false).hidePost(
                 postID: postID,
                 context: context,
                 timelineData: timelineData,

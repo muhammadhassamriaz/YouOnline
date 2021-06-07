@@ -153,7 +153,7 @@ final String messageIcon2 = "assets/images/messageIcon2.png";
 final String pageIcon3 = "assets/images/pageIcon3.png";
 final String appLogo = "assets/images/appLogo.png";
 final String pageCover = "assets/images/pageCover.png";
-final String videoThumbnail = "assets/images/videoThumbnail.png";
+// final String videoThumbnail = "assets/images/videoThumbnail.png";
 final String eventCameraIcon = "assets/images/eventCameraIcon.png";
 final String reportGroup = "assets/images/reportGroup.png";
 final String pinGroup = "assets/images/pinGroup.png";
@@ -180,7 +180,11 @@ final String sleepy = 'assets/images/sleepy.png';
 final String pretty = 'assets/images/pretty.png';
 final String bored = 'assets/images/bored.png';
 final String loadingPlaceholder = "assets/images/loadingPlaceholder.png";
-
+final String vehiclePlacholder = "assets/images/vehiclePlaceholder.png";
+final String vehiclePlacholder1 = "assets/images/vehiclePlaceholder1.png";
+final String vehiclePlacholder2 = "assets/images/vehiclePlaceholder2.png";
+final String vehiclePlacholder3 = "assets/images/vehiclePlaceholder3.png";
+final String mapPlaceholder = "assets/images/mapPlaceholder.png";
 var feeling = [
   'happy',
   'loved',

@@ -27,8 +27,6 @@ class PostMultipleImages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
-    print(album);
     return Container(
       width: double.infinity,
       child: PhotoGrid(

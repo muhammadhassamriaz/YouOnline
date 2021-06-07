@@ -37,7 +37,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
     Orientation orientation = MediaQuery.of(context).orientation;
     var _widgetProvider = Provider.of<WidgetProvider>(context);
     var _userProvider = Provider.of<UserProvider>(context);
-    _userProvider.followingData.followings.forEach((element) {
+    _userProvider.timelineUserProfile.following.forEach((element) {
       if (element.userId == _userProvider.user.userId) {
         isFollowed = true;
       } else {

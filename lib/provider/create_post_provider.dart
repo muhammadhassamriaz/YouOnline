@@ -32,8 +32,9 @@ class PostProvider with ChangeNotifier {
   }) async {
     var _userProvider = Provider.of<UserProvider>(context, listen: false);
     if (_userProvider.userAuthenticationToken != null) {
+      Uri uri = Uri.parse(ApiNetwork.BASE_URL + ApiNetwork().getColors);
       await http.get(
-        ApiNetwork.BASE_URL + ApiNetwork().getColors,
+        uri,
         headers: <String, String>{
           "Accept": "application/json",
           "Authorization": "Bearer ${_userProvider.userAuthenticationToken}",
@@ -94,9 +95,10 @@ class PostProvider with ChangeNotifier {
             ),
           ),
           (route) => false);
+      Uri uri = Uri.parse(ApiNetwork.BASE_URL + ApiNetwork().createPost);
       await http
           .post(
-        ApiNetwork.BASE_URL + ApiNetwork().createPost,
+        uri,
         headers: <String, String>{
           "Accept": "application/json",
           "Authorization": "Bearer $_userAuthToken",
@@ -169,9 +171,10 @@ class PostProvider with ChangeNotifier {
             ),
           ),
           (route) => false);
+      Uri uri = Uri.parse(ApiNetwork.BASE_URL + ApiNetwork().createPost);
       await http
           .post(
-        ApiNetwork.BASE_URL + ApiNetwork().createPost,
+        uri,
         headers: <String, String>{
           "Accept": "application/json",
           "Authorization": "Bearer $_userAuthToken",
@@ -226,8 +229,9 @@ class PostProvider with ChangeNotifier {
             ),
           ),
           (route) => false);
+      Uri uri = Uri.parse(ApiNetwork.BASE_URL + ApiNetwork().createPost);
       await http.post(
-        ApiNetwork.BASE_URL + ApiNetwork().createPost,
+        uri,
         headers: <String, String>{
           "Accept": "application/json",
           "Authorization": "Bearer $_userAuthToken",
@@ -285,8 +289,9 @@ class PostProvider with ChangeNotifier {
             ),
           ),
           (route) => false);
+      Uri uri = Uri.parse(ApiNetwork.BASE_URL + ApiNetwork().createPost);
       await http.post(
-        ApiNetwork.BASE_URL + ApiNetwork().createPost,
+        uri,
         headers: <String, String>{
           "Accept": "application/json",
           "Authorization": "Bearer $_userAuthToken",
@@ -360,9 +365,10 @@ class PostProvider with ChangeNotifier {
             ),
           ),
           (route) => false);
+      Uri uri = Uri.parse(ApiNetwork.BASE_URL + ApiNetwork().createPost);
       await http
           .post(
-        ApiNetwork.BASE_URL + ApiNetwork().createPost,
+        uri,
         headers: <String, String>{
           "Accept": "application/json",
           "Authorization": "Bearer ${_userProvider.userAuthenticationToken}",
@@ -411,8 +417,9 @@ class PostProvider with ChangeNotifier {
     BotToast.showLoading();
     var _userProvider = Provider.of<UserProvider>(context, listen: false);
     if (_userProvider.userAuthenticationToken != null) {
+      Uri uri = Uri.parse(ApiNetwork.BASE_URL + ApiNetwork().voteForPoll);
       await http.post(
-        ApiNetwork.BASE_URL + ApiNetwork().voteForPoll,
+        uri,
         headers: <String, String>{
           "Accept": "application/json",
           "Authorization": "Bearer ${_userProvider.userAuthenticationToken}",
@@ -447,8 +454,9 @@ class PostProvider with ChangeNotifier {
         Provider.of<UserProvider>(context, listen: false)
             .userAuthenticationToken;
     if (_userAuthenticationToken != null) {
+      Uri uri = Uri.parse(ApiNetwork.BASE_URL + ApiNetwork().getTrendingGIFs);
       await http.get(
-        ApiNetwork.BASE_URL + ApiNetwork().getTrendingGIFs,
+        uri,
         headers: <String, String>{
           "Accept": "application/json",
           "Authorization": "Bearer $_userAuthenticationToken",
@@ -472,17 +480,22 @@ class PostProvider with ChangeNotifier {
         Provider.of<UserProvider>(context, listen: false)
             .userAuthenticationToken;
     if (_userAuthenticationToken != null) {
-      await http.post(ApiNetwork.BASE_URL + ApiNetwork().savePost,
-          headers: <String, String>{
-            "Accept": "application/json",
-            "Authorization": "Bearer $_userAuthenticationToken",
-          },
-          body: {
-            "post_id": postID,
-          }).catchError((err) {
-        print(err.toString());
-        throw err;
-      }).then((value) {
+      Uri uri = Uri.parse(ApiNetwork.BASE_URL + ApiNetwork().savePost);
+      await http.post(
+        uri,
+        headers: <String, String>{
+          "Accept": "application/json",
+          "Authorization": "Bearer $_userAuthenticationToken",
+        },
+        body: {
+          "post_id": postID,
+        },
+      ).catchError(
+        (err) {
+          print(err.toString());
+          throw err;
+        },
+      ).then((value) {
         try {
           var response = json.decode(value.body);
           print(response);
@@ -501,18 +514,23 @@ class PostProvider with ChangeNotifier {
         Provider.of<UserProvider>(context, listen: false)
             .userAuthenticationToken;
     if (_userAuthenticationToken != null) {
-      await http.post(ApiNetwork.BASE_URL + ApiNetwork().reportPost,
-          headers: <String, String>{
-            "Accept": "application/json",
-            "Authorization": "Bearer $_userAuthenticationToken",
-          },
-          body: {
-            "post_id": postID,
-            "text": "Spam",
-          }).catchError((err) {
-        print(err.toString());
-        throw err;
-      }).then((value) {
+      Uri uri = Uri.parse(ApiNetwork.BASE_URL + ApiNetwork().reportPost);
+      await http.post(
+        uri,
+        headers: <String, String>{
+          "Accept": "application/json",
+          "Authorization": "Bearer $_userAuthenticationToken",
+        },
+        body: {
+          "post_id": postID,
+          "text": "Spam",
+        },
+      ).catchError(
+        (err) {
+          print(err.toString());
+          throw err;
+        },
+      ).then((value) {
         try {
           var response = json.decode(value.body);
           print(response);
@@ -534,18 +552,18 @@ class PostProvider with ChangeNotifier {
         Provider.of<UserProvider>(context, listen: false)
             .userAuthenticationToken;
     if (_userAuthenticationToken != null) {
-      BotToast.showLoading();
-
-      await http.post(ApiNetwork.BASE_URL + ApiNetwork().hidePost,
-          headers: <String, String>{
-            "Accept": "application/json",
-            "Authorization": "Bearer $_userAuthenticationToken",
-          },
-          body: {
-            "post_id": postID,
-          }).catchError((err) {
+      Uri uri = Uri.parse(ApiNetwork.BASE_URL + ApiNetwork().hidePost);
+      await http.post(
+        uri,
+        headers: <String, String>{
+          "Accept": "application/json",
+          "Authorization": "Bearer $_userAuthenticationToken",
+        },
+        body: {
+          "post_id": postID,
+        },
+      ).catchError((err) {
         print(err.toString());
-        BotToast.closeAllLoading();
         throw err;
       }).then((value) {
         try {
@@ -558,10 +576,7 @@ class PostProvider with ChangeNotifier {
                   .changeTimelineData(_timelineData);
             }
           }
-          BotToast.closeAllLoading();
         } catch (ex) {
-          BotToast.closeAllLoading();
-
           throw ex;
         }
       });

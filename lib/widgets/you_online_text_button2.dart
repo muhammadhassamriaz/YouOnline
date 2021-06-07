@@ -6,11 +6,17 @@ import 'package:flutter/material.dart';
 class YouOnlineButton2 extends StatelessWidget {
   final String title;
   final VoidCallback callback;
+  final Color buttonColor;
+  final TextStyle textStyle;
+  final Color textColor;
 
   YouOnlineButton2({
     Key key,
     @required this.title,
     @required this.callback,
+    this.buttonColor,
+    this.textColor,
+    this.textStyle,
   }) : super(key: key);
 
   @override
@@ -22,11 +28,12 @@ class YouOnlineButton2 extends StatelessWidget {
       child: TextButton(
         child: Text(
           title,
-          style: labelTextStyle.copyWith(
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-            fontSize: SizeConfig.kDefaultSize * 4,
-          ),
+          style: textStyle ??
+              labelTextStyle.copyWith(
+                fontWeight: FontWeight.bold,
+                color: textColor ?? Colors.black,
+                fontSize: SizeConfig.kDefaultSize * 4,
+              ),
           textScaleFactor: 1,
         ),
         style: ButtonStyle(
@@ -40,7 +47,7 @@ class YouOnlineButton2 extends StatelessWidget {
             },
           ),
           backgroundColor: MaterialStateProperty.resolveWith(
-            (states) => searchContainerColor,
+            (states) => buttonColor ?? searchContainerColor,
           ),
           overlayColor: MaterialStateProperty.resolveWith(
             (states) => Colors.black26,

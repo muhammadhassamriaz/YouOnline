@@ -15,6 +15,7 @@ import 'package:youonline/model/following.dart';
 import 'package:youonline/model/group.dart';
 import 'package:youonline/model/group_data.dart';
 import 'package:youonline/model/page_timeline.dart';
+import 'package:youonline/model/profile_timelinedata.dart';
 import 'package:youonline/model/search.dart';
 import 'package:youonline/model/stories.dart';
 import 'package:youonline/model/timeline_data.dart';
@@ -34,9 +35,10 @@ class UserProvider with ChangeNotifier {
   //AUTHENTICATE USER WHICH IS PROVIDED BY THE ADMIN PANEL
   Future<String> authenticateUser() async {
     String authenticationUserToken;
+    Uri uri = Uri.parse(ApiNetwork.BASE_URL + ApiNetwork().authenticateRequest);
     await http
         .post(
-      ApiNetwork.BASE_URL + ApiNetwork().authenticateRequest,
+      uri,
       headers: <String, String>{
         "Accept": "application/json",
       },
@@ -77,9 +79,10 @@ class UserProvider with ChangeNotifier {
 
     String token = await authenticateUser();
     if (token != null) {
+      Uri uri = Uri.parse(ApiNetwork.BASE_URL + ApiNetwork().createAccountURL);
       await http
           .post(
-        ApiNetwork.BASE_URL + ApiNetwork().createAccountURL,
+        uri,
         headers: <String, String>{
           "Accept": "application/json",
           "Authorization": "Bearer $token"
@@ -139,8 +142,9 @@ class UserProvider with ChangeNotifier {
     BotToast.showLoading();
     String token = await authenticateUser();
     if (token != null) {
+      Uri uri = Uri.parse(ApiNetwork.BASE_URL + ApiNetwork().requestEmail);
       await http.post(
-        ApiNetwork.BASE_URL + ApiNetwork().requestEmail,
+        uri,
         headers: <String, String>{
           "Accept": "application/json",
           "Authorization": "Bearer $token",
@@ -171,8 +175,9 @@ class UserProvider with ChangeNotifier {
     String token = await authenticateUser();
     userAuthenticationToken = "";
     if (token != null) {
+      Uri uri = Uri.parse(ApiNetwork.BASE_URL + ApiNetwork().loginURL);
       await http.post(
-        ApiNetwork.BASE_URL + ApiNetwork().loginURL,
+        uri,
         headers: <String, String>{
           "Accept": "application/json",
           "Authorization": "Bearer $token",
@@ -266,18 +271,21 @@ class UserProvider with ChangeNotifier {
     @required String userID,
   }) async {
     if (userAuthenticationToken != null) {
+      Uri uri = Uri.parse(ApiNetwork.BASE_URL +
+          ApiNetwork().getUserPosts +
+          userID +
+          "page=$pageNo");
       await http.get(
-        ApiNetwork.BASE_URL +
-            ApiNetwork().getUserPosts +
-            userID +
-            "page=$pageNo",
+        uri,
         headers: <String, String>{
           "Accept": "application/json",
           "Authorization": "Bearer $userAuthenticationToken",
         },
-      ).catchError((err) {
-        print(err);
-      }).then((value) {
+      ).catchError(
+        (err) {
+          print(err);
+        },
+      ).then((value) {
         var response = json.decode(value.body);
         userTimelineData = UserTimelineData.fromJson(response);
         print(userTimelineData);
@@ -291,8 +299,9 @@ class UserProvider with ChangeNotifier {
     bool isUpdated = false,
   }) async {
     bool isError = false;
+    Uri uri = Uri.parse(ApiNetwork.BASE_URL + ApiNetwork().getUserData);
     await http.get(
-      ApiNetwork.BASE_URL + ApiNetwork().getUserData,
+      uri,
       headers: <String, String>{
         "Accept": "application/json",
         "Authorization": "Bearer $userAuthenticationToken",
@@ -313,11 +322,16 @@ class UserProvider with ChangeNotifier {
                 user = AppUser.fromJson(response['user']);
                 notifyListeners();
                 print(user);
-                // await getUserGroups();
+
                 if (!isUpdated) {
+                  await Provider.of<UserProvider>(context, listen: false)
+                      .getAllUserStories();
+                  await Provider.of<TimelineProvider>(context, listen: false)
+                      .getTimeLinePosts(
+                    context: context,
+                    pageNo: 1,
+                  );
                   Future.delayed(Duration(seconds: 1), () {
-                    Provider.of<TimelineProvider>(context, listen: false)
-                        .changeTimelineData([]);
                     Provider.of<WidgetProvider>(context, listen: false)
                         .changeReaction(null);
                     Provider.of<WidgetProvider>(context, listen: false)
@@ -345,6 +359,53 @@ class UserProvider with ChangeNotifier {
                 });
               }
             }
+          } catch (e) {
+            throw e;
+          }
+        }
+      },
+    );
+  }
+
+  ProfileTimelineData timelineUserProfile;
+  changeTimelineUserProfile(ProfileTimelineData _timelineUserProfile) {
+    timelineUserProfile = _timelineUserProfile;
+    notifyListeners();
+  }
+
+  Future getTimelineUserProfile({
+    @required String userId,
+  }) async {
+    bool isError = false;
+    Uri uri = Uri.parse(ApiNetwork.BASE_URL + "api/profile?id=$userId");
+    await http.get(
+      uri,
+      headers: <String, String>{
+        "Accept": "application/json",
+        "Authorization": "Bearer $userAuthenticationToken",
+      },
+    ).catchError((err) {
+      isError = true;
+      print(err);
+    }).then(
+      (value) async {
+        if (!isError) {
+          try {
+            var response = jsonDecode(value.body);
+            if (!response['message']
+                .toString()
+                .toLowerCase()
+                .contains("unauth")) {
+              if (response != null) {
+                try {
+                  timelineUserProfile = ProfileTimelineData.fromJson(response);
+                  print(timelineUserProfile);
+                  changeTimelineUserProfile(timelineUserProfile);
+                } catch (e) {
+                  throw e;
+                }
+              }
+            } else {}
           } catch (e) {
             throw e;
           }
@@ -453,8 +514,9 @@ class UserProvider with ChangeNotifier {
 
   Future<AllGroups> getUserGroups() async {
     if (userAuthenticationToken != null) {
+      Uri uri = Uri.parse(ApiNetwork.BASE_URL + ApiNetwork().getUserGroups);
       await http.get(
-        ApiNetwork.BASE_URL + ApiNetwork().getUserGroups,
+        uri,
         headers: <String, String>{
           "Accept": "application/json",
           "Authorization": "Bearer $userAuthenticationToken"
@@ -480,8 +542,10 @@ class UserProvider with ChangeNotifier {
   }) async {
     SingleGroupData singleGroupData;
     if (userAuthenticationToken != null) {
+      Uri uri = Uri.parse(
+          ApiNetwork.BASE_URL + ApiNetwork().getSingleGroup + groupId);
       await http.get(
-        ApiNetwork.BASE_URL + ApiNetwork().getSingleGroup + groupId,
+        uri,
         headers: <String, String>{
           "Accept": "application/json",
           "Authorization": "Bearer $userAuthenticationToken"
@@ -512,15 +576,19 @@ class UserProvider with ChangeNotifier {
       @required String groupInfo}) async {
     if (userAuthenticationToken != null) {
       BotToast.showLoading();
-      print(groupId);
-      await http.post(ApiNetwork.BASE_URL + ApiNetwork().joinGroup,
-          headers: <String, String>{
-            "Accept": "application/json",
-            "Authorization": "Bearer $userAuthenticationToken"
-          },
-          body: {
-            "group_id": groupId,
-          }).catchError((err) {
+
+      Uri uri = Uri.parse(ApiNetwork.BASE_URL + ApiNetwork().joinGroup);
+
+      await http.post(
+        uri,
+        headers: <String, String>{
+          "Accept": "application/json",
+          "Authorization": "Bearer $userAuthenticationToken"
+        },
+        body: {
+          "group_id": groupId,
+        },
+      ).catchError((err) {
         print(err);
       }).then((value) async {
         var response = json.decode(value.body);
@@ -571,8 +639,9 @@ class UserProvider with ChangeNotifier {
 
   Future getUserPages() async {
     if (userAuthenticationToken != null) {
+      Uri uri = Uri.parse(ApiNetwork.BASE_URL + ApiNetwork().getUserPages);
       await http.get(
-        ApiNetwork.BASE_URL + ApiNetwork().getUserPages,
+        uri,
         headers: <String, String>{
           "Accept": "application/json",
           "Authorization": "Bearer $userAuthenticationToken"
@@ -598,8 +667,10 @@ class UserProvider with ChangeNotifier {
   }) async {
     SinglePageTimeline singlePageTimeline;
     if (userAuthenticationToken != null) {
+      Uri uri =
+          Uri.parse(ApiNetwork.BASE_URL + ApiNetwork().getSinglePage + pageID);
       await http.get(
-        ApiNetwork.BASE_URL + ApiNetwork().getSinglePage + pageID,
+        uri,
         headers: <String, String>{
           "Accept": "application/json",
           "Authorization": "Bearer $userAuthenticationToken"
@@ -631,8 +702,9 @@ class UserProvider with ChangeNotifier {
     @required String groupId,
   }) async {
     if (userAuthenticationToken != null) {
+      Uri uri = Uri.parse(ApiNetwork.BASE_URL + ApiNetwork().unjoinGroup);
       await http.post(
-        ApiNetwork.BASE_URL + ApiNetwork().unjoinGroup,
+        uri,
         headers: <String, String>{
           "Accept": "application/json",
           "Authorization": "Bearer $userAuthenticationToken"
@@ -659,8 +731,10 @@ class UserProvider with ChangeNotifier {
     @required String userId,
   }) async {
     if (userAuthenticationToken != null) {
+      Uri uri = Uri.parse(
+          ApiNetwork.BASE_URL + ApiNetwork().getUserFollowers + userId);
       await http.get(
-        ApiNetwork.BASE_URL + ApiNetwork().getUserFollowers + userId,
+        uri,
         headers: <String, String>{
           "Accept": "application/json",
           "Authorization": "Bearer $userAuthenticationToken"
@@ -691,8 +765,10 @@ class UserProvider with ChangeNotifier {
     @required String userId,
   }) async {
     if (userAuthenticationToken != null) {
+      Uri uri = Uri.parse(
+          ApiNetwork.BASE_URL + ApiNetwork().getUserFollowings + userId);
       await http.get(
-        ApiNetwork.BASE_URL + ApiNetwork().getUserFollowings + userId,
+        uri,
         headers: <String, String>{
           "Accept": "application/json",
           "Authorization": "Bearer $userAuthenticationToken"
@@ -719,8 +795,9 @@ class UserProvider with ChangeNotifier {
   }) async {
     if (userAuthenticationToken != null) {
       BotToast.showLoading();
+      Uri uri = Uri.parse(ApiNetwork.BASE_URL + ApiNetwork().followUser);
       await http.post(
-        ApiNetwork.BASE_URL + ApiNetwork().followUser,
+        uri,
         headers: <String, String>{
           "Accept": "application/json",
           "Authorization": "Bearer $userAuthenticationToken",
@@ -776,8 +853,9 @@ class UserProvider with ChangeNotifier {
   }) async {
     if (userAuthenticationToken != null) {
       BotToast.showLoading();
+      Uri uri = Uri.parse(ApiNetwork.BASE_URL + ApiNetwork().unFollowUser);
       await http.post(
-        ApiNetwork.BASE_URL + ApiNetwork().unFollowUser,
+        uri,
         headers: <String, String>{
           "Accept": "application/json",
           "Authorization": "Bearer $userAuthenticationToken",
@@ -831,8 +909,10 @@ class UserProvider with ChangeNotifier {
   }) async {
     Timeline _timeline;
     if (userAuthenticationToken != null) {
+      Uri uri = Uri.parse(
+          ApiNetwork.BASE_URL + ApiNetwork().getUserImagesPosts + userId);
       await http.get(
-        ApiNetwork.BASE_URL + ApiNetwork().getUserImagesPosts + userId,
+        uri,
         headers: <String, String>{
           "Accept": "application/json",
           "Authorization": "Bearer $userAuthenticationToken",
@@ -852,8 +932,10 @@ class UserProvider with ChangeNotifier {
   }) async {
     Timeline _timeline;
     if (userAuthenticationToken != null) {
+      Uri uri = Uri.parse(
+          ApiNetwork.BASE_URL + ApiNetwork().getUserVideoPosts + userId);
       await http.get(
-        ApiNetwork.BASE_URL + ApiNetwork().getUserVideoPosts + userId,
+        uri,
         headers: <String, String>{
           "Accept": "application/json",
           "Authorization": "Bearer $userAuthenticationToken",
@@ -974,8 +1056,9 @@ class UserProvider with ChangeNotifier {
   Future unfollowPage(BuildContext context, {@required String pageId}) async {
     if (userAuthenticationToken != null) {
       BotToast.showLoading();
+      Uri uri = Uri.parse(ApiNetwork.BASE_URL + ApiNetwork().unfollowPage);
       await http.post(
-        ApiNetwork.BASE_URL + ApiNetwork().unfollowPage,
+        uri,
         headers: <String, String>{
           "Accept": "application/json",
           "Authorization": "Bearer $userAuthenticationToken",
@@ -1019,8 +1102,9 @@ class UserProvider with ChangeNotifier {
       bool pageScreen = false}) async {
     if (userAuthenticationToken != null) {
       BotToast.showLoading();
+      Uri uri = Uri.parse(ApiNetwork.BASE_URL + ApiNetwork().followPage);
       await http.post(
-        ApiNetwork.BASE_URL + ApiNetwork().followPage,
+        uri,
         headers: <String, String>{
           "Accept": "application/json",
           "Authorization": "Bearer $userAuthenticationToken",
@@ -1069,8 +1153,9 @@ class UserProvider with ChangeNotifier {
   Future<void> search({@required String keyword}) async {
     if (userAuthenticationToken != null) {
       BotToast.showLoading();
+      Uri uri = Uri.parse(ApiNetwork.BASE_URL + ApiNetwork().searchURL);
       await http.post(
-        ApiNetwork.BASE_URL + ApiNetwork().searchURL,
+        uri,
         headers: <String, String>{
           "Accept": "application/json",
           "Authorization": "Bearer $userAuthenticationToken",
@@ -1105,8 +1190,9 @@ class UserProvider with ChangeNotifier {
 
   Future<StoryModel> getAllUserStories() async {
     if (userAuthenticationToken != null) {
+      Uri uri = Uri.parse(ApiNetwork.BASE_URL + ApiNetwork().getAllStories);
       await http.get(
-        ApiNetwork.BASE_URL + ApiNetwork().getAllStories,
+        uri,
         headers: {
           "Accept": "application/json",
           "Authorization": "Bearer $userAuthenticationToken",

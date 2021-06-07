@@ -101,13 +101,13 @@ class _CreateUserStoriesState extends State<CreateUserStories> {
                   ),
                   child: GestureDetector(
                     onTap: () async {
-                      await ImagePicker.pickImage(
+                      await ImagePicker.platform.pickImage(
                         imageQuality: 70,
                         source: ImageSource.gallery,
                       ).then((value) {
                         if (value != null) {
                           setState(() {
-                            imageFile = value;
+                            imageFile = File(value.path);
                           });
                         }
                       });
@@ -172,12 +172,12 @@ class _CreateUserStoriesState extends State<CreateUserStories> {
                   ),
                   child: GestureDetector(
                     onTap: () async {
-                      await ImagePicker.pickImage(
+                      await ImagePicker.platform.pickImage(
                               source: ImageSource.gallery, imageQuality: 70)
                           .then((value) {
                         if (value != null) {
                           setState(() {
-                            imageFile = value;
+                            imageFile = File(value.path);
                           });
                         }
                       });
@@ -223,13 +223,13 @@ class _CreateUserStoriesState extends State<CreateUserStories> {
                                       color: primaryColor,
                                     ),
                                     onPressed: () async {
-                                      await ImagePicker.pickImage(
+                                      await ImagePicker.platform.pickImage(
                                         imageQuality: 70,
                                         source: ImageSource.gallery,
                                       ).then((value) {
                                         if (value != null) {
                                           setState(() {
-                                            imageFile = value;
+                                            imageFile = File(value.path);
                                           });
                                         }
                                       });

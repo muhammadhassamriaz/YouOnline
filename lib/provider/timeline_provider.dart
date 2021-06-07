@@ -27,9 +27,10 @@ class TimelineProvider with ChangeNotifier {
             .userAuthenticationToken;
 
     if (userAuthenticationToken != null) {
-      // print(pageNo);
+      Uri uri = Uri.parse(
+          ApiNetwork.BASE_URL + ApiNetwork().getTimeline + pageNo.toString());
       await http.get(
-        ApiNetwork.BASE_URL + ApiNetwork().getTimeline + pageNo.toString(),
+        uri,
         headers: <String, String>{
           "Accept": "application/json",
           "Authorization": "Bearer $userAuthenticationToken",
@@ -48,7 +49,7 @@ class TimelineProvider with ChangeNotifier {
                   if (!timelineData.contains(post)) {
                     timelineData.add(post);
                   }
-                  // changeTimelineData(timelineData);
+                  changeTimelineData(timelineData);
                 } catch (ex) {
                   print(ex);
                   throw ex;
@@ -72,8 +73,10 @@ class TimelineProvider with ChangeNotifier {
             .userAuthenticationToken;
     AllComments allComments;
     if (userAuthenticationToken != null) {
+      Uri uri =
+          Uri.parse(ApiNetwork.BASE_URL + ApiNetwork().getComments + postID);
       await http.get(
-        ApiNetwork.BASE_URL + ApiNetwork().getComments + postID,
+        uri,
         headers: <String, String>{
           "Accept": "application/json",
           "Authorization": "Bearer $userAuthenticationToken",
@@ -109,9 +112,10 @@ class TimelineProvider with ChangeNotifier {
       "text": comment,
     };
     if (userAuthenticationToken != null) {
+      Uri uri = Uri.parse(ApiNetwork.BASE_URL + ApiNetwork().addComment);
       await http
           .post(
-        ApiNetwork.BASE_URL + ApiNetwork().addComment,
+        uri,
         headers: <String, String>{
           "Accept": "application/json",
           "Authorization": "Bearer $userAuthenticationToken",
@@ -142,22 +146,27 @@ class TimelineProvider with ChangeNotifier {
             .userAuthenticationToken;
 
     if (commentID != null && text != null) {
-      await http.post(ApiNetwork.BASE_URL + ApiNetwork().addReplyComment,
-          headers: <String, String>{
-            "Accept": "application/json",
-            "Authorization": "Bearer $userAuthenticationToken",
-          },
-          body: {
-            "comment_id": commentID,
-            "text": text,
-          }).catchError(
+      Uri uri = Uri.parse(ApiNetwork.BASE_URL + ApiNetwork().addReplyComment);
+      await http.post(
+        uri,
+        headers: <String, String>{
+          "Accept": "application/json",
+          "Authorization": "Bearer $userAuthenticationToken",
+        },
+        body: {
+          "comment_id": commentID,
+          "text": text,
+        },
+      ).catchError(
         (err) {
           print(err.toString());
         },
-      ).then((value) {
-        var response = jsonDecode(value.body);
-        print(response);
-      });
+      ).then(
+        (value) {
+          var response = jsonDecode(value.body);
+          print(response);
+        },
+      );
     }
   }
 
@@ -171,16 +180,15 @@ class TimelineProvider with ChangeNotifier {
         Provider.of<UserProvider>(context, listen: false)
             .userAuthenticationToken;
     if (userAuthenticationToken != null) {
-      await http.post(ApiNetwork.BASE_URL + ApiNetwork().commentLike,
-          headers: <String, String>{
-            "Accept": "application/json",
-            "Authorization": "Bearer $userAuthenticationToken",
-          },
-          body: {
-            "post_id": postID,
-            "comment_id": commentID,
-            "reaction": reaction,
-          }).catchError((err) {
+      Uri uri = Uri.parse(ApiNetwork.BASE_URL + ApiNetwork().commentLike);
+      await http.post(uri, headers: <String, String>{
+        "Accept": "application/json",
+        "Authorization": "Bearer $userAuthenticationToken",
+      }, body: {
+        "post_id": postID,
+        "comment_id": commentID,
+        "reaction": reaction,
+      }).catchError((err) {
         print(err);
       }).then((value) {
         var response = jsonDecode(value.body);
@@ -216,9 +224,10 @@ class TimelineProvider with ChangeNotifier {
       String userAuthenticationToken =
           Provider.of<UserProvider>(context, listen: false)
               .userAuthenticationToken;
+      Uri uri = Uri.parse(ApiNetwork.BASE_URL + ApiNetwork().sharePost);
       await http
           .post(
-        ApiNetwork.BASE_URL + ApiNetwork().sharePost,
+        uri,
         headers: <String, String>{
           "Accept": "application/json",
           "Authorization": "Bearer $userAuthenticationToken",
@@ -245,9 +254,9 @@ class TimelineProvider with ChangeNotifier {
     String userAuthenticationToken =
         Provider.of<UserProvider>(context, listen: false)
             .userAuthenticationToken;
-
+    Uri uri = Uri.parse(ApiNetwork.BASE_URL + ApiNetwork().likePost);
     await http.post(
-      ApiNetwork.BASE_URL + ApiNetwork().likePost,
+      uri,
       headers: <String, String>{
         "Accept": "application/json",
         "Authorization": "Bearer $userAuthenticationToken",

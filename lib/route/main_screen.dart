@@ -1,5 +1,6 @@
 import 'package:provider/provider.dart';
 import 'package:youonline/provider/create_post_provider.dart';
+import 'package:youonline/provider/timeline_provider.dart';
 import 'package:youonline/provider/user_provider.dart';
 import 'package:youonline/route/group_screen.dart';
 import 'package:youonline/route/home_screen.dart';
@@ -48,19 +49,25 @@ class _MainScreenState extends State<MainScreen> {
 
   List<Widget> widgets;
   Widget selectedWidget = Scaffold();
-  initialiseData() async {
-    // await Provider.of<UserProvider>(context, listen: false).getAllUserStories();
-    await Provider.of<UserProvider>(context, listen: false).getUserGroups();
+  initialiseData() {
+    var _timelineProvider =
+        Provider.of<TimelineProvider>(context, listen: false);
+    _timelineProvider.getTimeLinePosts(
+      context: context,
+      pageNo: 1,
+    );
+    Provider.of<UserProvider>(context, listen: false).getUserGroups();
     // await Provider.of<UserProvider>(context, listen: false).getUserPages();
-    await Provider.of<PostProvider>(context, listen: false)
+    Provider.of<PostProvider>(context, listen: false)
         .getPostColors(context: context);
-    await Provider.of<PostProvider>(context, listen: false)
+    Provider.of<PostProvider>(context, listen: false)
         .getTrendingGIFs(context: context);
   }
 
   @override
   void initState() {
     super.initState();
+    initialiseData();
     widgets = [
       HomeScreen(
         isMainScreen: widget.isMainScreen,
@@ -77,7 +84,6 @@ class _MainScreenState extends State<MainScreen> {
       NotificationAlertScreen(),
       MenuScreen(),
     ];
-    initialiseData();
   }
 
   @override

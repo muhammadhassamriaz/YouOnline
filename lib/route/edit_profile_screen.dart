@@ -92,13 +92,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       Spacer(),
                       InkWell(
                         onTap: () async {
-                          ImagePicker.pickImage(
+                          ImagePicker.platform
+                              .pickImage(
                             source: ImageSource.gallery,
                             imageQuality: 70,
-                          ).then((value) {
+                          )
+                              .then((value) {
                             setState(() {
                               if (value != null) {
-                                profileAvatar = value;
+                                profileAvatar = File(value.path);
                               }
                             });
                           });
@@ -186,13 +188,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           Spacer(),
                           InkWell(
                             onTap: () {
-                              ImagePicker.pickImage(
+                              ImagePicker.platform
+                                  .pickImage(
                                 source: ImageSource.gallery,
                                 imageQuality: 70,
-                              ).then((value) {
+                              )
+                                  .then((value) {
                                 setState(() {
                                   if (value != null) {
-                                    coverPhoto = value;
+                                    coverPhoto = File(value.path);
                                   }
                                 });
                               });

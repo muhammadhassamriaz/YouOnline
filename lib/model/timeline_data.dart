@@ -1,4 +1,7 @@
+import 'dart:convert';
 import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 
 import 'package:youonline/model/colors.dart';
 import 'package:youonline/model/page.dart';
@@ -133,88 +136,91 @@ class TimelineData {
   String image;
   List<Album> album;
   List<Options> options;
+  VideoThumbnail videoThumbnail;
 
-  TimelineData(
-      {this.id,
-      this.postId,
-      this.user,
-      this.recipientId,
-      this.postText,
-      this.page,
-      this.group,
-      // this.event,
-      // this.pageEvent,
-      this.postLink,
-      this.postLinkTitle,
-      this.postLinkImage,
-      this.postLinkContent,
-      this.postVimeo,
-      this.postDailymotion,
-      this.postFacebook,
-      this.postFile,
-      this.postFileName,
-      this.postFileThumb,
-      this.postYoutube,
-      this.postVine,
-      this.postSoundCloud,
-      this.postPlaytube,
-      this.postDeepsound,
-      this.postMap,
-      this.postShare,
-      this.postPrivacy,
-      this.postType,
-      this.postFeeling,
-      this.postListening,
-      this.postTraveling,
-      this.postWatching,
-      this.postPlaying,
-      this.postPhoto,
-      this.time,
-      this.registered,
-      this.albumName,
-      this.multiImage,
-      this.multiImagePost,
-      this.boosted,
-      this.productId,
-      this.classifiedId,
-      this.jobsId,
-      this.propertyId,
-      this.pollId,
-      this.blogId,
-      this.forumId,
-      this.threadId,
-      this.videoViews,
-      this.postRecord,
-      this.postSticker,
-      this.sharedFrom,
-      this.postUrl,
-      this.sharedBy,
-      this.cache,
-      this.commentsStatus,
-      this.blur,
-      this.colorId,
-      this.jobId,
-      this.offerId,
-      this.fundRaiseId,
-      this.fundId,
-      this.active,
-      this.streamName,
-      this.ultimateVideos,
-      this.liveTime,
-      this.liveEnded,
-      this.agoraResourceId,
-      this.agoraSid,
-      this.type,
-      this.commentsCount,
-      this.comments,
-      this.colored,
-      this.likesCount,
-      this.reactionCount,
-      this.reactions,
-      this.reactionTypes,
-      this.youtube,
-      this.video,
-      this.image});
+  TimelineData({
+    this.id,
+    this.postId,
+    this.user,
+    this.recipientId,
+    this.postText,
+    this.page,
+    this.group,
+    // this.event,
+    // this.pageEvent,
+    this.postLink,
+    this.postLinkTitle,
+    this.postLinkImage,
+    this.postLinkContent,
+    this.postVimeo,
+    this.postDailymotion,
+    this.postFacebook,
+    this.postFile,
+    this.postFileName,
+    this.postFileThumb,
+    this.postYoutube,
+    this.postVine,
+    this.postSoundCloud,
+    this.postPlaytube,
+    this.postDeepsound,
+    this.postMap,
+    this.postShare,
+    this.postPrivacy,
+    this.postType,
+    this.postFeeling,
+    this.postListening,
+    this.postTraveling,
+    this.postWatching,
+    this.postPlaying,
+    this.postPhoto,
+    this.time,
+    this.registered,
+    this.albumName,
+    this.multiImage,
+    this.multiImagePost,
+    this.boosted,
+    this.productId,
+    this.classifiedId,
+    this.jobsId,
+    this.propertyId,
+    this.pollId,
+    this.blogId,
+    this.forumId,
+    this.threadId,
+    this.videoViews,
+    this.postRecord,
+    this.postSticker,
+    this.sharedFrom,
+    this.postUrl,
+    this.sharedBy,
+    this.cache,
+    this.commentsStatus,
+    this.blur,
+    this.colorId,
+    this.jobId,
+    this.offerId,
+    this.fundRaiseId,
+    this.fundId,
+    this.active,
+    this.streamName,
+    this.ultimateVideos,
+    this.liveTime,
+    this.liveEnded,
+    this.agoraResourceId,
+    this.agoraSid,
+    this.type,
+    this.commentsCount,
+    this.comments,
+    this.colored,
+    this.likesCount,
+    this.reactionCount,
+    this.reactions,
+    this.reactionTypes,
+    this.youtube,
+    this.video,
+    this.image,
+    this.videoThumbnail,
+  });
 
   TimelineData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -222,7 +228,8 @@ class TimelineData {
     user = json['user'] != null ? new User.fromJson(json['user']) : null;
     recipientId = json['recipient_id'];
     postText = json['postText'];
-    page = json['page'] != null ? new TimelinePage.fromJson(json['page']) : null;
+    page =
+        json['page'] != null ? new TimelinePage.fromJson(json['page']) : null;
     group = json['group'] != null ? new Group.fromJson(json['group']) : null;
     // event = json['event'];
     // pageEvent = json['page_event'];
@@ -329,6 +336,9 @@ class TimelineData {
     youtube = json['youtube'];
     video = json['video'];
     image = json['image'];
+    videoThumbnail = json['video_thumbnail'] != null
+        ? new VideoThumbnail.fromJson(json['video_thumbnail'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -378,6 +388,7 @@ class TimelineData {
     data['product_id'] = this.productId;
     data['classified_id'] = this.classifiedId;
     data['jobs_id'] = this.jobsId;
+
     data['property_id'] = this.propertyId;
     data['poll_id'] = this.pollId;
     data['blog_id'] = this.blogId;
@@ -434,6 +445,9 @@ class TimelineData {
     data['youtube'] = this.youtube;
     data['video'] = this.video;
     data['image'] = this.image;
+    if (this.videoThumbnail != null) {
+      data['video_thumbnail'] = this.videoThumbnail.toJson();
+    }
     return data;
   }
 }
@@ -976,6 +990,7 @@ class SharedBy {
   int commentsCount;
   ColorPostTypes colored;
   int likesCount;
+  VideoThumbnail videoThumbnail;
 
   int reactionCount;
   String reactionTypes;
@@ -1592,6 +1607,22 @@ class Group {
     data['join_privacy'] = this.joinPrivacy;
     data['active'] = this.active;
     data['registered'] = this.registered;
+    return data;
+  }
+}
+
+class VideoThumbnail {
+  String image;
+
+  VideoThumbnail({this.image});
+
+  VideoThumbnail.fromJson(Map<String, dynamic> json) {
+    image = json['image'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['image'] = this.image;
     return data;
   }
 }

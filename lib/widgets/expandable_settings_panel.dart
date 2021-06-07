@@ -1,3 +1,4 @@
+import 'package:youonline/route/automotive/automotive.dart';
 import 'package:youonline/utils/color.dart';
 import 'package:youonline/utils/globals.dart';
 import 'package:youonline/utils/size_config.dart';
@@ -89,42 +90,56 @@ class _ExpandableSettingsPanelState extends State<ExpandableSettingsPanel> {
                   //     textScaleFactor: 1,
                   //   ),
                   // );
-                  return Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: SizeConfig.kDefaultSize * 2,
-                    ),
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          width: SizeConfig.kDefaultSize * 3,
-                        ),
-                        SizedBox(
-                          width: SizeConfig.kDefaultSize * 6,
-                          height: SizeConfig.kDefaultSize * 6,
-                          child: Image.asset(
-                            images2[index],
+                  return GestureDetector(
+                    onTap: () {
+                      if (settingTitles[index]
+                          .toLowerCase()
+                          .contains("automotive")) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => AutomotiveScreen(),
                           ),
-                        ),
-                        SizedBox(
-                          width: SizeConfig.kDefaultSize * 3,
-                        ),
-                        Text(
-                          settingTitles[index],
-                          style: labelTextStyle.copyWith(
-                            fontSize: SizeConfig.kDefaultSize * 4.2,
+                        );
+                      }
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: SizeConfig.kDefaultSize * 2,
+                      ),
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: SizeConfig.kDefaultSize * 3,
                           ),
-                          textScaleFactor: 1,
-                        ),
-                        Spacer(),
-                        Text(
-                          "       Launch Soon",
-                          style: labelTextStyle.copyWith(
-                            fontSize: SizeConfig.kDefaultSize * 3,
-                            color: hintTextColor,
+                          SizedBox(
+                            width: SizeConfig.kDefaultSize * 6,
+                            height: SizeConfig.kDefaultSize * 6,
+                            child: Image.asset(
+                              images2[index],
+                            ),
                           ),
-                          textScaleFactor: 1,
-                        ),
-                      ],
+                          SizedBox(
+                            width: SizeConfig.kDefaultSize * 3,
+                          ),
+                          Text(
+                            settingTitles[index],
+                            style: labelTextStyle.copyWith(
+                              fontSize: SizeConfig.kDefaultSize * 4.2,
+                            ),
+                            textScaleFactor: 1,
+                          ),
+                          Spacer(),
+                          Text(
+                            "       Launch Soon",
+                            style: labelTextStyle.copyWith(
+                              fontSize: SizeConfig.kDefaultSize * 3,
+                              color: hintTextColor,
+                            ),
+                            textScaleFactor: 1,
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 },

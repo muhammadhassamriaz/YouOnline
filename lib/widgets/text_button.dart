@@ -33,7 +33,6 @@ class YouOnlineTextButton extends StatelessWidget {
             height: width * .05,
             child: Image.asset(
               assetImage,
-              fit: BoxFit.fill,
             ),
           ),
           SizedBox(

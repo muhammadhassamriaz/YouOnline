@@ -188,14 +188,15 @@ class _SearchScreenState extends State<SearchScreen> {
                                     return GestureDetector(
                                       onTap: () async {
                                         BotToast.showLoading();
-                                        await _userProvider.getFollowingList(
-                                            userId: _userProvider
-                                                .searchModel.users[index].userId
-                                                .toString());
-                                        await _userProvider.getFollowersList(
-                                            userId: _userProvider
-                                                .searchModel.users[index].userId
-                                                .toString());
+                                        BotToast.showLoading();
+                                        await _userProvider
+                                            .getTimelineUserProfile(
+                                          userId: _userProvider
+                                              .searchModel.users[index].userId
+                                              .toString(),
+                                        );
+
+                                        BotToast.closeAllLoading();
                                         BotToast.closeAllLoading();
                                         Navigator.push(
                                           context,

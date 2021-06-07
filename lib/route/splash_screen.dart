@@ -1,4 +1,5 @@
 import 'package:provider/provider.dart';
+import 'package:youonline/provider/timeline_provider.dart';
 import 'package:youonline/provider/user_provider.dart';
 import 'package:youonline/route/login_registration_route.dart';
 import 'package:youonline/utils/assets.dart';
@@ -44,10 +45,20 @@ class _SplashScreenState extends State<SplashScreen> {
               },
             );
           } else {
+            var _timelineProvider =
+                Provider.of<TimelineProvider>(context, listen: false);
+
             Provider.of<UserProvider>(context, listen: false)
                 .changeUserAuthenticationToken(userID);
+
             await Provider.of<UserProvider>(context, listen: false)
                 .getUserData(context: context);
+            Provider.of<UserProvider>(context, listen: false)
+                .getAllUserStories();
+            await _timelineProvider.getTimeLinePosts(
+              context: context,
+              pageNo: 1,
+            );
           }
         });
       },
