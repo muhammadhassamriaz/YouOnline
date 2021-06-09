@@ -6,12 +6,14 @@ import 'package:youonline/utils/color.dart';
 import 'package:youonline/utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:youonline/utils/styles.dart';
+import 'package:youonline/widgets/icon_button.dart';
 import 'package:youonline/widgets/you_online_button.dart';
 import 'package:youonline/widgets/you_online_text.dart';
 import 'package:youonline/widgets/you_online_textfield.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:transparent_image/transparent_image.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 class EditProfileScreen extends StatefulWidget {
   @override
@@ -19,8 +21,9 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
-  TextEditingController _fullNameTextEditingController =
+  TextEditingController _firstNameTextEditingController =
           TextEditingController(),
+      _lastNameTextEditingController = TextEditingController(),
       _aboutTextEditingController = TextEditingController(),
       _locationTextEditingController = TextEditingController(),
       _schoolTextEditingController = TextEditingController(),
@@ -37,7 +40,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     super.initState();
     var user = Provider.of<UserProvider>(context, listen: false).user;
     var _widgetProvider = Provider.of<WidgetProvider>(context, listen: false);
-    _fullNameTextEditingController.text = user.firstName + " " + user.lastName;
+    _firstNameTextEditingController.text = user.firstName ?? "";
+    _lastNameTextEditingController.text = user.lastName ?? "";
     _aboutTextEditingController.text = user.about ?? "";
     _locationTextEditingController.text = user.address ?? "";
     _schoolTextEditingController.text = user.school ?? "";
@@ -267,12 +271,23 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  YouOnlineText(text: "Full Name"),
+                  YouOnlineText(text: "First Name"),
                   SizedBox(
                     height: SizeConfig.kDefaultSize * 2,
                   ),
                   YouOnlineTextField(
-                    textEditingController: _fullNameTextEditingController,
+                    textEditingController: _firstNameTextEditingController,
+                    hintText: "Last Name",
+                  ),
+                  SizedBox(
+                    height: SizeConfig.kDefaultSize * 5,
+                  ),
+                  YouOnlineText(text: "Last Name"),
+                  SizedBox(
+                    height: SizeConfig.kDefaultSize * 2,
+                  ),
+                  YouOnlineTextField(
+                    textEditingController: _lastNameTextEditingController,
                     hintText: "Full Name",
                   ),
                   SizedBox(
@@ -349,9 +364,49 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   SizedBox(
                     height: SizeConfig.kDefaultSize * 2,
                   ),
-                  YouOnlineTextField(
-                    textEditingController: _birthdayTextEditingController,
-                    hintText: "13 June 1994",
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          child: YouOnlineTextField(
+                            textEditingController:
+                                _birthdayTextEditingController,
+                            hintText: "13 June 1994",
+                            isReadable: true,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: width * .02,
+                      ),
+                      YouOnlineIconButton(
+                        icon: Icons.calendar_today,
+                        iconSize: width * .05,
+                        callback: () {
+                          DatePicker.showDatePicker(
+                            context,
+                            showTitleActions: true,
+                            onChanged: (date) {
+                              _birthdayTextEditingController.text =
+                                  date.year.toString() +
+                                      "-" +
+                                      date.month.toString() +
+                                      "-" +
+                                      date.day.toString();
+                            },
+                            onConfirm: (date) {
+                              _birthdayTextEditingController.text =
+                                  date.year.toString() +
+                                      "-" +
+                                      date.month.toString() +
+                                      "-" +
+                                      date.day.toString();
+                            },
+                            currentTime: DateTime.now(),
+                          );
+                        },
+                      ),
+                    ],
                   ),
                   SizedBox(
                     height: SizeConfig.kDefaultSize * 5,
@@ -434,12 +489,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         _userProvider.updateUserProfile(
                           profilePicture: profilePicture,
                           coverImage: cover,
-                          firstName: _fullNameTextEditingController.text
-                              .split(" ")
-                              .first,
-                          lastName: _fullNameTextEditingController.text
-                              .split(" ")
-                              .last,
+                          firstName: _firstNameTextEditingController.text,
+                          lastName: _lastNameTextEditingController.text,
                           about: _aboutTextEditingController.text,
                           location: _locationTextEditingController.text,
                           school: _schoolTextEditingController.text,
@@ -460,12 +511,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         profilePicture.add(profileAvatar);
                         _userProvider.updateUserProfile(
                           profilePicture: profilePicture,
-                          firstName: _fullNameTextEditingController.text
-                              .split(" ")
-                              .first,
-                          lastName: _fullNameTextEditingController.text
-                              .split(" ")
-                              .last,
+                          firstName: _firstNameTextEditingController.text,
+                          lastName: _lastNameTextEditingController.text,
                           about: _aboutTextEditingController.text,
                           location: _locationTextEditingController.text,
                           school: _schoolTextEditingController.text,
@@ -486,12 +533,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         cover.add(coverPhoto);
                         _userProvider.updateUserProfile(
                           coverImage: cover,
-                          firstName: _fullNameTextEditingController.text
-                              .split(" ")
-                              .first,
-                          lastName: _fullNameTextEditingController.text
-                              .split(" ")
-                              .last,
+                          firstName: _firstNameTextEditingController.text,
+                          lastName: _lastNameTextEditingController.text,
                           about: _aboutTextEditingController.text,
                           location: _locationTextEditingController.text,
                           school: _schoolTextEditingController.text,
@@ -510,12 +553,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         );
                       } else {
                         _userProvider.updateUserProfile(
-                          firstName: _fullNameTextEditingController.text
-                              .split(" ")
-                              .first,
-                          lastName: _fullNameTextEditingController.text
-                              .split(" ")
-                              .last,
+                          firstName: _firstNameTextEditingController.text,
+                          lastName: _lastNameTextEditingController.text,
                           about: _aboutTextEditingController.text,
                           location: _locationTextEditingController.text,
                           school: _schoolTextEditingController.text,

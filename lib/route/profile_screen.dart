@@ -47,6 +47,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
+    print("Working");
     var _widgetProvider = Provider.of<WidgetProvider>(context);
     if (_widgetProvider.profileSectionIndex == 1) {
       return Scaffold(

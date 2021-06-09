@@ -26,6 +26,7 @@ import 'package:youonline/provider/widget_provider.dart';
 import 'package:youonline/route/group_detail_screen.dart';
 import 'package:youonline/route/login_screen.dart';
 import 'package:youonline/route/main_screen.dart';
+import 'package:youonline/route/profile_screen.dart';
 import 'package:youonline/route/single_page_screen.dart';
 import 'package:youonline/route/verify_otp_screen.dart';
 import 'package:youonline/utils/prefs.dart';
@@ -209,6 +210,9 @@ class UserProvider with ChangeNotifier {
               notifyListeners();
               await getUserData(
                 context: context,
+              );
+              await getTimelineUserProfile(
+                userId: user.userId.toString(),
               );
               // await getUserGroups();
               BotToast.closeAllLoading();
@@ -399,8 +403,8 @@ class UserProvider with ChangeNotifier {
               if (response != null) {
                 try {
                   timelineUserProfile = ProfileTimelineData.fromJson(response);
-                  print(timelineUserProfile);
                   changeTimelineUserProfile(timelineUserProfile);
+                  print(timelineUserProfile);
                 } catch (e) {
                   throw e;
                 }
@@ -1017,10 +1021,15 @@ class UserProvider with ChangeNotifier {
 
     var res = await http.Response.fromStream(response);
     if (response.statusCode == 200 || response.statusCode == 201) {
-      await getUserData(
-        context: context,
-        isUpdated: true,
+      await getTimelineUserProfile(
+        userId: user.userId.toString(),
       );
+      user.avatar = timelineUserProfile.user.avatar;
+      user.cover = timelineUserProfile.user.cover;
+      user.firstName = timelineUserProfile.user.firstName;
+      user.lastName = timelineUserProfile.user.lastName;
+      user.username = timelineUserProfile.user.username;
+
       BotToast.closeAllLoading();
       BotToast.showText(
         text: "Profile successfully updated!",
@@ -1030,14 +1039,17 @@ class UserProvider with ChangeNotifier {
         ),
         contentColor: Colors.white,
       );
-      Provider.of<WidgetProvider>(context, listen: false).changeReaction(null);
-      Provider.of<WidgetProvider>(context, listen: false).changePageNo(1);
-      Navigator.pushAndRemoveUntil(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (_) => MainScreen(),
+          builder: (_) => ProfileScreen(
+            userId: user.userId.toString(),
+            profileCover: user.cover,
+            fullName: user.firstName + " " + user.lastName,
+            profileAvatar: user.avatar,
+            username: user.username,
+          ),
         ),
-        (route) => false,
       );
       var responseDecode = json.decode(res.body);
 

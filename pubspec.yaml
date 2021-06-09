@@ -55,6 +55,8 @@ dev_dependencies:
   transparent_image: ^2.0.0
   chewie: any
   cached_network_image: ^3.0.0
+  loading_indicator: 
+  flutter_datetime_picker: ^1.5.1
 
 
 

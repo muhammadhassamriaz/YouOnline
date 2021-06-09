@@ -55,6 +55,13 @@ class _SplashScreenState extends State<SplashScreen> {
                 .getUserData(context: context);
             Provider.of<UserProvider>(context, listen: false)
                 .getAllUserStories();
+            Provider.of<UserProvider>(context, listen: false)
+                .getTimelineUserProfile(
+              userId: Provider.of<UserProvider>(context, listen: false)
+                  .user
+                  .userId
+                  .toString(),
+            );
             await _timelineProvider.getTimeLinePosts(
               context: context,
               pageNo: 1,

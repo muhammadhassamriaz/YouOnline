@@ -44,20 +44,51 @@ class FriendTag extends StatelessWidget {
         SizedBox(
           height: height * .01,
         ),
-        Container(
-          width: width * .2,
-          child: Center(
-            child: Text(
-              username != null ? username : name,
-              maxLines: 1,
-              style: labelTextStyle.copyWith(
-                color: hintTextColor,
-                fontSize: width * .032,
+        if (username != null && username.isNotEmpty)
+          Container(
+            width: width * .2,
+            child: Center(
+              child: Text(
+                username,
+                maxLines: 1,
+                style: labelTextStyle.copyWith(
+                  color: hintTextColor,
+                  fontSize: width * .032,
+                ),
+                textScaleFactor: 1,
               ),
-              textScaleFactor: 1,
+            ),
+          )
+        else if (name != null && name.isNotEmpty)
+          Container(
+            width: width * .2,
+            child: Center(
+              child: Text(
+                name,
+                maxLines: 1,
+                style: labelTextStyle.copyWith(
+                  color: hintTextColor,
+                  fontSize: width * .032,
+                ),
+                textScaleFactor: 1,
+              ),
+            ),
+          )
+        else
+          Container(
+            width: width * .2,
+            child: Center(
+              child: Text(
+                "YouOnline",
+                maxLines: 1,
+                style: labelTextStyle.copyWith(
+                  color: hintTextColor,
+                  fontSize: width * .032,
+                ),
+                textScaleFactor: 1,
+              ),
             ),
           ),
-        )
       ],
     );
   }

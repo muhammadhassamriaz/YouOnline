@@ -63,6 +63,37 @@ class TimelineProvider with ChangeNotifier {
     }
   }
 
+  Future deleteComment({
+    @required BuildContext context,
+    @required String commentId,
+  }) async {
+    bool _isError = false;
+    String userAuthenticationToken =
+        Provider.of<UserProvider>(context, listen: false)
+            .userAuthenticationToken;
+    Uri uri = Uri.parse(
+      ApiNetwork.BASE_URL + ApiNetwork().deleteComment,
+    );
+    if (userAuthenticationToken != null) {
+      await http.post(
+        uri,
+        headers: <String, String>{
+          "Accept": "application/json",
+          "Authorization": "Bearer $userAuthenticationToken",
+        },
+        body: {
+          "comment_id": commentId,
+        },
+      ).catchError((err) {
+        print(err.toString());
+        throw err;
+      }).then((value) {
+        var response = json.decode(value.body);
+        print(response);
+      });
+    }
+  }
+
   Future<AllComments> getPostComments({
     @required BuildContext context,
     @required String postID,

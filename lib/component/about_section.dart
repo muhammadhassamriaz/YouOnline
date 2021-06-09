@@ -1,5 +1,6 @@
 import 'package:youonline/component/profile_header.dart';
 import 'package:youonline/provider/user_provider.dart';
+import 'package:youonline/route/profile_screen.dart';
 import 'package:youonline/utils/assets.dart';
 import 'package:youonline/utils/color.dart';
 import 'package:youonline/utils/size_config.dart';
@@ -142,25 +143,55 @@ class _AboutSectionState extends State<AboutSection> {
                             spacing: width * .035,
                             runSpacing: width * .02,
                             children: List.generate(
-                              _userProvider.timelineUserProfile.following
-                                          .length >
-                                      5
-                                  ? _userProvider.timelineUserProfile.following
-                                      .sublist(0, 4)
-                                      .length
-                                  : _userProvider
-                                      .timelineUserProfile.following.length,
+                              _userProvider
+                                  .timelineUserProfile.following.length,
                               (index) {
                                 return GestureDetector(
                                   onTap: () async {
+                                    final userId = _userProvider
+                                        .timelineUserProfile
+                                        .following[index]
+                                        .userId
+                                        .toString();
+                                    final fullName = _userProvider
+                                            .timelineUserProfile
+                                            .following[index]
+                                            .firstName +
+                                        " " +
+                                        _userProvider.timelineUserProfile
+                                            .following[index].lastName;
+                                    final username = _userProvider
+                                        .timelineUserProfile
+                                        .following[index]
+                                        .username;
+                                    final profileAvatar = _userProvider
+                                        .timelineUserProfile
+                                        .following[index]
+                                        .avatar;
+
+                                    final cover = _userProvider
+                                        .timelineUserProfile
+                                        .following[index]
+                                        .cover;
                                     BotToast.showLoading();
                                     await _userProvider.getTimelineUserProfile(
                                       userId: _userProvider.timelineUserProfile
                                           .following[index].userId
                                           .toString(),
                                     );
-
                                     BotToast.closeAllLoading();
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => ProfileScreen(
+                                          userId: userId,
+                                          profileCover: cover,
+                                          fullName: fullName,
+                                          profileAvatar: profileAvatar,
+                                          username: username,
+                                        ),
+                                      ),
+                                    );
                                   },
                                   child: FriendTag(
                                     imageURL: _userProvider.timelineUserProfile
@@ -246,25 +277,57 @@ class _AboutSectionState extends State<AboutSection> {
                             spacing: width * .035,
                             runSpacing: width * .02,
                             children: List.generate(
-                              _userProvider.timelineUserProfile.followers
-                                          .length >
-                                      5
-                                  ? _userProvider.timelineUserProfile.followers
-                                      .sublist(0, 4)
-                                      .length
-                                  : _userProvider
-                                      .timelineUserProfile.followers.length,
+                              _userProvider
+                                  .timelineUserProfile.followers.length,
                               (index) {
                                 return GestureDetector(
                                   onTap: () async {
+                                    final userId = _userProvider
+                                        .timelineUserProfile
+                                        .followers[index]
+                                        .userId
+                                        .toString();
+                                    final fullName = _userProvider
+                                            .timelineUserProfile
+                                            .followers[index]
+                                            .firstName +
+                                        " " +
+                                        _userProvider.timelineUserProfile
+                                            .followers[index].lastName;
+                                    final username = _userProvider
+                                        .timelineUserProfile
+                                        .followers[index]
+                                        .username;
+                                    final profileAvatar = _userProvider
+                                        .timelineUserProfile
+                                        .followers[index]
+                                        .avatar;
+
+                                    final cover = _userProvider
+                                        .timelineUserProfile
+                                        .followers[index]
+                                        .cover;
+
                                     BotToast.showLoading();
                                     await _userProvider.getTimelineUserProfile(
                                       userId: _userProvider.timelineUserProfile
-                                          .following[index].userId
+                                          .followers[index].userId
                                           .toString(),
                                     );
-
                                     BotToast.closeAllLoading();
+
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => ProfileScreen(
+                                          userId: userId,
+                                          profileCover: cover,
+                                          fullName: fullName,
+                                          profileAvatar: profileAvatar,
+                                          username: username,
+                                        ),
+                                      ),
+                                    );
                                   },
                                   child: FriendTag(
                                     imageURL: _userProvider.timelineUserProfile

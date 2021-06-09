@@ -86,6 +86,7 @@ class _MainScreenState extends State<MainScreen> {
     ];
   }
 
+  bool isButtonPressed = true;
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -126,6 +127,7 @@ class _MainScreenState extends State<MainScreen> {
               _selectedItemPosition,
             );
           });
+
           if (_selectedItemPosition == 2) {
             // setState(() {
             //   Future.delayed(Duration(milliseconds: 100), () {
@@ -142,6 +144,7 @@ class _MainScreenState extends State<MainScreen> {
                 builder: (_) => CreatePostScreen(),
               ),
             );
+
             setState(() {
               _selectedItemPosition = 0;
               _controller.jumpToPage(0);

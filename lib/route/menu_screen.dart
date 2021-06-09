@@ -1,6 +1,12 @@
 import 'package:provider/provider.dart';
+import 'package:youonline/component/photo_section.dart';
+import 'package:youonline/component/post_section.dart';
+import 'package:youonline/component/video_section.dart';
 import 'package:youonline/model/post_reaction.dart';
+import 'package:youonline/provider/timeline_provider.dart';
 import 'package:youonline/provider/user_provider.dart';
+import 'package:youonline/provider/widget_provider.dart';
+import 'package:youonline/route/automotive/automotive.dart';
 import 'package:youonline/route/login_registration_route.dart';
 import 'package:youonline/route/profile_screen.dart';
 import 'package:youonline/route/settings_screen.dart';
@@ -15,12 +21,7 @@ import 'package:flutter/material.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-class MenuScreen extends StatefulWidget {
-  @override
-  _MenuScreenState createState() => _MenuScreenState();
-}
-
-class _MenuScreenState extends State<MenuScreen> {
+class MenuScreen extends StatelessWidget {
   List<PostReaction> postReactions = [];
 
   int reactionIndex;
@@ -39,6 +40,7 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   Widget build(BuildContext context) {
     var _userProvider = Provider.of<UserProvider>(context);
+    var _widgetProvider = Provider.of<WidgetProvider>(context);
     SizeConfig().init(context);
     return Scaffold(
       backgroundColor: Colors.white,
@@ -222,13 +224,10 @@ class _MenuScreenState extends State<MenuScreen> {
                                     .toLowerCase()
                                     .contains("profile")) {
                                   BotToast.showLoading();
-                                  BotToast.showLoading();
                                   await _userProvider.getTimelineUserProfile(
                                     userId:
                                         _userProvider.user.userId.toString(),
                                   );
-
-                                  BotToast.closeAllLoading();
                                   BotToast.closeAllLoading();
                                   Navigator.push(
                                     context,
@@ -243,6 +242,108 @@ class _MenuScreenState extends State<MenuScreen> {
                                             " " +
                                             _userProvider.user.lastName,
                                         username: _userProvider.user.username,
+                                      ),
+                                    ),
+                                  );
+                                } else if (titles[index]
+                                    .toLowerCase()
+                                    .contains("video")) {
+                                  BotToast.showLoading();
+                                  await _userProvider.getTimelineUserProfile(
+                                    userId:
+                                        _userProvider.user.userId.toString(),
+                                  );
+                                  _widgetProvider.changeProfileSelectedIndex(3);
+                                  BotToast.closeAllLoading();
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => Scaffold(
+                                        appBar: AppBar(
+                                          backgroundColor: Colors.white,
+                                          elevation: 0,
+                                        ),
+                                        body: VideoSection(
+                                          userId: _userProvider.user.userId
+                                              .toString(),
+                                          profileCover:
+                                              _userProvider.user.cover,
+                                          profileAvatar:
+                                              _userProvider.user.avatar,
+                                          fullName:
+                                              _userProvider.user.firstName +
+                                                  " " +
+                                                  _userProvider.user.lastName,
+                                          username: _userProvider.user.username,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                } else if (titles[index]
+                                    .toLowerCase()
+                                    .contains("photo")) {
+                                  BotToast.showLoading();
+                                  await _userProvider.getTimelineUserProfile(
+                                    userId:
+                                        _userProvider.user.userId.toString(),
+                                  );
+                                  _widgetProvider.changeProfileSelectedIndex(2);
+                                  BotToast.closeAllLoading();
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => Scaffold(
+                                        appBar: AppBar(
+                                          elevation: 0,
+                                          backgroundColor: Colors.white,
+                                        ),
+                                        body: PhotosSection(
+                                          userId: _userProvider.user.userId
+                                              .toString(),
+                                          profileCover:
+                                              _userProvider.user.cover,
+                                          profileAvatar:
+                                              _userProvider.user.avatar,
+                                          fullName:
+                                              _userProvider.user.firstName +
+                                                  " " +
+                                                  _userProvider.user.lastName,
+                                          username: _userProvider.user.username,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                } else if (titles[index]
+                                    .toLowerCase()
+                                    .contains("post")) {
+                                  BotToast.showLoading();
+                                  await _userProvider.getTimelineUserProfile(
+                                    userId:
+                                        _userProvider.user.userId.toString(),
+                                  );
+                                  _widgetProvider.changeProfileSelectedIndex(1);
+                                  BotToast.closeAllLoading();
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => Scaffold(
+                                        appBar: AppBar(
+                                          backgroundColor: Colors.white,
+                                          elevation: 0,
+                                        ),
+                                        body: PostSection(
+                                          userId: _userProvider.user.userId
+                                              .toString(),
+                                          profileCover:
+                                              _userProvider.user.cover,
+                                          profileAvatar:
+                                              _userProvider.user.avatar,
+                                          fullName:
+                                              _userProvider.user.firstName +
+                                                  " " +
+                                                  _userProvider.user.lastName,
+                                          username: _userProvider.user.username,
+                                        ),
                                       ),
                                     ),
                                   );
@@ -264,7 +365,25 @@ class _MenuScreenState extends State<MenuScreen> {
                     SizedBox(
                       height: SizeConfig.kDefaultSize * 5,
                     ),
-                    ExpandableSettingsPanel(),
+                    // ExpandableSettingsPanel(),
+                    ListTile(
+                      title: Text(
+                        'Automotive',
+                        textScaleFactor: 1,
+                        style: labelTextStyle.copyWith(
+                          fontSize: SizeConfig.kDefaultSize * 4,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => AutomotiveScreen(),
+                          ),
+                        );
+                      },
+                    ),
                     SizedBox(
                       height: SizeConfig.kDefaultSize * 2,
                     ),
@@ -274,6 +393,7 @@ class _MenuScreenState extends State<MenuScreen> {
                         textScaleFactor: 1,
                         style: labelTextStyle.copyWith(
                           fontSize: SizeConfig.kDefaultSize * 4,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                       onTap: () {
@@ -304,9 +424,13 @@ class _MenuScreenState extends State<MenuScreen> {
                         textScaleFactor: 1,
                         style: labelTextStyle.copyWith(
                           fontSize: SizeConfig.kDefaultSize * 4,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                       onTap: () {
+                        clearPrefs();
+                        Provider.of<TimelineProvider>(context, listen: false)
+                            .changeTimelineData([]);
                         Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
@@ -314,7 +438,6 @@ class _MenuScreenState extends State<MenuScreen> {
                           ),
                           (route) => false,
                         );
-                        clearPrefs();
                       },
                     )
                   ],

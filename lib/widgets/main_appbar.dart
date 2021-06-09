@@ -11,7 +11,6 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:story/story.dart';
 import 'package:transparent_image/transparent_image.dart';
-
 import 'package:youonline/helper/api_client.dart';
 import 'package:youonline/model/timeline_data.dart';
 import 'package:youonline/provider/create_post_provider.dart';
@@ -36,6 +35,8 @@ class MainAppBar extends StatefulWidget {
 class _MainAppBarState extends State<MainAppBar> {
   TextEditingController _postTextEditingController = TextEditingController();
   List videoFiles = [];
+
+  int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +81,6 @@ class _MainAppBarState extends State<MainAppBar> {
             ],
           ),
         ),
-
         Padding(
           padding: EdgeInsets.symmetric(horizontal: width * .04),
           child: Row(
@@ -192,6 +192,8 @@ class _MainAppBarState extends State<MainAppBar> {
                 title: 'Video',
                 color: searchContainerColor,
                 callback: () async {
+                  double sizeInMB;
+                  FilePickerResult selectedFile;
                   await FilePicker.platform
                       .pickFiles(
                     allowCompression: true,
@@ -200,14 +202,20 @@ class _MainAppBarState extends State<MainAppBar> {
                   )
                       .then((value) {
                     if (value != null) {
-                      setState(() {
-                        videoFiles =
-                            value.paths.map((path) => File(path)).toList();
-                      });
+                      double sizeInKB = value.files.first.size / 1024;
 
-                      if (videoFiles != null && videoFiles.length > 0) {
+                      setState(() {
+                        sizeInMB = sizeInKB / 1024;
+                      });
+                      if (sizeInMB.toInt() < 21) {
+                        setState(() {
+                          videoFiles =
+                              value.paths.map((path) => File(path)).toList();
+                        });
+                      } else {
                         BotToast.showText(
-                          text: "${videoFiles.length} video is selected.",
+                          text:
+                              "The size of the video must be less than 20 Mbs.",
                           textStyle: labelTextStyle.copyWith(
                             fontSize: 12,
                             color: Colors.black,
@@ -218,12 +226,24 @@ class _MainAppBarState extends State<MainAppBar> {
                     }
                   });
                   if (videoFiles != null && videoFiles.length > 0) {
-                    videoUploader(
-                      files: videoFiles,
-                      authenticationToken:
-                          _userProvider.userAuthenticationToken,
-                      context: context,
-                    );
+                    if (sizeInMB.toInt() < 21) {
+                      BotToast.showLoading();
+                      await videoUploader(
+                        files: videoFiles,
+                        authenticationToken:
+                            _userProvider.userAuthenticationToken,
+                        context: context,
+                      );
+                    } else {
+                      BotToast.showText(
+                        text: "The size of the video must be less than 20 Mbs.",
+                        textStyle: labelTextStyle.copyWith(
+                          fontSize: 12,
+                          color: Colors.black,
+                        ),
+                        contentColor: Colors.white,
+                      );
+                    }
                   }
                 },
               ),
@@ -277,7 +297,7 @@ class _MainAppBarState extends State<MainAppBar> {
             );
           },
           image: FadeInImage.memoryNetwork(
-            image: _userProvider.user.cover,
+            image: _userProvider.user?.cover,
             fit: BoxFit.cover,
             placeholder: kTransparentImage,
             imageScale: 0.5,
@@ -291,117 +311,131 @@ class _MainAppBarState extends State<MainAppBar> {
             ),
           ),
           itemCount: _userProvider.storyModel.data.length,
-          itemBuilder: (context, index) => GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) {
-                    return Scaffold(
-                      body: StoryPageView(
-                        itemBuilder: (
-                          context,
-                          pageIndex,
-                          storyIndex,
-                        ) {
-                          final user = _userProvider.storyModel.data[pageIndex];
-                          final story = _userProvider
-                              .storyModel.data[pageIndex].stories[storyIndex];
-                          return Stack(
-                            children: [
-                              Positioned.fill(
-                                child: Container(color: Colors.black),
-                              ),
-                              Positioned.fill(
-                                child: Image.network(
-                                  story.storyMediaImage.filename,
-                                ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 44, left: 8),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      height: width * .15,
-                                      width: width * .15,
-                                      decoration: BoxDecoration(
-                                        // image:
-                                        //     DecorationImage(
-                                        //   image: CachedNetworkImageProvider(
-                                        //     user.avatar,
-                                        //   ),
-                                        //   fit: BoxFit.cover,
-                                        // ),
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: ClipOval(
-                                        child: FadeInImage.memoryNetwork(
-                                          placeholder: kTransparentImage,
-                                          image: user?.avatar,
-                                          imageScale: 0.5,
+          itemBuilder: (context, index) {
+            return GestureDetector(
+              onTap: () {
+                setState(() {
+                  selectedIndex = index;
+                });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) {
+                      return Scaffold(
+                        body: SafeArea(
+                          child: StoryPageView(
+                            initialPage: selectedIndex,
+                            itemBuilder: (
+                              context,
+                              pageIndex,
+                              storyIndex,
+                            ) {
+                              final user =
+                                  _userProvider.storyModel.data[pageIndex];
+                              final story = _userProvider.storyModel
+                                  .data[pageIndex].stories[storyIndex];
+                              return Stack(
+                                children: [
+                                  Positioned.fill(
+                                    child: Container(color: Colors.black),
+                                  ),
+                                  Positioned.fill(
+                                    child: Image.network(
+                                      story.storyMediaImage.filename,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.only(top: 44, left: 8),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          height: width * .15,
+                                          width: width * .15,
+                                          decoration: BoxDecoration(
+                                            // image:
+                                            //     DecorationImage(
+                                            //   image: CachedNetworkImageProvider(
+                                            //     user.avatar,
+                                            //   ),
+                                            //   fit: BoxFit.cover,
+                                            // ),
+                                            shape: BoxShape.circle,
+                                          ),
+                                          child: ClipOval(
+                                            child: FadeInImage.memoryNetwork(
+                                              placeholder: kTransparentImage,
+                                              image: user?.avatar,
+                                              imageScale: 0.5,
+                                            ),
+                                          ),
                                         ),
-                                      ),
+                                        const SizedBox(
+                                          width: 8,
+                                        ),
+                                        Text(
+                                          user.firstName + " " + user.lastName,
+                                          style: TextStyle(
+                                            fontSize: width * .032,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    const SizedBox(
-                                      width: 8,
-                                    ),
-                                    Text(
-                                      user.username,
-                                      style: TextStyle(
-                                        fontSize: width * .032,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
+                                  ),
+                                ],
+                              );
+                            },
+                            gestureItemBuilder:
+                                (context, pageIndex, storyIndex) {
+                              return Align(
+                                alignment: Alignment.topRight,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 32),
+                                  child: IconButton(
+                                    padding: EdgeInsets.zero,
+                                    color: Colors.white,
+                                    icon: Icon(Icons.close),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
                                 ),
-                              ),
-                            ],
-                          );
-                        },
-                        gestureItemBuilder: (context, pageIndex, storyIndex) {
-                          return Align(
-                            alignment: Alignment.topRight,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 32),
-                              child: IconButton(
-                                padding: EdgeInsets.zero,
-                                color: Colors.white,
-                                icon: Icon(Icons.close),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                              ),
-                            ),
-                          );
-                        },
-                        pageLength: _userProvider.storyModel.data.length,
-                        storyLength: (int pageIndex) {
-                          return _userProvider
-                              .storyModel.data[pageIndex].stories.length;
-                        },
-                        onPageLimitReached: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                    );
-                  },
+                              );
+                            },
+                            pageLength: _userProvider.storyModel.data.length,
+                            storyLength: (int pageIndex) {
+                              return _userProvider
+                                  .storyModel.data[pageIndex].stories.length;
+                            },
+                            onPageLimitReached: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                );
+              },
+              child: Container(
+                width: width * .25,
+                height: height * .2,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage(
+                      _userProvider.storyModel.data[index].stories.first
+                          .storyMediaImage.filename,
+                    ),
+                    fit: BoxFit.cover,
+                  ),
+                  color: searchContainerColor,
                 ),
-              );
-            },
-            child: Container(
-              width: width * .25,
-              height: height * .2,
-              child: FadeInImage.memoryNetwork(
-                placeholder: kTransparentImage,
-                image: _userProvider.storyModel.data[index].stories.first
-                    .storyMediaImage.filename,
-                imageScale: 0.5,
-                fit: BoxFit.cover,
+                clipBehavior: Clip.antiAliasWithSaveLayer,
               ),
-            ),
-          ),
+            );
+          },
         ),
       ],
     );
@@ -482,7 +516,7 @@ Future<void> uploadMultipleImage({
 }
 
 Future<void> videoUploader({
-  @required List<File> files,
+  @required List files,
   @required String authenticationToken,
   @required BuildContext context,
   @required String text,
@@ -523,6 +557,7 @@ Future<void> videoUploader({
   var response = await request.send();
 
   var res = await http.Response.fromStream(response);
+  BotToast.closeAllLoading();
 
   if (response.statusCode == 200 || response.statusCode == 201) {
     var responseDecode = json.decode(res.body);
@@ -549,7 +584,35 @@ Future<void> videoUploader({
           color: Colors.black,
         ),
       );
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (_) => MainScreen(
+              isMainScreen: false,
+            ),
+          ),
+          (route) => false);
     }
     return res.body;
+  } else if (response.statusCode == 400 || response.statusCode == 500) {
+    if (response.statusCode == 400) {
+      BotToast.showText(
+        text: "Bad Request",
+        textStyle: labelTextStyle.copyWith(
+          fontSize: 12,
+          color: Colors.white,
+        ),
+        contentColor: Colors.red,
+      );
+    } else {
+      BotToast.showText(
+        text: "Internal Server Error",
+        textStyle: labelTextStyle.copyWith(
+          fontSize: 12,
+          color: Colors.white,
+        ),
+        contentColor: Colors.red,
+      );
+    }
   }
 }

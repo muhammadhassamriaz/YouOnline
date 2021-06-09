@@ -56,6 +56,12 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     // Assets.COLOR_ICON,
     // Assets.LOCATION_ICON,
   ];
+  @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
 
   List<String> bottomSheetItemTitle = [
     'Upload Images',
@@ -120,14 +126,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                         ),
                         contentColor: Colors.white,
                       );
-                      Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => MainScreen(
-                              isMainScreen: false,
-                            ),
-                          ),
-                          (route) => false);
+                      BotToast.showLoading();
+
                       await videoUploader(
                         files: videoFiles,
                         authenticationToken:
@@ -428,7 +428,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                     } else if (bottomSheetItemTitle[index]
                                         .toLowerCase()
                                         .contains("video")) {
-                                      var result;
+                                      FilePickerResult result;
                                       try {
                                         result =
                                             await FilePicker.platform.pickFiles(
@@ -436,6 +436,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                           allowMultiple: false,
                                           type: FileType.video,
                                         );
+
                                         print(result);
                                       } catch (e) {
                                         throw e;
@@ -445,27 +446,44 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                           result.files.length > 0) {
                                         if (result.files != null) {
                                           try {
+                                            double sizeInKB =
+                                                result.files.first.size / 1024;
+                                            double sizeInMB;
+
                                             setState(() {
-                                              videoFiles = result.paths
-                                                  .map((path) => File(path))
-                                                  .toList();
+                                              sizeInMB = sizeInKB / 1024;
                                             });
+
+                                            if (sizeInMB.toInt() < 21) {
+                                              setState(() {
+                                                videoFiles = result.paths
+                                                    .map((path) => File(path))
+                                                    .toList();
+                                              });
+                                              BotToast.showText(
+                                                text:
+                                                    "${videoFiles.length} video is selected.",
+                                                textStyle:
+                                                    labelTextStyle.copyWith(
+                                                  fontSize: 12,
+                                                  color: Colors.black,
+                                                ),
+                                                contentColor: Colors.white,
+                                              );
+                                            } else {
+                                              BotToast.showText(
+                                                text:
+                                                    "The size of the video must be less than 20 Mbs.",
+                                                textStyle:
+                                                    labelTextStyle.copyWith(
+                                                  fontSize: 12,
+                                                  color: Colors.black,
+                                                ),
+                                                contentColor: Colors.white,
+                                              );
+                                            }
                                           } catch (e) {
                                             throw e;
-                                          }
-
-                                          if (videoFiles != null &&
-                                              videoFiles.length > 0) {
-                                            BotToast.showText(
-                                              text:
-                                                  "${videoFiles.length} video is selected.",
-                                              textStyle:
-                                                  labelTextStyle.copyWith(
-                                                fontSize: 12,
-                                                color: Colors.black,
-                                              ),
-                                              contentColor: Colors.white,
-                                            );
                                           }
                                         }
                                       }
@@ -647,6 +665,12 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         Provider.of<TimelineProvider>(context, listen: false);
     var request = new http.MultipartRequest("POST", uri);
 
+    Map<String, String> headers = {
+      "Accept": "application/json",
+      "Authorization": "Bearer $authenticationToken"
+    };
+    request.headers.addAll(headers);
+
     for (var file in files) {
       String fileName = file.path.split("/").last;
       var stream = new http.ByteStream(DelegatingStream.typed(file.openRead()));
@@ -664,22 +688,15 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     if (text != null && text.isNotEmpty) {
       request.fields['postText'] = text;
     }
-    if (feelings != null && feelings.isNotEmpty) {
+    if (feelings != null) {
       request.fields["feeling_type"] = "feelings";
       request.fields["feeling"] = feelings;
     }
-    print(request.fields);
-
-    Map<String, String> headers = {
-      "Accept": "application/json",
-      "Authorization": "Bearer $authenticationToken"
-    };
-    request.headers.addAll(headers);
 
     var response = await request.send();
 
     var res = await http.Response.fromStream(response);
-
+    BotToast.closeAllLoading();
     if (response.statusCode == 200 || response.statusCode == 201) {
       var responseDecode = json.decode(res.body);
 
@@ -695,8 +712,37 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         TimelineData post = TimelineData.fromJson(responseDecode['post']);
         _timelineProvider.timelineData.insert(0, post);
         _timelineProvider.changeTimelineData(_timelineProvider.timelineData);
+        videoFiles = [];
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (_) => MainScreen(
+                isMainScreen: false,
+              ),
+            ),
+            (route) => false);
       }
       return res.body;
+    } else if (response.statusCode == 400 || response.statusCode == 500) {
+      if (response.statusCode == 400) {
+        BotToast.showText(
+          text: "Bad Request",
+          textStyle: labelTextStyle.copyWith(
+            fontSize: 12,
+            color: Colors.white,
+          ),
+          contentColor: Colors.red,
+        );
+      } else {
+        BotToast.showText(
+          text: "Internal Server Error",
+          textStyle: labelTextStyle.copyWith(
+            fontSize: 12,
+            color: Colors.white,
+          ),
+          contentColor: Colors.red,
+        );
+      }
     }
   }
 }

@@ -3,7 +3,7 @@ import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:youonline/utils/color.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 
 class VideoPlayerWidget extends StatefulWidget {
   final String videoURL;
@@ -30,34 +30,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget>
   void initState() {
     super.initState();
     videoPlayerController = VideoPlayerController.network(widget.videoURL);
-    // videoPlayerController
-    //   ..initialize().then((value) {
-    //     setState(() {
-    //       videoPlayerController..play();
-    //     });
-    //   });
     _future = initVideoPlayer();
-    // if (widget.videoURL != null) {
-    //   if (widget.videoURL.isNotEmpty) {
-    //     videoPlayerController = VideoPlayerController.network(
-    //       widget.videoURL,
-    //     )
-    //       ..initialize().then((value) {
-    //         setState(() {
-    //           videoPlayerController.seekTo(Duration(seconds: 3));
-    //           videoPlayerController.play();
-    //           videoPlayerController.setVolume(0);
-    //         });
-    //       })
-    //       ..videoPlayerOptions;
-    //     chewieController = ChewieController(
-    //       autoInitialize: true,
-    //       videoPlayerController: videoPlayerController,
-    //       autoPlay: true,
-    //       looping: false,
-    //     );
-    //   }
-    // }
   }
 
   @override
@@ -106,42 +79,17 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget>
                       height: height * .4,
                       width: width,
                       color: searchContainerColor,
+                      child: Center(
+                        child: SizedBox(
+                          width: width * .1,
+                          height: width * .1,
+                          child: LoadingIndicator(
+                            indicatorType: Indicator.ballGridPulse,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
                     ),
-          // child: Image.network(
-          //   // child: CupertinoActivityIndicator(),
-          //   widget?.videoThumbnail,
-          // ),
-          // decoration: BoxDecoration(
-          //   image: DecorationImage(
-          //     image: NetworkImage(
-          //       widget.videoThumbnail,
-          //       scale: 0.5,
-          //     ),
-          //     fit: BoxFit.cover,
-          //   ),
-          // ),
-          // child: Stack(
-          //   children: [
-          //     Align(
-          //       alignment: Alignment.center,
-          //       child: Container(
-          //         width: width * .15,
-          //         height: width * .15,
-          //         decoration: BoxDecoration(
-          //           color: Colors.white,
-          //           shape: BoxShape.circle,
-          //         ),
-          //         child: Center(
-          //           child: Icon(
-          //             Icons.play_arrow,
-          //             size: width * .08,
-          //             color: Colors.black,
-          //           ),
-          //         ),
-          //       ),
-          //     ),
-          //   ],
-          // ),
         );
       },
     );
@@ -154,10 +102,9 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget>
         chewieController = ChewieController(
           videoPlayerController: videoPlayerController,
           aspectRatio: videoPlayerController.value.aspectRatio,
-          //aspectRatio: 16 / 9,
           autoInitialize: true,
           autoPlay: true,
-          looping: false,
+          looping: true,
           errorBuilder: (context, errorMessage) {
             return Center(
               child: Text(errorMessage),

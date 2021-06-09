@@ -11,6 +11,7 @@ class SettingsTile extends StatelessWidget {
   final Color color;
   bool isNew = false;
   final String comingSoonText;
+  bool showLaunchSoon;
 
   SettingsTile({
     @required this.callback,
@@ -19,6 +20,7 @@ class SettingsTile extends StatelessWidget {
     @required this.color,
     this.isNew,
     @required this.comingSoonText,
+    this.showLaunchSoon = true,
   });
   @override
   Widget build(BuildContext context) {
@@ -65,14 +67,16 @@ class SettingsTile extends StatelessWidget {
                       imageURL,
                     ),
                   ),
-                  Text(
-                    "         Launch Soon",
-                    style: labelTextStyle.copyWith(
-                      fontSize: SizeConfig.kDefaultSize * 3,
-                      color: hintTextColor,
+                  if (showLaunchSoon)
+                    Text(
+                      // "         Launch Soon",
+                      "",
+                      style: labelTextStyle.copyWith(
+                        fontSize: SizeConfig.kDefaultSize * 3,
+                        color: hintTextColor,
+                      ),
+                      textScaleFactor: 1,
                     ),
-                    textScaleFactor: 1,
-                  ),
                 ],
               ),
               SizedBox(

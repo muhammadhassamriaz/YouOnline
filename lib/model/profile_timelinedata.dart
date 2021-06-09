@@ -130,7 +130,7 @@ class Followers {
   String eJoinedGroup;
   String eAccepted;
   String eProfileWallPost;
-  Null eSentmeMsg;
+  // Null eSentmeMsg;
   String eLastNotif;
   String notificationSettings;
   String status;
@@ -159,8 +159,8 @@ class Followers {
   String orderPostsBy;
   String socialLogin;
   String androidMDeviceId;
-  Null iosMDeviceId;
-  Null androidNDeviceId;
+  // Null iosMDeviceId;
+  // Null androidNDeviceId;
   String iosNDeviceId;
   String webDeviceId;
   String wallet;
@@ -178,7 +178,7 @@ class Followers {
   String pointDayExpire;
   int lastFollowId;
   int shareMyData;
-  Null lastLoginData;
+  // Null lastLoginData;
   int twoFactor;
   String newEmail;
   int twoFactorVerified;
@@ -248,7 +248,7 @@ class Followers {
       this.eJoinedGroup,
       this.eAccepted,
       this.eProfileWallPost,
-      this.eSentmeMsg,
+      // this.eSentmeMsg,
       this.eLastNotif,
       this.notificationSettings,
       this.status,
@@ -277,8 +277,8 @@ class Followers {
       this.orderPostsBy,
       this.socialLogin,
       this.androidMDeviceId,
-      this.iosMDeviceId,
-      this.androidNDeviceId,
+      // this.iosMDeviceId,
+      // this.androidNDeviceId,
       this.iosNDeviceId,
       this.webDeviceId,
       this.wallet,
@@ -296,7 +296,7 @@ class Followers {
       this.pointDayExpire,
       this.lastFollowId,
       this.shareMyData,
-      this.lastLoginData,
+      // this.lastLoginData,
       this.twoFactor,
       this.newEmail,
       this.twoFactorVerified,
@@ -366,7 +366,7 @@ class Followers {
     eJoinedGroup = json['e_joined_group'];
     eAccepted = json['e_accepted'];
     eProfileWallPost = json['e_profile_wall_post'];
-    eSentmeMsg = json['e_sentme_msg'];
+    // eSentmeMsg = json['e_sentme_msg'];
     eLastNotif = json['e_last_notif'];
     notificationSettings = json['notification_settings'];
     status = json['status'];
@@ -395,8 +395,8 @@ class Followers {
     orderPostsBy = json['order_posts_by'];
     socialLogin = json['social_login'];
     androidMDeviceId = json['android_m_device_id'];
-    iosMDeviceId = json['ios_m_device_id'];
-    androidNDeviceId = json['android_n_device_id'];
+    // iosMDeviceId = json['ios_m_device_id'];
+    // androidNDeviceId = json['android_n_device_id'];
     iosNDeviceId = json['ios_n_device_id'];
     webDeviceId = json['web_device_id'];
     wallet = json['wallet'];
@@ -414,7 +414,7 @@ class Followers {
     pointDayExpire = json['point_day_expire'];
     lastFollowId = json['last_follow_id'];
     shareMyData = json['share_my_data'];
-    lastLoginData = json['last_login_data'];
+    // lastLoginData = json['last_login_data'];
     twoFactor = json['two_factor'];
     newEmail = json['new_email'];
     twoFactorVerified = json['two_factor_verified'];
@@ -486,7 +486,7 @@ class Followers {
     data['e_joined_group'] = this.eJoinedGroup;
     data['e_accepted'] = this.eAccepted;
     data['e_profile_wall_post'] = this.eProfileWallPost;
-    data['e_sentme_msg'] = this.eSentmeMsg;
+    // data['e_sentme_msg'] = this.eSentmeMsg;
     data['e_last_notif'] = this.eLastNotif;
     data['notification_settings'] = this.notificationSettings;
     data['status'] = this.status;
@@ -515,8 +515,8 @@ class Followers {
     data['order_posts_by'] = this.orderPostsBy;
     data['social_login'] = this.socialLogin;
     data['android_m_device_id'] = this.androidMDeviceId;
-    data['ios_m_device_id'] = this.iosMDeviceId;
-    data['android_n_device_id'] = this.androidNDeviceId;
+    // data['ios_m_device_id'] = this.iosMDeviceId;
+    // data['android_n_device_id'] = this.androidNDeviceId;
     data['ios_n_device_id'] = this.iosNDeviceId;
     data['web_device_id'] = this.webDeviceId;
     data['wallet'] = this.wallet;
@@ -534,7 +534,7 @@ class Followers {
     data['point_day_expire'] = this.pointDayExpire;
     data['last_follow_id'] = this.lastFollowId;
     data['share_my_data'] = this.shareMyData;
-    data['last_login_data'] = this.lastLoginData;
+    // data['last_login_data'] = this.lastLoginData;
     data['two_factor'] = this.twoFactor;
     data['new_email'] = this.newEmail;
     data['two_factor_verified'] = this.twoFactorVerified;
@@ -607,7 +607,7 @@ class Following {
   String eJoinedGroup;
   String eAccepted;
   String eProfileWallPost;
-  Null eSentmeMsg;
+  // Null eSentmeMsg;
   String eLastNotif;
   String notificationSettings;
   String status;
@@ -636,8 +636,8 @@ class Following {
   String orderPostsBy;
   String socialLogin;
   String androidMDeviceId;
-  Null iosMDeviceId;
-  Null androidNDeviceId;
+  // Null iosMDeviceId;
+  // Null androidNDeviceId;
   String iosNDeviceId;
   String webDeviceId;
   String wallet;
@@ -655,7 +655,7 @@ class Following {
   String pointDayExpire;
   int lastFollowId;
   int shareMyData;
-  Null lastLoginData;
+  // Null lastLoginData;
   int twoFactor;
   String newEmail;
   int twoFactorVerified;
@@ -725,7 +725,7 @@ class Following {
       this.eJoinedGroup,
       this.eAccepted,
       this.eProfileWallPost,
-      this.eSentmeMsg,
+      // this.eSentmeMsg,
       this.eLastNotif,
       this.notificationSettings,
       this.status,
@@ -754,8 +754,8 @@ class Following {
       this.orderPostsBy,
       this.socialLogin,
       this.androidMDeviceId,
-      this.iosMDeviceId,
-      this.androidNDeviceId,
+      // this.iosMDeviceId,
+      // this.androidNDeviceId,
       this.iosNDeviceId,
       this.webDeviceId,
       this.wallet,
@@ -773,7 +773,7 @@ class Following {
       this.pointDayExpire,
       this.lastFollowId,
       this.shareMyData,
-      this.lastLoginData,
+      // this.lastLoginData,
       this.twoFactor,
       this.newEmail,
       this.twoFactorVerified,
@@ -843,7 +843,7 @@ class Following {
     eJoinedGroup = json['e_joined_group'];
     eAccepted = json['e_accepted'];
     eProfileWallPost = json['e_profile_wall_post'];
-    eSentmeMsg = json['e_sentme_msg'];
+    // eSentmeMsg = json['e_sentme_msg'];
     eLastNotif = json['e_last_notif'];
     notificationSettings = json['notification_settings'];
     status = json['status'];
@@ -872,8 +872,8 @@ class Following {
     orderPostsBy = json['order_posts_by'];
     socialLogin = json['social_login'];
     androidMDeviceId = json['android_m_device_id'];
-    iosMDeviceId = json['ios_m_device_id'];
-    androidNDeviceId = json['android_n_device_id'];
+    // iosMDeviceId = json['ios_m_device_id'];
+    // androidNDeviceId = json['android_n_device_id'];
     iosNDeviceId = json['ios_n_device_id'];
     webDeviceId = json['web_device_id'];
     wallet = json['wallet'];
@@ -891,7 +891,7 @@ class Following {
     pointDayExpire = json['point_day_expire'];
     lastFollowId = json['last_follow_id'];
     shareMyData = json['share_my_data'];
-    lastLoginData = json['last_login_data'];
+    // lastLoginData = json['last_login_data'];
     twoFactor = json['two_factor'];
     newEmail = json['new_email'];
     twoFactorVerified = json['two_factor_verified'];
@@ -963,7 +963,7 @@ class Following {
     data['e_joined_group'] = this.eJoinedGroup;
     data['e_accepted'] = this.eAccepted;
     data['e_profile_wall_post'] = this.eProfileWallPost;
-    data['e_sentme_msg'] = this.eSentmeMsg;
+    // data['e_sentme_msg'] = this.eSentmeMsg;
     data['e_last_notif'] = this.eLastNotif;
     data['notification_settings'] = this.notificationSettings;
     data['status'] = this.status;
@@ -992,8 +992,8 @@ class Following {
     data['order_posts_by'] = this.orderPostsBy;
     data['social_login'] = this.socialLogin;
     data['android_m_device_id'] = this.androidMDeviceId;
-    data['ios_m_device_id'] = this.iosMDeviceId;
-    data['android_n_device_id'] = this.androidNDeviceId;
+    // data['ios_m_device_id'] = this.iosMDeviceId;
+    // data['android_n_device_id'] = this.androidNDeviceId;
     data['ios_n_device_id'] = this.iosNDeviceId;
     data['web_device_id'] = this.webDeviceId;
     data['wallet'] = this.wallet;
@@ -1011,7 +1011,7 @@ class Following {
     data['point_day_expire'] = this.pointDayExpire;
     data['last_follow_id'] = this.lastFollowId;
     data['share_my_data'] = this.shareMyData;
-    data['last_login_data'] = this.lastLoginData;
+    // data['last_login_data'] = this.lastLoginData;
     data['two_factor'] = this.twoFactor;
     data['new_email'] = this.newEmail;
     data['two_factor_verified'] = this.twoFactorVerified;

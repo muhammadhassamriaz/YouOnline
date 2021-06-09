@@ -181,8 +181,7 @@ class PostCardHeader extends StatelessWidget {
                           children: [
                             Flexible(
                               child: Text(
-                                name.replaceFirst(" ", "") ??
-                                    'YouOnline Prizes Egypt',
+                                name,
                                 style: labelTextStyle.copyWith(
                                   fontSize: SizeConfig.kDefaultSize * 4,
                                   fontWeight: FontWeight.bold,

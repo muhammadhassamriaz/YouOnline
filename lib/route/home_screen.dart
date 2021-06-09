@@ -39,13 +39,10 @@ class _HomeScreenState extends State<HomeScreen> {
     wowGIF,
   ];
 
-  ScrollController scrollController, primaryScrollController;
+  ScrollController scrollController;
 
   bool closeTopColumn = false;
   List<File> videoFiles;
-  RefreshController _refreshController = RefreshController(
-    initialRefresh: false,
-  );
 
   @override
   void initState() {
@@ -64,6 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
             closeTopColumn = false;
           });
         }
+
         double centerPosition =
             scrollController.position.maxScrollExtent / 1.75;
         double edgePosition = scrollController.position.maxScrollExtent / 1.73;
@@ -74,8 +72,8 @@ class _HomeScreenState extends State<HomeScreen> {
             context: context,
             pageNo: pageNo,
           );
-        } else if (scrollController.offset ==
-            scrollController.position.minScrollExtent) {
+        }
+        if (scrollController.position.pixels < 5) {
           _timelineProvider.getTimeLinePosts(
             context: context,
             pageNo: 1,
@@ -97,7 +95,6 @@ class _HomeScreenState extends State<HomeScreen> {
     double width = SizeConfig.kDefaultSize * 100;
     var _userProvider = Provider.of<UserProvider>(context);
     var _timelineProvider = Provider.of<TimelineProvider>(context);
-
     return Scaffold(
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: true,
@@ -452,8 +449,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             ? comments[0]
                             : TimelinePostComments()
                         : TimelinePostComments(),
-                    commentButtonCallback: () {
-                      commentBottomSheet(
+                    commentButtonCallback: () async {
+                      await commentBottomSheet(
                         context,
                         comments: comments ?? [],
                         postID: _timelineProvider
@@ -462,6 +459,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         timelineIndex: timelineIndex,
                         totalLikes: reactions.length,
                       );
+                      setState(() {});
                     },
                     feelings: _timelineProvider
                         .timelineData[timelineIndex].postFeeling,
@@ -546,8 +544,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     option:
                         _timelineProvider.timelineData[timelineIndex].options ??
                             [],
-                    showCommentBottomSheet: () {
-                      commentBottomSheet(
+                    showCommentBottomSheet: () async {
+                      await commentBottomSheet(
                         context,
                         comments: comments ?? [],
                         postID: _timelineProvider
@@ -556,6 +554,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         timelineIndex: timelineIndex,
                         totalLikes: reactions.length,
                       );
+                      setState(() {});
                     },
                   );
                 },

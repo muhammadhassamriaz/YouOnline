@@ -40,6 +40,7 @@ class ApiNetwork {
   final String unfollowPage;
   final String searchURL;
   final String getAllStories;
+  final String deleteComment;
   const ApiNetwork({
     this.serverKey =
         "5572447f999065e3aca553c5b0bfafc32abb23b4-a2aba67c4d09ce599d90a8c4327c810d-43668015",
@@ -82,6 +83,7 @@ class ApiNetwork {
     this.unfollowPage = "api/unfollow-page",
     this.searchURL = "api/search",
     this.getAllStories = "api/get-all-stories",
+    this.deleteComment = "api/delete-comment",
   });
 
   static authenticateUserBody() => {

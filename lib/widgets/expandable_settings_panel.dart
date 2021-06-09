@@ -72,24 +72,6 @@ class _ExpandableSettingsPanelState extends State<ExpandableSettingsPanel> {
                 shrinkWrap: true,
                 itemCount: settingTitles.length,
                 itemBuilder: (context, index) {
-                  // return ListTile(
-                  //   leading:
-                  // SizedBox(
-                  //     width: SizeConfig.kDefaultSize * 6,
-                  //     height: SizeConfig.kDefaultSize * 6,
-                  //     child: Image.asset(
-                  //       images2[index],
-                  //     ),
-                  //   ),
-                  //   title:
-                  // Text(
-                  //     settingTitles[index],
-                  //     style: labelTextStyle.copyWith(
-                  //       fontSize: SizeConfig.kDefaultSize * 4.2,
-                  //     ),
-                  //     textScaleFactor: 1,
-                  //   ),
-                  // );
                   return GestureDetector(
                     onTap: () {
                       if (settingTitles[index]
@@ -131,7 +113,8 @@ class _ExpandableSettingsPanelState extends State<ExpandableSettingsPanel> {
                           ),
                           Spacer(),
                           Text(
-                            "       Launch Soon",
+                            // "       Launch Soon",
+                            "",
                             style: labelTextStyle.copyWith(
                               fontSize: SizeConfig.kDefaultSize * 3,
                               color: hintTextColor,

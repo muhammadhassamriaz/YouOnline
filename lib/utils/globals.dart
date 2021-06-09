@@ -85,17 +85,19 @@ Future menuRoute({
   }
 }
 
-
 final List<String> titles = [
-  "Events",
+  // "Events",
   "Groups",
-  "Friends",
-  "Blog",
-  "View Profile",
+  // "Friends",
+  // "Blog",
   "Pages",
+  "View Profile",
+  "Posts",
+  "Photos",
   "Videos",
-  "Market Place",
-  "News Feed",
+  // "Videos",
+  // "Market Place",
+  // "News Feed",
 ];
 
 final List<String> feelingsText = [
@@ -120,15 +122,17 @@ final List<String> feelingsText = [
 ];
 
 final List<String> images = [
-  calendarIcon,
+  // calendarIcon,
   groupsIcon,
-  friendsIcon,
-  blogIcon2,
-  profileIcon,
   pageIcon2,
-  videoIcon2,
+  profileIcon,
+
+  // friendsIcon,
   savedPostsIcon,
-  newsFeedIcon,
+  // newsFeedIcon,
+  Assets.UPLOAD_IMAGE_ICON,
+  videoIcon2,
+  // blogIcon2,
 ];
 
 final List<String> images2 = [

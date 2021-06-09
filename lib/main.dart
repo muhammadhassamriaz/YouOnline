@@ -4,7 +4,6 @@ import 'package:youonline/provider/timeline_provider.dart';
 import 'package:youonline/provider/user_provider.dart';
 import 'package:youonline/provider/data_provider.dart';
 import 'package:youonline/provider/widget_provider.dart';
-import 'package:youonline/route/automotive/add_product.dart';
 import 'package:youonline/route/splash_screen.dart';
 import 'package:youonline/utils/color.dart';
 import 'package:bot_toast/bot_toast.dart';
@@ -76,7 +75,7 @@ class _MyAppState extends State<MyApp> {
                 brightness: Brightness.light,
               ),
             ),
-            home: SplashScreen  (),
+            home: SplashScreen(),
           ),
         ),
       ),

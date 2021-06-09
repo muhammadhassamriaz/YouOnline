@@ -478,11 +478,11 @@ class _PostCommentsWidgetState extends State<PostCommentsWidget> {
                 ),
                 Container(
                   width: double.infinity,
-                  height: SizeConfig.kDefaultSize * 7,
+                  height: SizeConfig.kDefaultSize * 9,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(
-                      SizeConfig.kDefaultSize * 08,
+                      SizeConfig.kDefaultSize * 07,
                     ),
                     border: Border.all(
                       width: 1,
@@ -503,12 +503,12 @@ class _PostCommentsWidgetState extends State<PostCommentsWidget> {
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintStyle: hintTextStyle.copyWith(
-                            fontSize: SizeConfig.kDefaultSize * 2.8,
+                            fontSize: SizeConfig.kDefaultSize * 3.5,
                           ),
                           hintText: 'Write your reply',
                         ),
                         style: labelTextStyle.copyWith(
-                          fontSize: SizeConfig.kDefaultSize * 2.8,
+                          fontSize: SizeConfig.kDefaultSize * 3.5,
                         ),
                         onSubmitted: (value) {
                           Replies reply = Replies();

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:youonline/route/automotive/automotive_filters.dart';
 import 'package:youonline/route/automotive/automotive_header.dart';
 import 'package:youonline/utils/size_config.dart';
 import 'package:youonline/utils/styles.dart';
@@ -46,7 +47,14 @@ class AutomotiveScreen extends StatelessWidget {
                     ),
                     clipBehavior: Clip.antiAliasWithSaveLayer,
                     child: YouOnlineButton(
-                      callback: () {},
+                      callback: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => AutomotiveFilters(),
+                          ),
+                        );
+                      },
                       title: "Filters",
                       textStyle: labelTextStyle.copyWith(
                         fontSize: width * .035,

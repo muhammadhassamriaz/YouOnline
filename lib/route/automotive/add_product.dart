@@ -170,7 +170,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       ),
                       YouOnlineButton(
                         callback: () {
-                          Navigator.push(
+                          Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                               builder: (_) => ConditionTypesScreen(),

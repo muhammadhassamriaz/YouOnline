@@ -185,6 +185,8 @@ final String vehiclePlacholder1 = "assets/images/vehiclePlaceholder1.png";
 final String vehiclePlacholder2 = "assets/images/vehiclePlaceholder2.png";
 final String vehiclePlacholder3 = "assets/images/vehiclePlaceholder3.png";
 final String mapPlaceholder = "assets/images/mapPlaceholder.png";
+final String safetyFirstIcon = "assets/images/safetyFirstIcon.png";
+final String doneIcon = "assets/images/doneIcon.png";
 var feeling = [
   'happy',
   'loved',

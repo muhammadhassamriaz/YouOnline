@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:youonline/route/automotive/add_product.dart';
 import 'package:youonline/utils/assets.dart';
 import 'package:youonline/utils/color.dart';
 import 'package:youonline/utils/size_config.dart';
@@ -8,6 +9,7 @@ import 'package:youonline/utils/styles.dart';
 import 'package:youonline/widgets/automotive_card.dart';
 import 'package:youonline/widgets/automotive_option.dart';
 import 'package:youonline/widgets/icon_button.dart';
+import 'package:youonline/widgets/you_online_button.dart';
 
 class AddAutomotiveScreen extends StatelessWidget {
   @override
@@ -76,6 +78,20 @@ class AddAutomotiveScreen extends StatelessWidget {
                 title: "Condition and Types",
                 subtitle: "Grande, sale, audi,",
                 callback: () {},
+              ),
+              SizedBox(
+                height: height * .05,
+              ),
+              YouOnlineButton(
+                callback: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => AddProductScreen(),
+                    ),
+                  );
+                },
+                title: "Next",
               ),
             ],
           ),

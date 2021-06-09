@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:youonline/route/automotive/add_automotive.dart';
+import 'package:youonline/route/automotive/automotive_search.dart';
 import 'package:youonline/utils/assets.dart';
 import 'package:youonline/utils/size_config.dart';
 import 'package:youonline/utils/styles.dart';
@@ -67,7 +68,14 @@ class AutomotiveHeader extends StatelessWidget {
           width: width * .02,
         ),
         YouOnlineIconButton(
-          callback: () {},
+          callback: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => AutomotiveSearch(),
+              ),
+            );
+          },
           icon: Icons.search,
         ),
       ],

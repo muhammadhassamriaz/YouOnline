@@ -28,6 +28,7 @@ final lightOrangeColor = Color(0xffFEF8EE);
 final lightBlueColor = Color(0xffEDFAFC);
 final lightNavyColor = Color(0xffECF0FA);
 final lightRedColor = Color(0xffFEEBEB);
+final greyColor = Color(0xffC8C8C8);
 const MaterialColor primarySwatchColor = const MaterialColor(
   0xff00CC33,
   const <int, Color>{
