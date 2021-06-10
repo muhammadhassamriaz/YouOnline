@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:transparent_image/transparent_image.dart';
-
+import 'package:cached_network_image/cached_network_image.dart';
 // ignore: must_be_immutable
 class PostCardHeader extends StatelessWidget {
   final String profileAvatar;
@@ -107,12 +107,12 @@ class PostCardHeader extends StatelessWidget {
                   width: SizeConfig.kDefaultSize * 15,
                   height: SizeConfig.kDefaultSize * 15,
                   child: profileAvatar != null
-                      ? FadeInImage.memoryNetwork(
-                          placeholder: kTransparentImage,
-                          image: profileAvatar,
+                      ? CachedNetworkImage(
+                          // placeholder: kTransparentImage,
+                          imageUrl: profileAvatar,
                           fit: BoxFit.cover,
-                          imageScale: 0.5,
-                          excludeFromSemantics: true,
+                          // imageScale: 0.5,
+                          // excludeFromSemantics: true,
                         )
                       : Image.asset(
                           Assets.PROFILE_AVATAR,
@@ -179,16 +179,13 @@ class PostCardHeader extends StatelessWidget {
                       Expanded(
                         child: Row(
                           children: [
-                            Flexible(
-                              child: Text(
-                                name,
-                                style: labelTextStyle.copyWith(
-                                  fontSize: SizeConfig.kDefaultSize * 4,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                maxLines: 1,
-                                textScaleFactor: 1,
+                            Text(
+                              name,
+                              style: labelTextStyle.copyWith(
+                                fontSize: SizeConfig.kDefaultSize * 4,
+                                fontWeight: FontWeight.bold,
                               ),
+                              textScaleFactor: 1,
                             ),
                             SizedBox(
                               width: SizeConfig.kDefaultSize * 1,

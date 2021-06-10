@@ -10,6 +10,8 @@ import 'package:youonline/widgets/you_online_text.dart';
 import 'package:youonline/widgets/you_online_textfield.dart';
 import 'package:flutter/material.dart';
 
+import 'forgot_password_screen.dart';
+
 // ignore: must_be_immutable
 class LoginScreen extends StatelessWidget {
   TextEditingController _userNameTextEditingController =
@@ -92,29 +94,29 @@ class LoginScreen extends StatelessWidget {
                 SizedBox(
                   height: height * .015,
                 ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.end,
-                //   children: [
-                //     InkWell(
-                //       onTap: () {
-                //         Navigator.push(
-                //           context,
-                //           MaterialPageRoute(
-                //             builder: (_) => ForgotPasswordScreen(),
-                //           ),
-                //         );
-                //       },
-                //       child: Text(
-                //         'Forgot Password?',
-                //         style: labelTextStyle.copyWith(
-                //           fontSize: width * .035,
-                //           fontWeight: FontWeight.bold,
-                //         ),
-                //         textScaleFactor: 1,
-                //       ),
-                //     )
-                //   ],
-                // ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => ForgotPasswordScreen(),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        'Forgot Password?',
+                        style: labelTextStyle.copyWith(
+                          fontSize: width * .035,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textScaleFactor: 1,
+                      ),
+                    )
+                  ],
+                ),
                 SizedBox(
                   height: height * .03,
                 ),

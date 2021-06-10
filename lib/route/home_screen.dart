@@ -77,6 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
           _timelineProvider.getTimeLinePosts(
             context: context,
             pageNo: 1,
+            isRefresh: true,
           );
         }
       });
@@ -106,7 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
             opacity: !closeTopColumn ? 1 : 0,
             child: AnimatedContainer(
               width: width,
-              height: !closeTopColumn ? height * .48 : 0,
+              height: !closeTopColumn ? height * .5 : 0,
               duration: Duration(
                 milliseconds: 500,
               ),
@@ -144,8 +145,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   }
 
                   List<Album> album = [];
+                  String videoThumbnail = "";
 
                   if (shared) {
+                    videoThumbnail = _timelineProvider
+                        .timelineData[timelineIndex]
+                        .sharedBy
+                        ?.videoThumbnail
+                        ?.image;
                     if (_timelineProvider.timelineData[timelineIndex].sharedBy
                                 .postText !=
                             null &&
@@ -220,6 +227,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           .timelineData[timelineIndex].sharedBy.postYoutube;
                     }
                   } else {
+                    videoThumbnail = _timelineProvider
+                        .timelineData[timelineIndex].videoThumbnail?.image;
                     if (_timelineProvider
                                 .timelineData[timelineIndex].postYoutube !=
                             null &&
@@ -301,11 +310,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     reactions = [];
                   }
                   return HomePostWidget(
-                    videoThumbnail: _timelineProvider
-                            .timelineData[timelineIndex]
-                            ?.videoThumbnail
-                            ?.image ??
-                        null,
+                    videoThumbnail: videoThumbnail,
                     page: _timelineProvider.timelineData[timelineIndex].page,
                     user: _timelineProvider.timelineData[timelineIndex].user,
                     group: _timelineProvider.timelineData[timelineIndex].group,

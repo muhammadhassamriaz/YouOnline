@@ -15,12 +15,12 @@ class PostHeader extends StatefulWidget {
 }
 
 class _PostHeaderState extends State<PostHeader> {
-  List<String> audience = [
-    'Everyone',
-    'Friends of friends',
-    'Friends',
-    'Only me',
-  ];
+  // List<String> audience = [
+  //   'Everyone',
+  //   'Friends of friends',
+  //   'Friends',
+  //   'Only me',
+  // ];
 
   String value;
 
@@ -35,7 +35,7 @@ class _PostHeaderState extends State<PostHeader> {
   @override
   void initState() {
     super.initState();
-    value = audience[0];
+    // value = audience[0];
   }
 
   @override
@@ -119,76 +119,76 @@ class _PostHeaderState extends State<PostHeader> {
                   ),
                 ],
               ),
-            Row(
-              children: [
-                Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                      SizeConfig.kDefaultSize * 3,
-                    ),
-                  ),
-                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                  child: Container(
-                    width: value.contains("of")
-                        ? SizeConfig.kDefaultSize * 45
-                        : value.contains("only")
-                            ? SizeConfig.kDefaultSize * 25
-                            : value.contains("everyone")
-                                ? SizeConfig.kDefaultSize * 30
-                                : SizeConfig.kDefaultSize * 25,
-                    height: SizeConfig.kDefaultSize * 10,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(
-                        SizeConfig.kDefaultSize * 3,
-                      ),
-                    ),
-                    child: Padding(
-                        padding: EdgeInsets.all(
-                          SizeConfig.kDefaultSize * 2,
-                        ),
-                        child: PopupMenuButton<String>(
-                          itemBuilder: (context) {
-                            return audience.map((str) {
-                              return PopupMenuItem(
-                                value: str,
-                                child: Text(
-                                  str,
-                                  style: labelTextStyle.copyWith(
-                                    fontSize: width * .032,
-                                  ),
-                                ),
-                              );
-                            }).toList();
-                          },
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Text(
-                                value,
-                                style: labelTextStyle.copyWith(
-                                  fontSize: width * .032,
-                                ),
-                              ),
-                              SizedBox(
-                                width: width * .01,
-                              ),
-                              Icon(
-                                Icons.arrow_downward,
-                                size: width * .04,
-                              ),
-                            ],
-                          ),
-                          onSelected: (v) {
-                            setState(() {
-                              value = v;
-                            });
-                          },
-                        )),
-                  ),
-                ),
-                SizedBox(width: SizeConfig.kDefaultSize * 3),
-              ],
-            ),
+            // Row(
+            //   children: [
+            //     Card(
+            //       shape: RoundedRectangleBorder(
+            //         borderRadius: BorderRadius.circular(
+            //           SizeConfig.kDefaultSize * 3,
+            //         ),
+            //       ),
+            //       clipBehavior: Clip.antiAliasWithSaveLayer,
+            //       child: Container(
+            //         width: value.contains("of")
+            //             ? SizeConfig.kDefaultSize * 45
+            //             : value.contains("only")
+            //                 ? SizeConfig.kDefaultSize * 25
+            //                 : value.contains("everyone")
+            //                     ? SizeConfig.kDefaultSize * 30
+            //                     : SizeConfig.kDefaultSize * 25,
+            //         height: SizeConfig.kDefaultSize * 10,
+            //         decoration: BoxDecoration(
+            //           borderRadius: BorderRadius.circular(
+            //             SizeConfig.kDefaultSize * 3,
+            //           ),
+            //         ),
+            //         child: Padding(
+            //             padding: EdgeInsets.all(
+            //               SizeConfig.kDefaultSize * 2,
+            //             ),
+            //             child: PopupMenuButton<String>(
+            //               itemBuilder: (context) {
+            //                 return audience.map((str) {
+            //                   return PopupMenuItem(
+            //                     value: str,
+            //                     child: Text(
+            //                       str,
+            //                       style: labelTextStyle.copyWith(
+            //                         fontSize: width * .032,
+            //                       ),
+            //                     ),
+            //                   );
+            //                 }).toList();
+            //               },
+            //               child: Row(
+            //                 mainAxisSize: MainAxisSize.min,
+            //                 children: <Widget>[
+            //                   Text(
+            //                     value,
+            //                     style: labelTextStyle.copyWith(
+            //                       fontSize: width * .032,
+            //                     ),
+            //                   ),
+            //                   SizedBox(
+            //                     width: width * .01,
+            //                   ),
+            //                   Icon(
+            //                     Icons.arrow_downward,
+            //                     size: width * .04,
+            //                   ),
+            //                 ],
+            //               ),
+            //               onSelected: (v) {
+            //                 setState(() {
+            //                   value = v;
+            //                 });
+            //               },
+            //             )),
+            //       ),
+            //     ),
+            //     SizedBox(width: SizeConfig.kDefaultSize * 3),
+            //   ],
+            // ),
           ],
         ),
       ],

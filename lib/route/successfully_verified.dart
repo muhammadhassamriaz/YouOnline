@@ -5,6 +5,10 @@ import 'package:youonline/utils/styles.dart';
 import 'package:flutter/material.dart';
 
 class SuccessfullyVerified extends StatefulWidget {
+  const SuccessfullyVerified({
+    Key key,
+  }) : super(key: key);
+
   @override
   _SuccessfullyVerifiedState createState() => _SuccessfullyVerifiedState();
 }
@@ -13,14 +17,17 @@ class _SuccessfullyVerifiedState extends State<SuccessfullyVerified> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 3), () {
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (_) => ResetPasswordScreen(),
-          ),
-          (route) => false);
-    });
+    Future.delayed(
+      Duration(milliseconds: 1200),
+      () {
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (_) => ResetPasswordScreen(),
+            ),
+            (route) => false);
+      },
+    );
   }
 
   @override

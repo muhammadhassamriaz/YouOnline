@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:async/async.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:file_picker/file_picker.dart';
@@ -26,6 +25,7 @@ import 'package:youonline/utils/size_config.dart';
 import 'package:youonline/utils/styles.dart';
 import 'package:youonline/widgets/icon_button.dart';
 import 'package:youonline/widgets/text_button.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class MainAppBar extends StatefulWidget {
   @override
@@ -67,6 +67,26 @@ class _MainAppBarState extends State<MainAppBar> {
                 textScaleFactor: 1,
               ),
               Spacer(),
+              YouOnlineIconButton(
+                  callback: () {
+                    _timelineProvider.getTimeLinePosts(
+                      context: context,
+                      pageNo: 1,
+                      isRefresh: true,
+                    );
+                    BotToast.showText(
+                      text: "Refreshing Timeline...",
+                      textStyle: labelTextStyle.copyWith(
+                        fontSize: 12,
+                        color: Colors.black,
+                      ),
+                      contentColor: Colors.white,
+                    );
+                  },
+                  icon: Icons.refresh),
+              SizedBox(
+                width: width * .01,
+              ),
               YouOnlineIconButton(
                 callback: () {
                   Navigator.push(
@@ -284,10 +304,11 @@ class _MainAppBarState extends State<MainAppBar> {
         StoryList(
           iconBackgroundColor: primaryColor,
           addItemBackgroundColor: Colors.white,
-          borderColor: Colors.white,
+          borderColor: Colors.grey[300],
           backgroundColor: Colors.white,
           addItemWidth: width * .25,
-          height: width * .45,
+          height: width * .49,
+          iconSize: width * .04,
           onPressedIcon: () {
             Navigator.push(
               context,
@@ -297,17 +318,17 @@ class _MainAppBarState extends State<MainAppBar> {
             );
           },
           image: FadeInImage.memoryNetwork(
-            image: _userProvider.user?.cover,
+            image: _userProvider.user?.avatar,
             fit: BoxFit.cover,
             placeholder: kTransparentImage,
             imageScale: 0.5,
           ),
           text: Text(
-            "",
+            "Create Story",
             maxLines: 1,
             style: labelTextStyle.copyWith(
               fontSize: width * .032,
-              color: primaryColor,
+              color: Colors.black,
             ),
           ),
           itemCount: _userProvider.storyModel.data.length,
@@ -340,8 +361,18 @@ class _MainAppBarState extends State<MainAppBar> {
                                     child: Container(color: Colors.black),
                                   ),
                                   Positioned.fill(
-                                    child: Image.network(
-                                      story.storyMediaImage.filename,
+                                    child: CachedNetworkImage(
+                                      imageUrl: story.storyMediaImage.filename,
+                                      progressIndicatorBuilder:
+                                          (context, url, downloadProgress) =>
+                                              Container(
+                                        width: width * .1,
+                                        height: width * .1,
+                                        child: Center(
+                                          child: CircularProgressIndicator(
+                                              value: downloadProgress.progress),
+                                        ),
+                                      ),
                                     ),
                                   ),
                                   Padding(
@@ -423,16 +454,23 @@ class _MainAppBarState extends State<MainAppBar> {
                 width: width * .25,
                 height: height * .2,
                 decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: NetworkImage(
-                      _userProvider.storyModel.data[index].stories.first
-                          .storyMediaImage.filename,
-                    ),
-                    fit: BoxFit.cover,
-                  ),
                   color: searchContainerColor,
                 ),
                 clipBehavior: Clip.antiAliasWithSaveLayer,
+                child: CachedNetworkImage(
+                  imageUrl: _userProvider
+                      .storyModel.data[index].stories.first.thumbnail,
+                  fit: BoxFit.cover,
+                  progressIndicatorBuilder: (context, url, downloadProgress) =>
+                      Container(
+                    width: width * .04,
+                    height: width * .04,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                          value: downloadProgress.progress),
+                    ),
+                  ),
+                ),
               ),
             );
           },

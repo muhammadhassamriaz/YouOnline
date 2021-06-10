@@ -1,12 +1,14 @@
 import 'dart:io';
 
 import 'package:youonline/model/timeline_data.dart';
+import 'package:youonline/provider/user_provider.dart';
 import 'package:youonline/utils/assets.dart';
 import 'package:youonline/utils/size_config.dart';
 import 'package:youonline/utils/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:transparent_image/transparent_image.dart';
+import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class ImageFullScreen extends StatefulWidget {
@@ -41,8 +43,8 @@ class _ImageFullScreenState extends State<ImageFullScreen> {
     SizeConfig().init(context);
     double height = SizeConfig.kDefaultSize * 100 * 2;
     double width = SizeConfig.kDefaultSize * 100;
-
     Orientation orientation = MediaQuery.of(context).orientation;
+    var _userProvider = Provider.of<UserProvider>(context);
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
@@ -73,19 +75,19 @@ class _ImageFullScreenState extends State<ImageFullScreen> {
                         ),
                       ),
                       Spacer(),
-                      Icon(
-                        Icons.download_rounded,
-                        size: width * .06,
-                        color: Colors.white,
-                      ),
-                      SizedBox(
-                        width: width * .02,
-                      ),
-                      Icon(
-                        Icons.copy_outlined,
-                        size: width * .06,
-                        color: Colors.white,
-                      ),
+                      // Icon(
+                      //   Icons.download_rounded,
+                      //   size: width * .06,
+                      //   color: Colors.white,
+                      // ),
+                      // SizedBox(
+                      //   width: width * .02,
+                      // ),
+                      // Icon(
+                      //   Icons.copy_outlined,
+                      //   size: width * .06,
+                      //   color: Colors.white,
+                      // ),
                     ],
                   ),
                 ),
@@ -216,11 +218,16 @@ class _ImageFullScreenState extends State<ImageFullScreen> {
                         SizedBox(
                           width: SizeConfig.kDefaultSize * 02,
                         ),
-                        SizedBox(
+                        Container(
                           width: SizeConfig.kDefaultSize * 05,
                           height: SizeConfig.kDefaultSize * 05,
-                          child: Image.asset(
-                            Assets.PROFILE_AVATAR,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              image: NetworkImage(
+                                _userProvider.user.avatar,
+                              ),
+                            ),
                           ),
                         ),
                       ],
@@ -340,6 +347,9 @@ class _ImageFullScreenState extends State<ImageFullScreen> {
                       ),
                     ),
                   ],
+                ),
+                SizedBox(
+                  height: height * .02,
                 ),
               ],
             ),

@@ -6,6 +6,7 @@ import 'package:youonline/provider/create_post_provider.dart';
 import 'package:youonline/provider/timeline_provider.dart';
 import 'package:youonline/provider/user_provider.dart';
 import 'package:youonline/provider/widget_provider.dart';
+import 'package:youonline/route/main_screen.dart';
 import 'package:youonline/utils/color.dart';
 import 'package:youonline/utils/globals.dart';
 import 'package:youonline/utils/size_config.dart';
@@ -103,7 +104,6 @@ shareBottomSheet(
                               );
                               await Globals.playShareNowNotificationSound();
 
-                              Navigator.pop(context);
                               BotToast.showText(
                                 text: "Post shared on your timeline.",
                                 textStyle: labelTextStyle.copyWith(
@@ -112,6 +112,14 @@ shareBottomSheet(
                                 ),
                                 contentColor: Colors.white,
                               );
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => MainScreen(
+                                      isMainScreen: false,
+                                    ),
+                                  ),
+                                  (route) => false);
                             },
                             title: "Share now",
                             textSize: width * .032,

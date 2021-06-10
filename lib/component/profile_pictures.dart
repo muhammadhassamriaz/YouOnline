@@ -17,12 +17,12 @@ class ProfilePictures extends StatelessWidget {
       color: Colors.white,
       child: Column(
         children: [
-          Text(
-            "Coming Soon",
-            style: labelTextStyle.copyWith(
-              fontSize: SizeConfig.kDefaultSize * 3,
-            ),
-          ),
+          // Text(
+          //   "Coming Soon",
+          //   style: labelTextStyle.copyWith(
+          //     fontSize: SizeConfig.kDefaultSize * 3,
+          //   ),
+          // ),
           SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             scrollDirection: Axis.horizontal,
@@ -62,27 +62,27 @@ class ProfilePictures extends StatelessWidget {
                         SizedBox(
                           width: SizeConfig.kDefaultSize * 02,
                         ),
-                        Flexible(
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => CreateGroupScreen(),
-                                ),
-                              );
-                            },
-                            child: Text(
-                              'Create Group',
-                              style: labelTextStyle.copyWith(
-                                fontSize: SizeConfig.kDefaultSize * 03.8,
-                                color: primaryColor,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              textScaleFactor: 1,
-                            ),
-                          ),
-                        ),
+                        // Flexible(
+                        //   child: GestureDetector(
+                        //     onTap: () {
+                        //       Navigator.push(
+                        //         context,
+                        //         MaterialPageRoute(
+                        //           builder: (_) => CreateGroupScreen(),
+                        //         ),
+                        //       );
+                        //     },
+                        //     child: Text(
+                        //       'Create Group',
+                        //       style: labelTextStyle.copyWith(
+                        //         fontSize: SizeConfig.kDefaultSize * 03.8,
+                        //         color: primaryColor,
+                        //         fontWeight: FontWeight.bold,
+                        //       ),
+                        //       textScaleFactor: 1,
+                        //     ),
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),

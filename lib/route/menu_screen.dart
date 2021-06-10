@@ -21,6 +21,8 @@ import 'package:flutter/material.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:transparent_image/transparent_image.dart';
 
+import 'edit_profile_screen.dart';
+
 class MenuScreen extends StatelessWidget {
   List<PostReaction> postReactions = [];
 
@@ -222,7 +224,7 @@ class MenuScreen extends StatelessWidget {
                               callback: () async {
                                 if (titles[index]
                                     .toLowerCase()
-                                    .contains("profile")) {
+                                    .contains("view")) {
                                   BotToast.showLoading();
                                   await _userProvider.getTimelineUserProfile(
                                     userId:
@@ -258,24 +260,16 @@ class MenuScreen extends StatelessWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (_) => Scaffold(
-                                        appBar: AppBar(
-                                          backgroundColor: Colors.white,
-                                          elevation: 0,
-                                        ),
-                                        body: VideoSection(
-                                          userId: _userProvider.user.userId
-                                              .toString(),
-                                          profileCover:
-                                              _userProvider.user.cover,
-                                          profileAvatar:
-                                              _userProvider.user.avatar,
-                                          fullName:
-                                              _userProvider.user.firstName +
-                                                  " " +
-                                                  _userProvider.user.lastName,
-                                          username: _userProvider.user.username,
-                                        ),
+                                      builder: (_) => ProfileScreen(
+                                        userId: _userProvider.user.userId
+                                            .toString(),
+                                        profileCover: _userProvider.user.cover,
+                                        profileAvatar:
+                                            _userProvider.user.avatar,
+                                        fullName: _userProvider.user.firstName +
+                                            " " +
+                                            _userProvider.user.lastName,
+                                        username: _userProvider.user.username,
                                       ),
                                     ),
                                   );
@@ -292,24 +286,16 @@ class MenuScreen extends StatelessWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (_) => Scaffold(
-                                        appBar: AppBar(
-                                          elevation: 0,
-                                          backgroundColor: Colors.white,
-                                        ),
-                                        body: PhotosSection(
-                                          userId: _userProvider.user.userId
-                                              .toString(),
-                                          profileCover:
-                                              _userProvider.user.cover,
-                                          profileAvatar:
-                                              _userProvider.user.avatar,
-                                          fullName:
-                                              _userProvider.user.firstName +
-                                                  " " +
-                                                  _userProvider.user.lastName,
-                                          username: _userProvider.user.username,
-                                        ),
+                                      builder: (_) => ProfileScreen(
+                                        userId: _userProvider.user.userId
+                                            .toString(),
+                                        profileCover: _userProvider.user.cover,
+                                        profileAvatar:
+                                            _userProvider.user.avatar,
+                                        fullName: _userProvider.user.firstName +
+                                            " " +
+                                            _userProvider.user.lastName,
+                                        username: _userProvider.user.username,
                                       ),
                                     ),
                                   );
@@ -326,26 +312,41 @@ class MenuScreen extends StatelessWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (_) => Scaffold(
-                                        appBar: AppBar(
-                                          backgroundColor: Colors.white,
-                                          elevation: 0,
-                                        ),
-                                        body: PostSection(
-                                          userId: _userProvider.user.userId
-                                              .toString(),
-                                          profileCover:
-                                              _userProvider.user.cover,
-                                          profileAvatar:
-                                              _userProvider.user.avatar,
-                                          fullName:
-                                              _userProvider.user.firstName +
-                                                  " " +
-                                                  _userProvider.user.lastName,
-                                          username: _userProvider.user.username,
-                                        ),
+                                      builder: (_) => ProfileScreen(
+                                        userId: _userProvider.user.userId
+                                            .toString(),
+                                        profileCover: _userProvider.user.cover,
+                                        profileAvatar:
+                                            _userProvider.user.avatar,
+                                        fullName: _userProvider.user.firstName +
+                                            " " +
+                                            _userProvider.user.lastName,
+                                        username: _userProvider.user.username,
                                       ),
                                     ),
+                                  );
+                                } else if (titles[index]
+                                    .toLowerCase()
+                                    .contains("edit")) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => EditProfileScreen(),
+                                    ),
+                                  );
+                                } else if (titles[index]
+                                    .toLowerCase()
+                                    .contains("out")) {
+                                  clearPrefs();
+                                  Provider.of<TimelineProvider>(context,
+                                          listen: false)
+                                      .changeTimelineData([]);
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => LoginRegistrationScreen(),
+                                    ),
+                                    (route) => false,
                                   );
                                 } else {
                                   menuRoute(
@@ -366,80 +367,80 @@ class MenuScreen extends StatelessWidget {
                       height: SizeConfig.kDefaultSize * 5,
                     ),
                     // ExpandableSettingsPanel(),
-                    ListTile(
-                      title: Text(
-                        'Automotive',
-                        textScaleFactor: 1,
-                        style: labelTextStyle.copyWith(
-                          fontSize: SizeConfig.kDefaultSize * 4,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => AutomotiveScreen(),
-                          ),
-                        );
-                      },
-                    ),
-                    SizedBox(
-                      height: SizeConfig.kDefaultSize * 2,
-                    ),
-                    ListTile(
-                      title: Text(
-                        'Settings',
-                        textScaleFactor: 1,
-                        style: labelTextStyle.copyWith(
-                          fontSize: SizeConfig.kDefaultSize * 4,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => SettingsScreen(),
-                          ),
-                        );
-                      },
-                    ),
                     // ListTile(
-                    //   leading: Text(
-                    //     'Night Mode',
+                    //   title: Text(
+                    //     'Automotive',
                     //     textScaleFactor: 1,
                     //     style: labelTextStyle.copyWith(
                     //       fontSize: SizeConfig.kDefaultSize * 4,
+                    //       fontWeight: FontWeight.bold,
                     //     ),
                     //   ),
-                    //   trailing: Icon(
-                    //     Icons.nights_stay_outlined,
-                    //     size: SizeConfig.kDefaultSize * 6,
-                    //   ),
+                    //   onTap: () {
+                    //     Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(
+                    //         builder: (_) => AutomotiveScreen(),
+                    //       ),
+                    //     );
+                    //   },
                     // ),
-                    ListTile(
-                      title: Text(
-                        'Log Out',
-                        textScaleFactor: 1,
-                        style: labelTextStyle.copyWith(
-                          fontSize: SizeConfig.kDefaultSize * 4,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      onTap: () {
-                        clearPrefs();
-                        Provider.of<TimelineProvider>(context, listen: false)
-                            .changeTimelineData([]);
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => LoginRegistrationScreen(),
-                          ),
-                          (route) => false,
-                        );
-                      },
-                    )
+                    // SizedBox(
+                    //   height: SizeConfig.kDefaultSize * 2,
+                    // ),
+                    // ListTile(
+                    //   title: Text(
+                    //     'Settings',
+                    //     textScaleFactor: 1,
+                    //     style: labelTextStyle.copyWith(
+                    //       fontSize: SizeConfig.kDefaultSize * 4,
+                    //       fontWeight: FontWeight.bold,
+                    //     ),
+                    //   ),
+                    //   onTap: () {
+                    //     Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(
+                    //         builder: (_) => SettingsScreen(),
+                    //       ),
+                    //     );
+                    //   },
+                    // ),
+                    // // ListTile(
+                    // //   leading: Text(
+                    // //     'Night Mode',
+                    // //     textScaleFactor: 1,
+                    // //     style: labelTextStyle.copyWith(
+                    // //       fontSize: SizeConfig.kDefaultSize * 4,
+                    // //     ),
+                    // //   ),
+                    // //   trailing: Icon(
+                    // //     Icons.nights_stay_outlined,
+                    // //     size: SizeConfig.kDefaultSize * 6,
+                    // //   ),
+                    // // ),
+                    // ListTile(
+                    //   title: Text(
+                    //     'Log Out',
+                    //     textScaleFactor: 1,
+                    //     style: labelTextStyle.copyWith(
+                    //       fontSize: SizeConfig.kDefaultSize * 4,
+                    //       fontWeight: FontWeight.bold,
+                    //     ),
+                    //   ),
+                    //   onTap: () {
+                    //     clearPrefs();
+                    //     Provider.of<TimelineProvider>(context, listen: false)
+                    //         .changeTimelineData([]);
+                    //     Navigator.pushAndRemoveUntil(
+                    //       context,
+                    //       MaterialPageRoute(
+                    //         builder: (_) => LoginRegistrationScreen(),
+                    //       ),
+                    //       (route) => false,
+                    //     );
+                    //   },
+                    // )
                   ],
                 ),
               ),

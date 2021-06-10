@@ -9,6 +9,7 @@ import 'package:youonline/utils/styles.dart';
 import 'package:youonline/widgets/you_online_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class ProfileHeader extends StatefulWidget {
   final String fullname, profileAvatar, profileCover, username;
@@ -37,7 +38,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
     Orientation orientation = MediaQuery.of(context).orientation;
     var _widgetProvider = Provider.of<WidgetProvider>(context);
     var _userProvider = Provider.of<UserProvider>(context);
-    _userProvider.timelineUserProfile.following.forEach((element) {
+    _userProvider.timelineUserProfile.followers.forEach((element) {
       if (element.userId == _userProvider.user.userId) {
         isFollowed = true;
       } else {
@@ -72,9 +73,8 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                       ),
                     ),
                     clipBehavior: Clip.antiAliasWithSaveLayer,
-                    child: FadeInImage.memoryNetwork(
-                      placeholder: kTransparentImage,
-                      image: widget.profileCover,
+                    child: CachedNetworkImage(
+                      imageUrl: widget.profileCover,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -87,11 +87,9 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                       width: width * .4,
                       height: width * .4,
                       child: ClipOval(
-                        child: FadeInImage.memoryNetwork(
-                          placeholder: kTransparentImage,
+                        child: CachedNetworkImage(
                           fit: BoxFit.cover,
-                          imageScale: 0.5,
-                          image: widget.profileAvatar,
+                          imageUrl: widget.profileAvatar,
                         ),
                       ),
                       decoration: BoxDecoration(
@@ -126,21 +124,6 @@ class _ProfileHeaderState extends State<ProfileHeader> {
           SizedBox(
             height: height * .01,
           ),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.center,
-          //   children: [
-          //     Text(
-          //       'Manners maketh man',
-          //       style: hintTextStyle.copyWith(
-          //         fontSize: SizeConfig.kDefaultSize * 3.5,
-          //       ),
-          //       textScaleFactor: 1,
-          //     ),
-          //   ],
-          // ),
-          // SizedBox(
-          //   height: height * .03,
-          // ),
           Padding(
             padding: EdgeInsets.symmetric(
               horizontal: width * .04,
@@ -181,7 +164,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                           setState(() {});
                         }
                       },
-                      title: isFollowed ? "Following" : "Follow",
+                      title: isFollowed ? "Unfollow" : "Follow",
                       textSize: width * .045,
                     ),
                   ),
@@ -192,7 +175,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                     height: height * .06,
                     child: YouOnlineButton(
                       callback: () {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                             builder: (_) => EditProfileScreen(),
@@ -211,77 +194,6 @@ class _ProfileHeaderState extends State<ProfileHeader> {
           SizedBox(
             height: height * .015,
           ),
-          // Padding(
-          //   padding: EdgeInsets.symmetric(
-          //     horizontal: width * .04,
-          //   ),
-          //   child: Container(
-          //     width: width,
-          //     height: height * .1,
-          //     decoration: BoxDecoration(
-          //       color: searchContainerColor,
-          //       borderRadius: BorderRadius.circular(
-          //         width * .03,
-          //       ),
-          //     ),
-          //     clipBehavior: Clip.antiAliasWithSaveLayer,
-          //     child: Padding(
-          //       padding: EdgeInsets.symmetric(
-          //         horizontal: width * .04,
-          //       ),
-          //       child: Column(
-          //         crossAxisAlignment: CrossAxisAlignment.start,
-          //         mainAxisAlignment: MainAxisAlignment.center,
-          //         children: [
-          //           Text(
-          //             'Complete Your Progress',
-          //             style: labelTextStyle.copyWith(
-          //               fontSize: width * .032,
-          //             ),
-          //             textScaleFactor: 1,
-          //           ),
-          //           SizedBox(
-          //             height: height * .01,
-          //           ),
-          //           Row(
-          //             children: [
-          //               Container(
-          //                 width: width * .7,
-          //                 height: height * .005,
-          //                 decoration: BoxDecoration(
-          //                   color: Colors.grey[300],
-          //                   borderRadius: BorderRadius.circular(
-          //                     width * .01,
-          //                   ),
-          //                 ),
-          //                 clipBehavior: Clip.antiAliasWithSaveLayer,
-          //                 child: Row(
-          //                   children: [
-          //                     Container(
-          //                       width: width * .55,
-          //                       height: height * .005,
-          //                       color: primaryColor,
-          //                     ),
-          //                   ],
-          //                 ),
-          //               ),
-          //               Spacer(),
-          //               Text(
-          //                 '80 %',
-          //                 style: labelTextStyle.copyWith(
-          //                   fontSize: width * .032,
-          //                   fontWeight: FontWeight.bold,
-          //                 ),
-          //                 textScaleFactor: 1,
-          //               ),
-          //             ],
-          //           )
-          //         ],
-          //       ),
-          //     ),
-          //   ),
-          // ),
-
           SizedBox(
             height: height * .02,
           ),

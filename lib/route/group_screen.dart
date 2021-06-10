@@ -84,24 +84,24 @@ class _GroupScreenState extends State<GroupScreen> {
                       textScaleFactor: 1,
                     ),
                     Spacer(),
-                    YouOnlineIconButton(
-                      callback: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => CreateGroupScreen(),
-                          ),
-                        );
-                      },
-                      icon: Icons.add,
-                    ),
-                    SizedBox(
-                      width: SizeConfig.kDefaultSize * 3,
-                    ),
-                    YouOnlineIconButton(
-                      callback: () {},
-                      icon: Icons.settings,
-                    ),
+                    // YouOnlineIconButton(
+                    //   callback: () {
+                    //     Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(
+                    //         builder: (_) => CreateGroupScreen(),
+                    //       ),
+                    //     );
+                    //   },
+                    //   icon: Icons.add,
+                    // ),
+                    // SizedBox(
+                    //   width: SizeConfig.kDefaultSize * 3,
+                    // ),
+                    // YouOnlineIconButton(
+                    //   callback: () {},
+                    //   icon: Icons.settings,
+                    // ),
                     SizedBox(
                       width: SizeConfig.kDefaultSize * 3,
                     ),

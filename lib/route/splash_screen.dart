@@ -19,7 +19,6 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     changeRoute();
   }
-
   changeRoute() {
     Future.delayed(
       Duration(
@@ -27,47 +26,47 @@ class _SplashScreenState extends State<SplashScreen> {
       ),
       () {
         Future.delayed(
-            Duration(
-              seconds: 1,
-            ), () async {
-          String userID = await getUserToken();
-          if (userID == null) {
-            Future.delayed(
-              Duration(seconds: 1),
-              () {
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => LoginRegistrationScreen(),
-                  ),
-                  (route) => false,
-                );
-              },
-            );
-          } else {
-            var _timelineProvider =
-                Provider.of<TimelineProvider>(context, listen: false);
-
-            Provider.of<UserProvider>(context, listen: false)
-                .changeUserAuthenticationToken(userID);
-
-            await Provider.of<UserProvider>(context, listen: false)
-                .getUserData(context: context);
-            Provider.of<UserProvider>(context, listen: false)
-                .getAllUserStories();
-            Provider.of<UserProvider>(context, listen: false)
-                .getTimelineUserProfile(
-              userId: Provider.of<UserProvider>(context, listen: false)
-                  .user
-                  .userId
-                  .toString(),
-            );
-            await _timelineProvider.getTimeLinePosts(
-              context: context,
-              pageNo: 1,
-            );
-          }
-        });
+          Duration(
+            seconds: 1,
+          ),
+          () async {
+            String userID = await getUserToken();
+            if (userID == null) {
+              Future.delayed(
+                Duration(seconds: 0),
+                () {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => LoginRegistrationScreen(),
+                    ),
+                    (route) => false,
+                  );
+                },
+              );
+            } else {
+              var _timelineProvider =
+                  Provider.of<TimelineProvider>(context, listen: false);
+              Provider.of<UserProvider>(context, listen: false)
+                  .changeUserAuthenticationToken(userID);
+              await Provider.of<UserProvider>(context, listen: false)
+                  .getUserData(context: context);
+              Provider.of<UserProvider>(context, listen: false)
+                  .getAllUserStories();
+              Provider.of<UserProvider>(context, listen: false)
+                  .getTimelineUserProfile(
+                userId: Provider.of<UserProvider>(context, listen: false)
+                    .user
+                    .userId
+                    .toString(),
+              );
+              await _timelineProvider.getTimeLinePosts(
+                context: context,
+                pageNo: 1,
+              );
+            }
+          },
+        );
       },
     );
   }

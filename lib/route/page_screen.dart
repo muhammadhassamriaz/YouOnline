@@ -17,7 +17,7 @@ class _PageScreenState extends State<PageScreen> {
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
-  ScrollController  _smartRefresherController;
+  ScrollController _smartRefresherController;
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);

@@ -1149,6 +1149,9 @@ class SharedBy {
         album.add(Album.fromMap(e));
       });
     }
+    videoThumbnail = json['video_thumbnail'] != null
+        ? new VideoThumbnail.fromJson(json['video_thumbnail'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -1227,6 +1230,9 @@ class SharedBy {
     data['image'] = this.image;
     if (this.album != null) {
       data['album'] = this.album.map((e) => e.toMap()).toList();
+    }
+    if (this.videoThumbnail != null) {
+      data['video_thumbnail'] = this.videoThumbnail.toJson();
     }
     return data;
   }

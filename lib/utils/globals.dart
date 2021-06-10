@@ -87,16 +87,16 @@ Future menuRoute({
 
 final List<String> titles = [
   // "Events",
-  "Groups",
+  "My Groups",
   // "Friends",
   // "Blog",
-  "Pages",
+  "My Pages",
   "View Profile",
-  "Posts",
-  "Photos",
-  "Videos",
-  // "Videos",
-  // "Market Place",
+  "My Posts",
+  "My Photos",
+  "My Videos",
+  "Edit Profile",
+  "Log Out",
   // "News Feed",
 ];
 
@@ -132,7 +132,9 @@ final List<String> images = [
   // newsFeedIcon,
   Assets.UPLOAD_IMAGE_ICON,
   videoIcon2,
+  editProfileIcon,
   // blogIcon2,
+  logout,
 ];
 
 final List<String> images2 = [

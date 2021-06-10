@@ -24,10 +24,12 @@ import 'package:youonline/model/user_profile_data.dart';
 import 'package:youonline/provider/timeline_provider.dart';
 import 'package:youonline/provider/widget_provider.dart';
 import 'package:youonline/route/group_detail_screen.dart';
+import 'package:youonline/route/login_registration_route.dart';
 import 'package:youonline/route/login_screen.dart';
 import 'package:youonline/route/main_screen.dart';
 import 'package:youonline/route/profile_screen.dart';
 import 'package:youonline/route/single_page_screen.dart';
+import 'package:youonline/route/successfully_verified.dart';
 import 'package:youonline/route/verify_otp_screen.dart';
 import 'package:youonline/utils/prefs.dart';
 import 'package:youonline/utils/styles.dart';
@@ -139,11 +141,14 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future requestResetPassword(String email, BuildContext context) async {
+  Future requestPassword({
+    @required BuildContext context,
+    @required String email,
+  }) async {
     BotToast.showLoading();
     String token = await authenticateUser();
     if (token != null) {
-      Uri uri = Uri.parse(ApiNetwork.BASE_URL + ApiNetwork().requestEmail);
+      Uri uri = Uri.parse(ApiNetwork.BASE_URL + ApiNetwork().requestPassword);
       await http.post(
         uri,
         headers: <String, String>{
@@ -153,17 +158,249 @@ class UserProvider with ChangeNotifier {
         body: {
           "email": email,
         },
-      ).then((value) {
+      ).catchError((err) {
+        throw err;
+      }).then((value) {
         var response = json.decode(value.body);
-        if (response['success']) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => PinVerificationScreen(),
-            ),
-          );
+        BotToast.closeAllLoading();
+        try {
+          if (!response['message']
+              .toString()
+              .toLowerCase()
+              .contains("unauthenticaed")) {
+            if (response['success']) {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => PinVerificationScreen(
+                    email: email,
+                  ),
+                ),
+                (route) => false,
+              );
+              BotToast.showText(
+                text: 'Verification code sent. Please check your email.',
+                textStyle: labelTextStyle.copyWith(
+                  fontSize: 12,
+                  color: Colors.black,
+                ),
+                contentColor: Colors.white,
+              );
+            } else {
+              BotToast.showText(
+                text: 'User is not registered.',
+                textStyle: labelTextStyle.copyWith(
+                  fontSize: 12,
+                  color: Colors.white,
+                ),
+                contentColor: Colors.red,
+              );
+            }
+          } else {
+            BotToast.showText(
+              text: 'You have no permission.',
+              textStyle: labelTextStyle.copyWith(
+                fontSize: 12,
+                color: Colors.white,
+              ),
+              contentColor: Colors.red,
+            );
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => LoginRegistrationScreen(),
+                ),
+                (route) => false);
+          }
+        } catch (e) {
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (_) => LoginRegistrationScreen(),
+              ),
+              (route) => false);
+          throw e;
         }
       });
+    } else {
+      BotToast.closeAllLoading();
+    }
+  }
+
+  String passwordAuthenticationToken;
+  changePasswordAuthenticationToken(String _token) {
+    passwordAuthenticationToken = _token;
+    notifyListeners();
+  }
+
+  Future verifyRequestPassword({
+    @required BuildContext context,
+    @required String email,
+    @required String pin,
+  }) async {
+    BotToast.showLoading();
+    String token = await authenticateUser();
+    if (token != null) {
+      Uri uri = Uri.parse(
+        ApiNetwork.BASE_URL + ApiNetwork().verifyResetCode,
+      );
+      await http.post(
+        uri,
+        headers: <String, String>{
+          "Accept": "application/json",
+          "Authorization": "Bearer $token",
+        },
+        body: {
+          "email": email,
+          "code": pin,
+        },
+      ).then((value) {
+        var response = json.decode(value.body);
+        BotToast.closeAllLoading();
+        try {
+          if (!response['message']
+              .toString()
+              .toLowerCase()
+              .contains("unauthenticated")) {
+            if (response['success']) {
+              changePasswordAuthenticationToken(response['user_auth_token']);
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => SuccessfullyVerified(),
+                ),
+                (route) => false,
+              );
+
+              BotToast.showText(
+                text: 'Successfully Verified!',
+                textStyle: labelTextStyle.copyWith(
+                  fontSize: 12,
+                  color: Colors.black,
+                ),
+                contentColor: Colors.white,
+              );
+            } else {
+              BotToast.showText(
+                text: 'Invalid Pin.',
+                textStyle: labelTextStyle.copyWith(
+                  fontSize: 12,
+                  color: Colors.white,
+                ),
+                contentColor: Colors.red,
+              );
+            }
+          } else {
+            BotToast.showText(
+              text: 'You have no permission.',
+              textStyle: labelTextStyle.copyWith(
+                fontSize: 12,
+                color: Colors.white,
+              ),
+              contentColor: Colors.red,
+            );
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => LoginRegistrationScreen(),
+                ),
+                (route) => false);
+          }
+        } catch (e) {
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (_) => LoginRegistrationScreen(),
+              ),
+              (route) => false);
+          throw e;
+        }
+      });
+    } else {
+      BotToast.closeAllLoading();
+    }
+  }
+
+  Future resetPassword({
+    @required BuildContext context,
+    @required String password,
+  }) async {
+    BotToast.showLoading();
+    if (passwordAuthenticationToken != null &&
+        passwordAuthenticationToken.isNotEmpty) {
+      Uri uri = Uri.parse(ApiNetwork.BASE_URL + ApiNetwork().resetPassword);
+      await http.post(
+        uri,
+        headers: <String, String>{
+          "Accept": "application/json",
+          "Authorization": "Bearer $passwordAuthenticationToken",
+        },
+        body: {
+          "password": password,
+          "password_confirmation": password,
+        },
+      ).then((value) {
+        BotToast.closeAllLoading();
+        var response = json.decode(value.body);
+        try {
+          if (!response['message']
+              .toString()
+              .toLowerCase()
+              .contains("unauthenticated")) {
+            if (response['success']) {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => LoginScreen(),
+                ),
+                (route) => false,
+              );
+              BotToast.showText(
+                text: 'Password Updated!.',
+                textStyle: labelTextStyle.copyWith(
+                  fontSize: 12,
+                  color: Colors.black,
+                ),
+                contentColor: Colors.white,
+              );
+            } else {
+              BotToast.showText(
+                text: 'Password Mismatched.',
+                textStyle: labelTextStyle.copyWith(
+                  fontSize: 12,
+                  color: Colors.white,
+                ),
+                contentColor: Colors.red,
+              );
+            }
+          } else {
+            BotToast.showText(
+              text: 'You have no permission.',
+              textStyle: labelTextStyle.copyWith(
+                fontSize: 12,
+                color: Colors.white,
+              ),
+              contentColor: Colors.red,
+            );
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => LoginRegistrationScreen(),
+                ),
+                (route) => false);
+          }
+        } catch (e) {
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (_) => LoginRegistrationScreen(),
+              ),
+              (route) => false);
+          throw e;
+        }
+      });
+    } else {
+      BotToast.closeAllLoading();
     }
   }
 
@@ -433,7 +670,6 @@ class UserProvider with ChangeNotifier {
         Provider.of<UserProvider>(context, listen: false)
             .userAuthenticationToken;
     int i = -1;
-    BotToast.showLoading();
     if (imageFile != null && imageFile.length > 0) {
       for (var file in imageFile) {
         String fileName = file.path.split("/").last;
@@ -460,10 +696,22 @@ class UserProvider with ChangeNotifier {
       "Authorization": "Bearer $authenticationToken"
     };
     request.headers.addAll(headers);
-
+    BotToast.showText(
+      text: "Your story will be uploaded soon...",
+      textStyle: labelTextStyle.copyWith(
+        fontSize: 12,
+        color: Colors.black,
+      ),
+      contentColor: Colors.white,
+    );
     var response = await request.send();
 
-    print(response.statusCode);
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (_) => MainScreen(),
+        ),
+        (route) => false);
 
     var res = await http.Response.fromStream(response);
     if (response.statusCode == 200 || response.statusCode == 201) {
@@ -471,8 +719,6 @@ class UserProvider with ChangeNotifier {
       print(res.body);
       var responseDecode = json.decode(res.body);
 
-      Provider.of<TimelineProvider>(context, listen: false)
-          .changeTimelineData([]);
       await getAllUserStories();
       BotToast.showText(
         text: "User Story Created",
@@ -482,15 +728,6 @@ class UserProvider with ChangeNotifier {
         ),
         contentColor: Colors.white,
       );
-      BotToast.closeAllLoading();
-      Provider.of<WidgetProvider>(context, listen: false).changeReaction(null);
-      Provider.of<WidgetProvider>(context, listen: false).changePageNo(1);
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (_) => MainScreen(),
-          ),
-          (route) => false);
 
       if (responseDecode['status'] == true) {
         return res.body;
@@ -498,7 +735,6 @@ class UserProvider with ChangeNotifier {
         return res.body;
       }
     } else {
-      BotToast.closeAllLoading();
       BotToast.showText(
         text: "Something went wrong",
         textStyle: labelTextStyle.copyWith(
@@ -1008,6 +1244,7 @@ class UserProvider with ChangeNotifier {
     if (workLink.isNotEmpty) request.fields['working_link'] = workLink;
     if (website.isNotEmpty) request.fields['website'] = website;
     if (gender.isNotEmpty) request.fields['gender'] = gender;
+    if (birthday.isNotEmpty) request.fields['birthday'] = birthday;
 
     Map<String, String> headers = {
       "Accept": "application/json",
@@ -1029,7 +1266,7 @@ class UserProvider with ChangeNotifier {
       user.firstName = timelineUserProfile.user.firstName;
       user.lastName = timelineUserProfile.user.lastName;
       user.username = timelineUserProfile.user.username;
-
+      user.birthday = timelineUserProfile.user.birthday;
       BotToast.closeAllLoading();
       BotToast.showText(
         text: "Profile successfully updated!",

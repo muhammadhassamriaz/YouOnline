@@ -3,7 +3,7 @@ import 'package:youonline/utils/color.dart';
 import 'package:youonline/utils/size_config.dart';
 import 'package:youonline/utils/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:transparent_image/transparent_image.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class FriendTag extends StatelessWidget {
   final String imageURL;
@@ -29,9 +29,8 @@ class FriendTag extends StatelessWidget {
           height: width * .2,
           child: imageURL != null
               ? ClipOval(
-                  child: FadeInImage.memoryNetwork(
-                    image: imageURL,
-                    placeholder: kTransparentImage,
+                  child: CachedNetworkImage(
+                    imageUrl: imageURL,
                     fit: BoxFit.cover,
                   ),
                 )

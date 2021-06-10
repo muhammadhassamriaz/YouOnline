@@ -1,20 +1,37 @@
+import 'package:flutter/material.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:youonline/provider/user_provider.dart';
+
 import 'package:youonline/route/successfully_verified.dart';
 import 'package:youonline/utils/color.dart';
 import 'package:youonline/utils/size_config.dart';
 import 'package:youonline/utils/styles.dart';
+import 'package:youonline/widgets/settings_route_tile.dart';
 import 'package:youonline/widgets/you_online_button.dart';
-import 'package:flutter/material.dart';
-import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:bot_toast/bot_toast.dart';
+import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
-class PinVerificationScreen extends StatelessWidget {
+class PinVerificationScreen extends StatefulWidget {
+  final String email;
+
+  PinVerificationScreen({
+    Key key,
+    @required this.email,
+  }) : super(key: key);
+
+  @override
+  _PinVerificationScreenState createState() => _PinVerificationScreenState();
+}
+
+class _PinVerificationScreenState extends State<PinVerificationScreen> {
   TextEditingController _pinTextEditingController = TextEditingController();
+
   String pin = "";
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
-
+    var _userProvider = Provider.of<UserProvider>(context);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -70,7 +87,9 @@ class PinVerificationScreen extends StatelessWidget {
                     length: 4,
                     controller: _pinTextEditingController,
                     onChanged: (value) {
-                      pin = value;
+                      setState(() {
+                        pin = value;
+                      });
                     },
                     pinTheme: PinTheme(
                       shape: PinCodeFieldShape.box,
@@ -126,12 +145,33 @@ class PinVerificationScreen extends StatelessWidget {
               ),
               YouOnlineButton(
                 callback: () {
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => SuccessfullyVerified(),
+                  if (pin != null && pin.isNotEmpty) {
+                    if (pin.length == 4) {
+                      _userProvider.verifyRequestPassword(
+                        email: widget.email,
+                        pin: pin,
+                        context: context,
+                      );
+                    } else {
+                      BotToast.showText(
+                        text: 'Please enter your verification pincode.',
+                        textStyle: labelTextStyle.copyWith(
+                          fontSize: 12,
+                          color: Colors.white,
+                        ),
+                        contentColor: Colors.red,
+                      );
+                    }
+                  } else {
+                    BotToast.showText(
+                      text: 'Please enter your verification pincode.',
+                      textStyle: labelTextStyle.copyWith(
+                        fontSize: 12,
+                        color: Colors.white,
                       ),
-                      (route) => false);
+                      contentColor: Colors.red,
+                    );
+                  }
                 },
                 title: "Verify Email",
               ),

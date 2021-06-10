@@ -142,38 +142,38 @@ bottomModalSheet(BuildContext context) {
                     )
                   ],
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => CreatePageScreen(),
-                      ),
-                    );
-                  },
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: width * .15,
-                        width: width * .15,
-                        child: Image.asset(
-                          Assets.PAGE_ICON,
-                        ),
-                      ),
-                      SizedBox(
-                        height: height * .01,
-                      ),
-                      Text(
-                        'Page',
-                        style: hintTextStyle.copyWith(
-                          fontSize: width * .04,
-                          color: Colors.grey,
-                        ),
-                        textScaleFactor: 1,
-                      )
-                    ],
-                  ),
-                ),
+                // GestureDetector(
+                //   onTap: () {
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //         builder: (_) => CreatePageScreen(),
+                //       ),
+                //     );
+                //   },
+                //   child: Column(
+                //     children: [
+                //       SizedBox(
+                //         height: width * .15,
+                //         width: width * .15,
+                //         child: Image.asset(
+                //           Assets.PAGE_ICON,
+                //         ),
+                //       ),
+                //       SizedBox(
+                //         height: height * .01,
+                //       ),
+                //       Text(
+                //         'Page',
+                //         style: hintTextStyle.copyWith(
+                //           fontSize: width * .04,
+                //           color: Colors.grey,
+                //         ),
+                //         textScaleFactor: 1,
+                //       )
+                //     ],
+                //   ),
+                // ),
               ],
             ),
             SizedBox(

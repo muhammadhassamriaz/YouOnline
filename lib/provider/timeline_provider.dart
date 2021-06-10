@@ -20,6 +20,7 @@ class TimelineProvider with ChangeNotifier {
   Future getTimeLinePosts({
     @required BuildContext context,
     @required int pageNo,
+    bool isRefresh = false,
   }) async {
     bool _isError = false;
     String userAuthenticationToken =
@@ -42,7 +43,23 @@ class TimelineProvider with ChangeNotifier {
         if (!_isError) {
           var response = jsonDecode(value.body);
           if (response['success'] != null) {
-            if (timelineData.length < response['posts']['count']) {
+            if (!isRefresh) {
+              if (timelineData.length < response['posts']['count']) {
+                response['posts']['data'].forEach((element) {
+                  try {
+                    TimelineData post = TimelineData.fromJson(element);
+                    if (!timelineData.contains(post)) {
+                      timelineData.add(post);
+                    }
+                    changeTimelineData(timelineData);
+                  } catch (ex) {
+                    print(ex);
+                    throw ex;
+                  }
+                });
+              }
+            } else {
+              changeTimelineData([]);
               response['posts']['data'].forEach((element) {
                 try {
                   TimelineData post = TimelineData.fromJson(element);
@@ -237,19 +254,36 @@ class TimelineProvider with ChangeNotifier {
   }) async {
     Map body = {};
     if (type != null && type.isNotEmpty) {
-      body = {
-        "type": type,
-        "type_id": typeID,
-        "post_id": postID,
-        "text": text,
-      };
+      if (text.isNotEmpty) {
+        body = {
+          "type": type,
+          "type_id": typeID,
+          "post_id": postID,
+          "text": text,
+        };
+      } else {
+        body = {
+          "type": type,
+          "type_id": typeID,
+          "post_id": postID,
+        };
+      }
     } else {
-      body = {
-        "type": type,
-        "post_id": postID,
-        "text": text,
-      };
+      if (text.isNotEmpty) {
+        body = {
+          "type": type,
+          "post_id": postID,
+          "text": text,
+        };
+      } else {
+        body = {
+          "type": type,
+          "post_id": postID,
+          "text": text,
+        };
+      }
     }
+
     if (body != null) {
       print(body);
       String userAuthenticationToken =

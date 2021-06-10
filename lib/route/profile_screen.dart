@@ -6,9 +6,12 @@ import 'package:youonline/component/post_section.dart';
 
 import 'package:youonline/component/video_section.dart';
 import 'package:youonline/model/post_reaction.dart';
+import 'package:youonline/provider/user_provider.dart';
 import 'package:youonline/provider/widget_provider.dart';
 import 'package:youonline/utils/assets.dart';
 import 'package:youonline/utils/size_config.dart';
+import 'package:youonline/widgets/icon_button.dart';
+import 'package:bot_toast/bot_toast.dart';
 
 class ProfileScreen extends StatefulWidget {
   final String userId;
@@ -47,13 +50,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    print("Working");
+    double width = MediaQuery.of(context).size.width;
     var _widgetProvider = Provider.of<WidgetProvider>(context);
+    var _userProvider = Provider.of<UserProvider>(context);
     if (_widgetProvider.profileSectionIndex == 1) {
       return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
+          actions: [
+            YouOnlineIconButton(
+              callback: () async {
+                BotToast.showLoading();
+                await _userProvider.getTimelineUserProfile(
+                  userId: widget.userId,
+                );
+                BotToast.closeAllLoading();
+              },
+              icon: Icons.refresh,
+              iconSize: width * .06,
+            ),
+            SizedBox(
+              width: width * .02,
+            ),
+          ],
         ),
         body: PostSection(
           userId: widget.userId,
@@ -68,6 +88,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
+          actions: [
+            YouOnlineIconButton(
+              callback: () async {
+                BotToast.showLoading();
+                await _userProvider.getTimelineUserProfile(
+                  userId: widget.userId,
+                );
+                BotToast.closeAllLoading();
+              },
+              icon: Icons.refresh,
+              iconSize: width * .06,
+            ),
+            SizedBox(
+              width: width * .02,
+            ),
+          ],
         ),
         body: AboutSection(
           userId: widget.userId,
@@ -82,6 +118,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
+          actions: [
+            YouOnlineIconButton(
+              callback: () async {
+                BotToast.showLoading();
+                await _userProvider.getTimelineUserProfile(
+                  userId: widget.userId,
+                );
+                BotToast.closeAllLoading();
+              },
+              icon: Icons.refresh,
+              iconSize: width * .06,
+            ),
+            SizedBox(
+              width: width * .02,
+            ),
+          ],
         ),
         body: PhotosSection(
           userId: widget.userId,
@@ -96,6 +148,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
+          actions: [
+            YouOnlineIconButton(
+              callback: () async {
+                BotToast.showLoading();
+                await _userProvider.getTimelineUserProfile(
+                  userId: widget.userId,
+                );
+                BotToast.closeAllLoading();
+              },
+              icon: Icons.refresh,
+              iconSize: width * .06,
+            ),
+            SizedBox(
+              width: width * .02,
+            ),
+          ],
         ),
         body: VideoSection(
           userId: widget.userId,

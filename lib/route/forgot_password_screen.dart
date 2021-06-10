@@ -1,3 +1,4 @@
+import 'package:youonline/provider/user_provider.dart';
 import 'package:youonline/utils/size_config.dart';
 import 'package:youonline/utils/styles.dart';
 import 'package:youonline/widgets/you_online_button.dart';
@@ -5,6 +6,7 @@ import 'package:youonline/widgets/you_online_text.dart';
 import 'package:youonline/widgets/you_online_textfield.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class ForgotPasswordScreen extends StatelessWidget {
@@ -13,6 +15,7 @@ class ForgotPasswordScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
+    var _userProvider = Provider.of<UserProvider>(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -45,7 +48,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                 ),
                 Center(
                   child: Text(
-                    'You’ll receive 4 dgit code to verify next.',
+                    'You’ll receive 4 digit code to verify next.',
                     style: labelTextStyle.copyWith(
                       fontSize: SizeConfig.kDefaultSize * 4,
                       color: Colors.grey,
@@ -72,7 +75,24 @@ class ForgotPasswordScreen extends StatelessWidget {
                 YouOnlineButton(
                   callback: () {
                     if (_emailTextEditingController.text.isNotEmpty) {
-                     
+                      bool emailValid = RegExp(
+                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                          .hasMatch(_emailTextEditingController.text);
+                      if (emailValid) {
+                        _userProvider.requestPassword(
+                          email: _emailTextEditingController.text,
+                          context: context,
+                        );
+                      } else {
+                        BotToast.showText(
+                          text: "Please enter valid email address!",
+                          textStyle: labelTextStyle.copyWith(
+                            fontSize: 12,
+                            color: Colors.white,
+                          ),
+                          contentColor: Colors.red,
+                        );
+                      }
                     } else {
                       BotToast.showText(
                         text: "Please enter your email!",
