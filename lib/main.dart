@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:youonline/provider/automotive_provider.dart';
 import 'package:youonline/provider/create_post_provider.dart';
 import 'package:youonline/provider/timeline_provider.dart';
 import 'package:youonline/provider/user_provider.dart';
@@ -56,6 +57,9 @@ class _MyAppState extends State<MyApp> {
           ),
           ChangeNotifierProvider<PostProvider>(
             create: (_) => PostProvider(),
+          ),
+          ChangeNotifierProvider<AutomotiveProvider>(
+            create: (_) => AutomotiveProvider(),
           ),
         ],
         child: GestureDetector(

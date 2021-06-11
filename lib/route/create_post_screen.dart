@@ -580,6 +580,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     var uri = Uri.parse(ApiNetwork.BASE_URL + ApiNetwork().createPost);
     var _timelineProvider =
         Provider.of<TimelineProvider>(context, listen: false);
+    var _widgetProvider = Provider.of<WidgetProvider>(context, listen: false);
     var request = new http.MultipartRequest("POST", uri);
 
     for (var file in files) {
@@ -599,11 +600,14 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     if (text != null && text.isNotEmpty) {
       request.fields['postText'] = text;
     }
+    if (_widgetProvider.postPrivacyIndex != null) {
+      request.fields['postPrivacy'] =
+          _widgetProvider.postPrivacyIndex.toString();
+    }
     if (feelings != null && feelings.isNotEmpty) {
       request.fields["feeling_type"] = "feelings";
       request.fields["feeling"] = feelings;
     }
-    print(request.fields);
 
     Map<String, String> headers = {
       "Accept": "application/json",
@@ -663,6 +667,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     var uri = Uri.parse(ApiNetwork.BASE_URL + ApiNetwork().createPost);
     var _timelineProvider =
         Provider.of<TimelineProvider>(context, listen: false);
+    var _widgetProvider = Provider.of<WidgetProvider>(context, listen: false);
     var request = new http.MultipartRequest("POST", uri);
 
     Map<String, String> headers = {
@@ -691,6 +696,10 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     if (feelings != null) {
       request.fields["feeling_type"] = "feelings";
       request.fields["feeling"] = feelings;
+    }
+    if (_widgetProvider.postPrivacyIndex != null) {
+      request.fields['postPrivacy'] =
+          _widgetProvider.postPrivacyIndex.toString();
     }
 
     var response = await request.send();

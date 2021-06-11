@@ -1,26 +1,32 @@
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:transparent_image/transparent_image.dart';
+
 import 'package:youonline/provider/create_post_provider.dart';
 import 'package:youonline/provider/user_provider.dart';
+import 'package:youonline/provider/widget_provider.dart';
 import 'package:youonline/utils/assets.dart';
 import 'package:youonline/utils/size_config.dart';
 import 'package:youonline/utils/styles.dart';
-import 'package:flutter/material.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 class PostHeader extends StatefulWidget {
-  PostHeader({Key key}) : super(key: key);
+  final bool isShared;
+  PostHeader({
+    Key key,
+    this.isShared = false,
+  }) : super(key: key);
 
   @override
   _PostHeaderState createState() => _PostHeaderState();
 }
 
 class _PostHeaderState extends State<PostHeader> {
-  // List<String> audience = [
-  //   'Everyone',
-  //   'Friends of friends',
-  //   'Friends',
-  //   'Only me',
-  // ];
+  List<String> audience = [
+    'Everyone',
+    'Friends of Friends',
+    'Friends',
+    'Only me',
+  ];
 
   String value;
 
@@ -35,7 +41,9 @@ class _PostHeaderState extends State<PostHeader> {
   @override
   void initState() {
     super.initState();
-    // value = audience[0];
+    value = audience[0];
+    Provider.of<WidgetProvider>(context, listen: false)
+        .changePostPrivacyPolicyIndex(0);
   }
 
   @override
@@ -44,7 +52,7 @@ class _PostHeaderState extends State<PostHeader> {
     var _userProvider = Provider.of<UserProvider>(context);
     var _postProvider = Provider.of<PostProvider>(context);
     double width = MediaQuery.of(context).size.width;
-
+    var _widgetProvider = Provider.of<WidgetProvider>(context);
     return Row(
       children: [
         Container(
@@ -119,76 +127,91 @@ class _PostHeaderState extends State<PostHeader> {
                   ),
                 ],
               ),
-            // Row(
-            //   children: [
-            //     Card(
-            //       shape: RoundedRectangleBorder(
-            //         borderRadius: BorderRadius.circular(
-            //           SizeConfig.kDefaultSize * 3,
-            //         ),
-            //       ),
-            //       clipBehavior: Clip.antiAliasWithSaveLayer,
-            //       child: Container(
-            //         width: value.contains("of")
-            //             ? SizeConfig.kDefaultSize * 45
-            //             : value.contains("only")
-            //                 ? SizeConfig.kDefaultSize * 25
-            //                 : value.contains("everyone")
-            //                     ? SizeConfig.kDefaultSize * 30
-            //                     : SizeConfig.kDefaultSize * 25,
-            //         height: SizeConfig.kDefaultSize * 10,
-            //         decoration: BoxDecoration(
-            //           borderRadius: BorderRadius.circular(
-            //             SizeConfig.kDefaultSize * 3,
-            //           ),
-            //         ),
-            //         child: Padding(
-            //             padding: EdgeInsets.all(
-            //               SizeConfig.kDefaultSize * 2,
-            //             ),
-            //             child: PopupMenuButton<String>(
-            //               itemBuilder: (context) {
-            //                 return audience.map((str) {
-            //                   return PopupMenuItem(
-            //                     value: str,
-            //                     child: Text(
-            //                       str,
-            //                       style: labelTextStyle.copyWith(
-            //                         fontSize: width * .032,
-            //                       ),
-            //                     ),
-            //                   );
-            //                 }).toList();
-            //               },
-            //               child: Row(
-            //                 mainAxisSize: MainAxisSize.min,
-            //                 children: <Widget>[
-            //                   Text(
-            //                     value,
-            //                     style: labelTextStyle.copyWith(
-            //                       fontSize: width * .032,
-            //                     ),
-            //                   ),
-            //                   SizedBox(
-            //                     width: width * .01,
-            //                   ),
-            //                   Icon(
-            //                     Icons.arrow_downward,
-            //                     size: width * .04,
-            //                   ),
-            //                 ],
-            //               ),
-            //               onSelected: (v) {
-            //                 setState(() {
-            //                   value = v;
-            //                 });
-            //               },
-            //             )),
-            //       ),
-            //     ),
-            //     SizedBox(width: SizeConfig.kDefaultSize * 3),
-            //   ],
-            // ),
+            if (!widget.isShared)
+              Row(
+                children: [
+                  Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                        SizeConfig.kDefaultSize * 3,
+                      ),
+                    ),
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    child: Container(
+                      width: value.contains("of")
+                          ? SizeConfig.kDefaultSize * 45
+                          : value.contains("only")
+                              ? SizeConfig.kDefaultSize * 25
+                              : value.contains("everyone")
+                                  ? SizeConfig.kDefaultSize * 30
+                                  : SizeConfig.kDefaultSize * 25,
+                      height: SizeConfig.kDefaultSize * 10,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(
+                          SizeConfig.kDefaultSize * 3,
+                        ),
+                      ),
+                      child: Padding(
+                          padding: EdgeInsets.all(
+                            SizeConfig.kDefaultSize * 2,
+                          ),
+                          child: PopupMenuButton<String>(
+                            itemBuilder: (context) {
+                              return audience.map((str) {
+                                return PopupMenuItem(
+                                  value: str,
+                                  child: Text(
+                                    str,
+                                    style: labelTextStyle.copyWith(
+                                      fontSize: width * .032,
+                                    ),
+                                  ),
+                                );
+                              }).toList();
+                            },
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Text(
+                                  value,
+                                  style: labelTextStyle.copyWith(
+                                    fontSize: width * .032,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: width * .01,
+                                ),
+                                Icon(
+                                  Icons.arrow_downward,
+                                  size: width * .04,
+                                ),
+                              ],
+                            ),
+                            onSelected: (v) {
+                              setState(() {
+                                value = v;
+                              });
+                              if (value.toLowerCase().contains("everyone")) {
+                                _widgetProvider.changePostPrivacyPolicyIndex(0);
+                              } else if (value.toLowerCase().contains("of")) {
+                                _widgetProvider.changePostPrivacyPolicyIndex(1);
+                              } else if (value
+                                  .toLowerCase()
+                                  .contains("friends")) {
+                                _widgetProvider.changePostPrivacyPolicyIndex(2);
+                              } else if (value.toLowerCase().contains("only")) {
+                                _widgetProvider.changePostPrivacyPolicyIndex(3);
+                              } else {
+                                _widgetProvider.changePostPrivacyPolicyIndex(0);
+                              }
+                              print(_widgetProvider.postPrivacyIndex);
+                            },
+                          )),
+                    ),
+                  ),
+                  SizedBox(width: SizeConfig.kDefaultSize * 3),
+                ],
+              ),
           ],
         ),
       ],

@@ -9,6 +9,7 @@ import 'package:youonline/model/timeline_data.dart';
 
 import 'package:youonline/provider/user_provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:youonline/utils/styles.dart';
 
 class TimelineProvider with ChangeNotifier {
   List<TimelineData> timelineData = [];
@@ -83,6 +84,7 @@ class TimelineProvider with ChangeNotifier {
   Future deleteComment({
     @required BuildContext context,
     @required String commentId,
+    @required TimelinePostComments comment,
   }) async {
     bool _isError = false;
     String userAuthenticationToken =
@@ -91,7 +93,9 @@ class TimelineProvider with ChangeNotifier {
     Uri uri = Uri.parse(
       ApiNetwork.BASE_URL + ApiNetwork().deleteComment,
     );
+    print(commentId);
     if (userAuthenticationToken != null) {
+      BotToast.showLoading();
       await http.post(
         uri,
         headers: <String, String>{
@@ -105,6 +109,7 @@ class TimelineProvider with ChangeNotifier {
         print(err.toString());
         throw err;
       }).then((value) {
+        BotToast.closeAllLoading();
         var response = json.decode(value.body);
         print(response);
       });

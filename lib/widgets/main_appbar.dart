@@ -44,194 +44,217 @@ class _MainAppBarState extends State<MainAppBar> {
     double width = SizeConfig.kDefaultSize * 100;
     var _userProvider = Provider.of<UserProvider>(context);
     var _timelineProvider = Provider.of<TimelineProvider>(context);
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(
-          height: height * .05,
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: width * .04,
+    return Container(
+      height: height * .5,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            height: height * .05,
           ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'YouOnline',
-                style: headingTextStyle.copyWith(
-                  fontSize: width * .06,
-                  color: primaryColor,
-                ),
-                textScaleFactor: 1,
-              ),
-              Spacer(),
-              YouOnlineIconButton(
-                  callback: () {
-                    _timelineProvider.getTimeLinePosts(
-                      context: context,
-                      pageNo: 1,
-                      isRefresh: true,
-                    );
-                    BotToast.showText(
-                      text: "Refreshing Timeline...",
-                      textStyle: labelTextStyle.copyWith(
-                        fontSize: 12,
-                        color: Colors.black,
-                      ),
-                      contentColor: Colors.white,
-                    );
-                  },
-                  icon: Icons.refresh),
-              SizedBox(
-                width: width * .01,
-              ),
-              YouOnlineIconButton(
-                callback: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => SearchScreen(),
-                    ),
-                  );
-                },
-                icon: Icons.search,
-              ),
-            ],
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: width * .04),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: width * .14,
-                height: width * .14,
-                child: _userProvider.user?.avatar != null
-                    ? Container(
-                        width: width * .14,
-                        height: width * .14,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                        ),
-                        child: ClipOval(
-                          child: FadeInImage.memoryNetwork(
-                            image: _userProvider.user.avatar,
-                            placeholder: kTransparentImage,
-                            imageScale: 0.5,
-                          ),
-                        ),
-                      )
-                    : Image.asset(
-                        Assets.PROFILE_AVATAR,
-                      ),
-              ),
-              SizedBox(
-                width: width * .02,
-              ),
-              Flexible(
-                child: MediaQuery(
-                  data: MediaQuery.of(context).copyWith(
-                    textScaleFactor: 1,
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: width * .04,
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'YouOnline',
+                  style: headingTextStyle.copyWith(
+                    fontSize: width * .06,
+                    color: primaryColor,
                   ),
-                  child: TextField(
-                    onTap: () {
-                      Provider.of<PostProvider>(context, listen: false)
-                          .changeFeelings(null);
-                      Provider.of<PostProvider>(context, listen: false)
-                          .changeGIFurl(null);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => CreatePostScreen(),
+                  textScaleFactor: 1,
+                ),
+                Spacer(),
+                YouOnlineIconButton(
+                    callback: () {
+                      _timelineProvider.getTimeLinePosts(
+                        context: context,
+                        pageNo: 1,
+                        isRefresh: true,
+                      );
+                      BotToast.showText(
+                        text: "Refreshing Timeline...",
+                        textStyle: labelTextStyle.copyWith(
+                          fontSize: 12,
+                          color: Colors.black,
                         ),
+                        contentColor: Colors.white,
                       );
                     },
-                    autofocus: false,
-                    readOnly: true,
-                    controller: _postTextEditingController,
-                    maxLines: 2,
-                    decoration: InputDecoration(
-                      hintStyle: hintTextStyle.copyWith(
+                    icon: Icons.refresh),
+                SizedBox(
+                  width: width * .01,
+                ),
+                YouOnlineIconButton(
+                  callback: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => SearchScreen(),
+                      ),
+                    );
+                  },
+                  icon: Icons.search,
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: width * .04),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: width * .14,
+                  height: width * .14,
+                  child: _userProvider.user?.avatar != null
+                      ? Container(
+                          width: width * .14,
+                          height: width * .14,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                          ),
+                          child: ClipOval(
+                            child: FadeInImage.memoryNetwork(
+                              image: _userProvider.user.avatar,
+                              placeholder: kTransparentImage,
+                              imageScale: 0.5,
+                            ),
+                          ),
+                        )
+                      : Image.asset(
+                          Assets.PROFILE_AVATAR,
+                        ),
+                ),
+                SizedBox(
+                  width: width * .02,
+                ),
+                Flexible(
+                  child: MediaQuery(
+                    data: MediaQuery.of(context).copyWith(
+                      textScaleFactor: 1,
+                    ),
+                    child: TextField(
+                      onTap: () {
+                        Provider.of<PostProvider>(context, listen: false)
+                            .changeFeelings(null);
+                        Provider.of<PostProvider>(context, listen: false)
+                            .changeGIFurl(null);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => CreatePostScreen(),
+                          ),
+                        );
+                      },
+                      autofocus: false,
+                      readOnly: true,
+                      controller: _postTextEditingController,
+                      maxLines: 2,
+                      decoration: InputDecoration(
+                        hintStyle: hintTextStyle.copyWith(
+                          fontSize: width * .04,
+                        ),
+                        hintText: 'What\'s going on?',
+                        border: InputBorder.none,
+                      ),
+                      style: labelTextStyle.copyWith(
                         fontSize: width * .04,
                       ),
-                      hintText: 'What\'s going on?',
-                      border: InputBorder.none,
-                    ),
-                    style: labelTextStyle.copyWith(
-                      fontSize: width * .04,
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-
-        Divider(
-          color: Colors.grey[300],
-          height: height * .003,
-        ),
-        Row(
-          children: [
-            Expanded(
-              child: YouOnlineTextButton(
-                assetImage: Assets.UPLOAD_IMAGE_ICON,
-                title: 'Photo',
-                color: searchContainerColor,
-                callback: () async {
-                  FilePickerResult result = await FilePicker.platform.pickFiles(
-                    allowMultiple: true,
-                    type: FileType.image,
-                  );
-
-                  if (result != null) {
-                    List<File> files =
-                        result.paths.map((path) => File(path)).toList();
-
-                    uploadMultipleImage(
-                      files: files,
-                      authenticationToken:
-                          _userProvider.userAuthenticationToken,
-                      context: context,
+          Divider(
+            color: Colors.grey[300],
+            height: height * .003,
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: YouOnlineTextButton(
+                  assetImage: Assets.UPLOAD_IMAGE_ICON,
+                  title: 'Photo',
+                  color: searchContainerColor,
+                  callback: () async {
+                    FilePickerResult result =
+                        await FilePicker.platform.pickFiles(
+                      allowMultiple: true,
+                      type: FileType.image,
                     );
-                  }
-                },
-              ),
-            ),
-            Container(
-              height: height * .03,
-              width: width * .002,
-              color: Colors.grey[300],
-            ),
-            Expanded(
-              child: YouOnlineTextButton(
-                assetImage: Assets.UPLOAD_VIDEO_ICON,
-                title: 'Video',
-                color: searchContainerColor,
-                callback: () async {
-                  double sizeInMB;
-                  FilePickerResult selectedFile;
-                  await FilePicker.platform
-                      .pickFiles(
-                    allowCompression: true,
-                    allowMultiple: false,
-                    type: FileType.video,
-                  )
-                      .then((value) {
-                    if (value != null) {
-                      double sizeInKB = value.files.first.size / 1024;
 
-                      setState(() {
-                        sizeInMB = sizeInKB / 1024;
-                      });
-                      if (sizeInMB.toInt() < 21) {
+                    if (result != null) {
+                      List<File> files =
+                          result.paths.map((path) => File(path)).toList();
+
+                      uploadMultipleImage(
+                        files: files,
+                        authenticationToken:
+                            _userProvider.userAuthenticationToken,
+                        context: context,
+                      );
+                    }
+                  },
+                ),
+              ),
+              Container(
+                height: height * .03,
+                width: width * .002,
+                color: Colors.grey[300],
+              ),
+              Expanded(
+                child: YouOnlineTextButton(
+                  assetImage: Assets.UPLOAD_VIDEO_ICON,
+                  title: 'Video',
+                  color: searchContainerColor,
+                  callback: () async {
+                    double sizeInMB;
+                    FilePickerResult selectedFile;
+                    await FilePicker.platform
+                        .pickFiles(
+                      allowCompression: true,
+                      allowMultiple: false,
+                      type: FileType.video,
+                    )
+                        .then((value) {
+                      if (value != null) {
+                        double sizeInKB = value.files.first.size / 1024;
+
                         setState(() {
-                          videoFiles =
-                              value.paths.map((path) => File(path)).toList();
+                          sizeInMB = sizeInKB / 1024;
                         });
+                        if (sizeInMB.toInt() < 21) {
+                          setState(() {
+                            videoFiles =
+                                value.paths.map((path) => File(path)).toList();
+                          });
+                        } else {
+                          BotToast.showText(
+                            text:
+                                "The size of the video must be less than 20 Mbs.",
+                            textStyle: labelTextStyle.copyWith(
+                              fontSize: 12,
+                              color: Colors.black,
+                            ),
+                            contentColor: Colors.white,
+                          );
+                        }
+                      }
+                    });
+                    if (videoFiles != null && videoFiles.length > 0) {
+                      if (sizeInMB.toInt() < 21) {
+                        BotToast.showLoading();
+                        await videoUploader(
+                          files: videoFiles,
+                          authenticationToken:
+                              _userProvider.userAuthenticationToken,
+                          context: context,
+                        );
                       } else {
                         BotToast.showText(
                           text:
@@ -244,238 +267,226 @@ class _MainAppBarState extends State<MainAppBar> {
                         );
                       }
                     }
-                  });
-                  if (videoFiles != null && videoFiles.length > 0) {
-                    if (sizeInMB.toInt() < 21) {
-                      BotToast.showLoading();
-                      await videoUploader(
-                        files: videoFiles,
-                        authenticationToken:
-                            _userProvider.userAuthenticationToken,
-                        context: context,
-                      );
-                    } else {
-                      BotToast.showText(
-                        text: "The size of the video must be less than 20 Mbs.",
-                        textStyle: labelTextStyle.copyWith(
-                          fontSize: 12,
-                          color: Colors.black,
-                        ),
-                        contentColor: Colors.white,
-                      );
-                    }
-                  }
-                },
+                  },
+                ),
               ),
-            ),
-            Container(
-              height: height * .03,
-              width: width * .002,
-              color: Colors.grey[300],
-            ),
-            Expanded(
-              child: YouOnlineTextButton(
-                title: 'Activity',
-                assetImage: Assets.FEELINGS_ICON,
-                color: yellowColor,
-                callback: () {
-                  Provider.of<PostProvider>(context, listen: false)
-                      .changeFeelings(null);
-                  Provider.of<PostProvider>(context, listen: false)
-                      .changeGIFurl(null);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => CreatePostScreen(),
-                    ),
-                  );
-                },
+              Container(
+                height: height * .03,
+                width: width * .002,
+                color: Colors.grey[300],
               ),
-            ),
-          ],
-        ),
-        // SizedBox(
-        //   height: height * .01,
-        // ),
-        // ProfilePictures(),
-        SizedBox(
-          height: height * .005,
-        ),
-        StoryList(
-          iconBackgroundColor: primaryColor,
-          addItemBackgroundColor: Colors.white,
-          borderColor: Colors.grey[300],
-          backgroundColor: Colors.white,
-          addItemWidth: width * .25,
-          height: width * .49,
-          iconSize: width * .04,
-          onPressedIcon: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => CreateUserStories(),
+              Expanded(
+                child: YouOnlineTextButton(
+                  title: 'Activity',
+                  assetImage: Assets.FEELINGS_ICON,
+                  color: yellowColor,
+                  callback: () {
+                    Provider.of<PostProvider>(context, listen: false)
+                        .changeFeelings(null);
+                    Provider.of<PostProvider>(context, listen: false)
+                        .changeGIFurl(null);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => CreatePostScreen(),
+                      ),
+                    );
+                  },
+                ),
               ),
-            );
-          },
-          image: FadeInImage.memoryNetwork(
-            image: _userProvider.user?.avatar,
-            fit: BoxFit.cover,
-            placeholder: kTransparentImage,
-            imageScale: 0.5,
+            ],
           ),
-          text: Text(
-            "Create Story",
-            maxLines: 1,
-            style: labelTextStyle.copyWith(
-              fontSize: width * .032,
-              color: Colors.black,
-            ),
+          SizedBox(
+            height: height * .005,
           ),
-          itemCount: _userProvider.storyModel.data.length,
-          itemBuilder: (context, index) {
-            return GestureDetector(
-              onTap: () {
-                setState(() {
-                  selectedIndex = index;
-                });
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: width * .01,
+            ),
+            child: StoryList(
+              iconBackgroundColor: primaryColor,
+              addItemBackgroundColor: Colors.white,
+              borderColor: Colors.grey[300],
+              backgroundColor: Colors.white,
+              addItemWidth: width * .25,
+              height: width * .49,
+              iconSize: width * .04,
+              onPressedIcon: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) {
-                      return Scaffold(
-                        body: SafeArea(
-                          child: StoryPageView(
-                            initialPage: selectedIndex,
-                            itemBuilder: (
-                              context,
-                              pageIndex,
-                              storyIndex,
-                            ) {
-                              final user =
-                                  _userProvider.storyModel.data[pageIndex];
-                              final story = _userProvider.storyModel
-                                  .data[pageIndex].stories[storyIndex];
-                              return Stack(
-                                children: [
-                                  Positioned.fill(
-                                    child: Container(color: Colors.black),
-                                  ),
-                                  Positioned.fill(
-                                    child: CachedNetworkImage(
-                                      imageUrl: story.storyMediaImage.filename,
-                                      progressIndicatorBuilder:
-                                          (context, url, downloadProgress) =>
-                                              Container(
-                                        width: width * .1,
-                                        height: width * .1,
-                                        child: Center(
-                                          child: CircularProgressIndicator(
-                                              value: downloadProgress.progress),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.only(top: 44, left: 8),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          height: width * .15,
-                                          width: width * .15,
-                                          decoration: BoxDecoration(
-                                            // image:
-                                            //     DecorationImage(
-                                            //   image: CachedNetworkImageProvider(
-                                            //     user.avatar,
-                                            //   ),
-                                            //   fit: BoxFit.cover,
-                                            // ),
-                                            shape: BoxShape.circle,
-                                          ),
-                                          child: ClipOval(
-                                            child: FadeInImage.memoryNetwork(
-                                              placeholder: kTransparentImage,
-                                              image: user?.avatar,
-                                              imageScale: 0.5,
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          width: 8,
-                                        ),
-                                        Text(
-                                          user.firstName + " " + user.lastName,
-                                          style: TextStyle(
-                                            fontSize: width * .032,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              );
-                            },
-                            gestureItemBuilder:
-                                (context, pageIndex, storyIndex) {
-                              return Align(
-                                alignment: Alignment.topRight,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 32),
-                                  child: IconButton(
-                                    padding: EdgeInsets.zero,
-                                    color: Colors.white,
-                                    icon: Icon(Icons.close),
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                  ),
-                                ),
-                              );
-                            },
-                            pageLength: _userProvider.storyModel.data.length,
-                            storyLength: (int pageIndex) {
-                              return _userProvider
-                                  .storyModel.data[pageIndex].stories.length;
-                            },
-                            onPageLimitReached: () {
-                              Navigator.pop(context);
-                            },
-                          ),
-                        ),
-                      );
-                    },
+                    builder: (_) => CreateUserStories(),
                   ),
                 );
               },
-              child: Container(
-                width: width * .25,
-                height: height * .2,
-                decoration: BoxDecoration(
-                  color: searchContainerColor,
-                ),
-                clipBehavior: Clip.antiAliasWithSaveLayer,
-                child: CachedNetworkImage(
-                  imageUrl: _userProvider
-                      .storyModel.data[index].stories.first.thumbnail,
-                  fit: BoxFit.cover,
-                  progressIndicatorBuilder: (context, url, downloadProgress) =>
-                      Container(
-                    width: width * .04,
-                    height: width * .04,
-                    child: Center(
-                      child: CircularProgressIndicator(
-                          value: downloadProgress.progress),
-                    ),
-                  ),
+              image: FadeInImage.memoryNetwork(
+                image: _userProvider.user?.avatar,
+                fit: BoxFit.cover,
+                placeholder: kTransparentImage,
+                imageScale: 0.5,
+              ),
+              text: Text(
+                "Create Story",
+                maxLines: 1,
+                style: labelTextStyle.copyWith(
+                  fontSize: width * .032,
+                  color: Colors.black,
                 ),
               ),
-            );
-          },
-        ),
-      ],
+              itemCount: _userProvider.storyModel.data?.length,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      selectedIndex = index;
+                    });
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) {
+                          return Scaffold(
+                            body: SafeArea(
+                              child: StoryPageView(
+                                initialPage: selectedIndex,
+                                itemBuilder: (
+                                  context,
+                                  pageIndex,
+                                  storyIndex,
+                                ) {
+                                  final user =
+                                      _userProvider.storyModel.data[pageIndex];
+                                  final story = _userProvider.storyModel
+                                      .data[pageIndex].stories[storyIndex];
+                                  return Stack(
+                                    children: [
+                                      Positioned.fill(
+                                        child: Container(color: Colors.black),
+                                      ),
+                                      Positioned.fill(
+                                        child: CachedNetworkImage(
+                                          imageUrl:
+                                              story.storyMediaImage.filename,
+                                          progressIndicatorBuilder: (context,
+                                                  url, downloadProgress) =>
+                                              Container(
+                                            width: width * .1,
+                                            height: width * .1,
+                                            child: Center(
+                                              child: CircularProgressIndicator(
+                                                  value: downloadProgress
+                                                      .progress),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 44, left: 8),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              height: width * .15,
+                                              width: width * .15,
+                                              decoration: BoxDecoration(
+                                                // image:
+                                                //     DecorationImage(
+                                                //   image: CachedNetworkImageProvider(
+                                                //     user.avatar,
+                                                //   ),
+                                                //   fit: BoxFit.cover,
+                                                // ),
+                                                shape: BoxShape.circle,
+                                              ),
+                                              child: ClipOval(
+                                                child:
+                                                    FadeInImage.memoryNetwork(
+                                                  placeholder:
+                                                      kTransparentImage,
+                                                  image: user?.avatar,
+                                                  imageScale: 0.5,
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              width: 8,
+                                            ),
+                                            Text(
+                                              user.firstName +
+                                                  " " +
+                                                  user.lastName,
+                                              style: TextStyle(
+                                                fontSize: width * .032,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                                gestureItemBuilder:
+                                    (context, pageIndex, storyIndex) {
+                                  return Align(
+                                    alignment: Alignment.topRight,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(top: 32),
+                                      child: IconButton(
+                                        padding: EdgeInsets.zero,
+                                        color: Colors.white,
+                                        icon: Icon(Icons.close),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                    ),
+                                  );
+                                },
+                                pageLength:
+                                    _userProvider.storyModel.data.length,
+                                storyLength: (int pageIndex) {
+                                  return _userProvider.storyModel
+                                      .data[pageIndex].stories.length;
+                                },
+                                onPageLimitReached: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  },
+                  child: Container(
+                    width: width * .25,
+                    height: height * .2,
+                    decoration: BoxDecoration(
+                      color: searchContainerColor,
+                    ),
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    child: CachedNetworkImage(
+                      imageUrl: _userProvider
+                          .storyModel.data[index].stories.first.thumbnail,
+                      fit: BoxFit.cover,
+                      progressIndicatorBuilder:
+                          (context, url, downloadProgress) => Container(
+                        width: width * .04,
+                        height: width * .04,
+                        child: Center(
+                          child: CircularProgressIndicator(
+                              value: downloadProgress.progress),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

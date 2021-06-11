@@ -130,7 +130,9 @@ shareBottomSheet(
                         ),
                       ],
                     ),
-                    PostHeader(),
+                    PostHeader(
+                      isShared: true,
+                    ),
                     SizedBox(
                       height: SizeConfig.kDefaultSize * 03,
                     ),

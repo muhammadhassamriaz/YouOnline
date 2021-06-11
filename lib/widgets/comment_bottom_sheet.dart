@@ -962,39 +962,35 @@ commentBottomSheet(
                                           .user
                                           .userId ==
                                       _userProvider.user.userId)
-                                    StatefulBuilder(
-                                      builder: (context, setState) {
-                                        return GestureDetector(
-                                          onTap: () {
-                                            Navigator.pop(context);
-                                            setState(() {
-                                              _timelineProvider
-                                                  .timelineData[timelineIndex]
-                                                  .comments
-                                                  .remove(_timelineProvider
-                                                      .timelineData[
-                                                          timelineIndex]
-                                                      .comments[index]);
-                                            });
-                                            _timelineProvider
-                                                .changeTimelineData(
-                                                    _timelineProvider
-                                                        .timelineData);
-                                            _timelineProvider.deleteComment(
-                                              context: context,
-                                              commentId: _timelineProvider
-                                                  .timelineData[timelineIndex]
-                                                  .comments[index]
-                                                  .id
-                                                  .toString(),
-                                            );
-                                          },
-                                          child: Icon(
-                                            Icons.delete,
-                                            size: width * .05,
-                                          ),
+                                    GestureDetector(
+                                      onTap: () async {
+                                        await _timelineProvider.deleteComment(
+                                          context: context,
+                                          commentId: _timelineProvider
+                                              .timelineData[timelineIndex]
+                                              .comments[index]
+                                              .id
+                                              .toString(),
+                                          comment: _timelineProvider
+                                              .timelineData[timelineIndex]
+                                              .comments[index],
                                         );
+                                        setState(() {
+                                          _timelineProvider
+                                              .timelineData[timelineIndex]
+                                              .comments
+                                              .remove(_timelineProvider
+                                                  .timelineData[timelineIndex]
+                                                  .comments[index]);
+                                        });
+                                        _timelineProvider.changeTimelineData(
+                                            _timelineProvider.timelineData);
+                                        Navigator.pop(context);
                                       },
+                                      child: Icon(
+                                        Icons.delete,
+                                        size: width * .05,
+                                      ),
                                     ),
                                 ],
                               );

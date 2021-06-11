@@ -38,6 +38,12 @@ class WidgetProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  int postPrivacyIndex = 0;
+  changePostPrivacyPolicyIndex(int _index) {
+    postPrivacyIndex = _index;
+    notifyListeners();
+  }
+
   List<String> dates = [
     'All',
     'Today',

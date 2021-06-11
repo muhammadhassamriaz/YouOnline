@@ -87,8 +87,9 @@ class _CreatePollScreenState extends State<CreatePollScreen> {
                             context: context,
                             pollQuestion: _postTextEditingController.text,
                             answers: polls,
-                            feeling:
-                                Provider.of<PostProvider>(context).feelings,
+                            feeling: Provider.of<PostProvider>(context,
+                                    listen: false)
+                                .feelings,
                           );
                           // _timelineProvider.changeTimelineData([]);
                         } else {
@@ -189,26 +190,15 @@ class _CreatePollScreenState extends State<CreatePollScreen> {
                                 onTap: () {},
                                 child: Row(
                                   children: [
-                                    SizedBox(
-                                      width: width * .04,
-                                      child: Text(
-                                        '${index + 1}.',
-                                        style: hintTextStyle.copyWith(
-                                            fontSize: width * .04,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: width * .03,
-                                    ),
                                     Expanded(
                                       child: Text(
                                         '${polls[index]}',
                                         style: hintTextStyle.copyWith(
-                                            fontSize: width * .04,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold),
+                                          fontSize: width * .04,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        maxLines: 1,
                                       ),
                                     ),
                                     SizedBox(
@@ -334,19 +324,19 @@ class _CreatePollScreenState extends State<CreatePollScreen> {
                       SizedBox(
                         height: height * .02,
                       ),
-                      Row(
-                        children: [
-                          Text(
-                            'Poll Duration',
-                            style: subheadingTextStyle.copyWith(
-                              fontSize: width * .045,
-                            ),
-                            textScaleFactor: 1,
-                          ),
-                          Spacer(),
-                          PollDuration(),
-                        ],
-                      ),
+                      // Row(
+                      //   children: [
+                      //     Text(
+                      //       'Poll Duration',
+                      //       style: subheadingTextStyle.copyWith(
+                      //         fontSize: width * .045,
+                      //       ),
+                      //       textScaleFactor: 1,
+                      //     ),
+                      //     Spacer(),
+                      //     PollDuration(),
+                      //   ],
+                      // ),
                     ],
                   ),
                 ),

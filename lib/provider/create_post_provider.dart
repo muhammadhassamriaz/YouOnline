@@ -10,6 +10,7 @@ import 'package:youonline/model/timeline_data.dart';
 import 'package:youonline/provider/timeline_provider.dart';
 import 'package:youonline/provider/user_provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:youonline/provider/widget_provider.dart';
 import 'package:youonline/route/main_screen.dart';
 import 'package:youonline/utils/styles.dart';
 
@@ -57,6 +58,9 @@ class PostProvider with ChangeNotifier {
         .userAuthenticationToken;
     var _timelineProvider =
         Provider.of<TimelineProvider>(context, listen: false);
+    var _postPrivacyIndex = Provider.of<WidgetProvider>(context, listen: false)
+        .postPrivacyIndex
+        .toString();
     Map body;
     if (postColorID != null && !postColorID.contains("null")) {
       if (feeling != null)
@@ -65,11 +69,13 @@ class PostProvider with ChangeNotifier {
           "post_color": postColorID,
           "feeling_type": "feelings",
           "feeling": feelings,
+          "postPrivacy": _postPrivacyIndex,
         };
       else {
         body = {
           "postText": postText,
           "post_color": postColorID,
+          "postPrivacy": _postPrivacyIndex,
         };
       }
     } else {
@@ -78,10 +84,12 @@ class PostProvider with ChangeNotifier {
           "feeling_type": "feelings",
           "feeling": feelings,
           "postText": postText,
+          "postPrivacy": _postPrivacyIndex,
         };
       } else {
         body = {
           "postText": postText,
+          "postPrivacy": _postPrivacyIndex,
         };
       }
     }
@@ -147,6 +155,9 @@ class PostProvider with ChangeNotifier {
         .userAuthenticationToken;
     var _timelineProvider =
         Provider.of<TimelineProvider>(context, listen: false);
+    var _postPrivacyIndex = Provider.of<WidgetProvider>(context, listen: false)
+        .postPrivacyIndex
+        .toString();
     Map body;
     if (postColorID != null) {
       body = {
@@ -154,12 +165,14 @@ class PostProvider with ChangeNotifier {
         "post_color": postColorID,
         "feeling_type": "feelings",
         "feeling": feelings,
+        "postPrivacy": _postPrivacyIndex,
       };
     } else {
       body = {
         "postText": postText,
         "feeling_type": "feelings",
         "feeling": feelings,
+        "postPrivacy": _postPrivacyIndex,
       };
     }
     if (_userAuthToken != null) {
@@ -220,6 +233,9 @@ class PostProvider with ChangeNotifier {
         .userAuthenticationToken;
     var _timelineProvider =
         Provider.of<TimelineProvider>(context, listen: false);
+    var _postPrivacyIndex = Provider.of<WidgetProvider>(context, listen: false)
+        .postPrivacyIndex
+        .toString();
     if (_userAuthToken != null) {
       Navigator.pushAndRemoveUntil(
           context,
@@ -239,6 +255,7 @@ class PostProvider with ChangeNotifier {
         body: {
           "postText": postText,
           "postSticker": gifURL,
+          "postPrivacy": _postPrivacyIndex,
         },
       ).catchError((err) {
         print(err);
@@ -279,7 +296,9 @@ class PostProvider with ChangeNotifier {
       @required String feeling}) async {
     var _userAuthToken = Provider.of<UserProvider>(context, listen: false)
         .userAuthenticationToken;
-
+    var _postPrivacyIndex = Provider.of<WidgetProvider>(context, listen: false)
+        .postPrivacyIndex
+        .toString();
     if (_userAuthToken != null) {
       Navigator.pushAndRemoveUntil(
           context,
@@ -301,6 +320,7 @@ class PostProvider with ChangeNotifier {
           "postSticker": gifURL,
           "feeling_type": "feelings",
           "feeling": feeling,
+          "postPrivacy": _postPrivacyIndex,
         },
       ).then((value) {
         var response = jsonDecode(value.body);
@@ -340,16 +360,21 @@ class PostProvider with ChangeNotifier {
     @required String feeling,
   }) async {
     var _userProvider = Provider.of<UserProvider>(context, listen: false);
+    var _postPrivacyIndex = Provider.of<WidgetProvider>(context, listen: false)
+        .postPrivacyIndex
+        .toString();
     Map body;
     if (feelings != null) {
       body = {
         "postText": pollQuestion,
         "feeling_type": "feelings",
         "feeling": feeling,
+        "postPrivacy": _postPrivacyIndex,
       };
     } else {
       body = {
         "postText": pollQuestion,
+        "postPrivacy": _postPrivacyIndex,
       };
     }
     for (int i = 0; i < answers.length; i++) {

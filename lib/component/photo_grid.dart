@@ -46,6 +46,7 @@ class _PhotoGridState extends State<PhotoGrid> {
                   child: FadeInImage.memoryNetwork(
                     placeholder: kTransparentImage,
                     image: widget.imageUrls[0].thumbnail,
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
@@ -60,6 +61,7 @@ class _PhotoGridState extends State<PhotoGrid> {
                   child: FadeInImage.memoryNetwork(
                     placeholder: kTransparentImage,
                     image: widget.imageUrls[1].thumbnail,
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
@@ -83,6 +85,7 @@ class _PhotoGridState extends State<PhotoGrid> {
                     child: FadeInImage.memoryNetwork(
                       placeholder: kTransparentImage,
                       image: widget.imageUrls[0].thumbnail,
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
@@ -99,6 +102,7 @@ class _PhotoGridState extends State<PhotoGrid> {
                     child: FadeInImage.memoryNetwork(
                       placeholder: kTransparentImage,
                       image: widget.imageUrls[1].thumbnail,
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
@@ -120,6 +124,7 @@ class _PhotoGridState extends State<PhotoGrid> {
                       child: FadeInImage.memoryNetwork(
                         placeholder: kTransparentImage,
                         image: widget.imageUrls[2].thumbnail,
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ),
@@ -139,6 +144,7 @@ class _PhotoGridState extends State<PhotoGrid> {
           height: SizeConfig.kDefaultSize * 70,
           child: FadeInImage.memoryNetwork(
             placeholder: kTransparentImage,
+            fit: BoxFit.cover,
             image: widget.imageUrls[0].thumbnail,
           ),
         ),
@@ -152,6 +158,7 @@ class _PhotoGridState extends State<PhotoGrid> {
           mainAxisSpacing: 2,
           childAspectRatio: 1.5,
         ),
+        physics: NeverScrollableScrollPhysics(),
         children: images,
       );
     }
@@ -172,6 +179,7 @@ class _PhotoGridState extends State<PhotoGrid> {
               height: 100,
               child: FadeInImage.memoryNetwork(
                 placeholder: kTransparentImage,
+                fit: BoxFit.cover,
                 image: imageUrl,
               ),
             ),
@@ -188,6 +196,7 @@ class _PhotoGridState extends State<PhotoGrid> {
                     width: 100,
                     height: 100,
                     child: FadeInImage.memoryNetwork(
+                      fit: BoxFit.cover,
                       image: imageUrl,
                       placeholder: kTransparentImage,
                     ),
@@ -218,6 +227,7 @@ class _PhotoGridState extends State<PhotoGrid> {
             height: 100,
             child: FadeInImage.memoryNetwork(
               placeholder: kTransparentImage,
+              fit: BoxFit.cover,
               image: imageUrl,
             ),
           ),

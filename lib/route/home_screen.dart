@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import 'package:youonline/model/post_reaction.dart';
 import 'package:youonline/model/timeline_data.dart';
+import 'package:youonline/provider/automotive_provider.dart';
 import 'package:youonline/provider/timeline_provider.dart';
 import 'package:youonline/provider/user_provider.dart';
 import 'package:youonline/utils/assets.dart';
@@ -49,6 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     var _timelineProvider =
         Provider.of<TimelineProvider>(context, listen: false);
+
     scrollController = ScrollController()
       ..addListener(() {
         if (scrollController.offset > 10 && scrollController.offset < 25) {
@@ -81,6 +83,10 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         }
       });
+    Future.delayed(Duration(seconds: 2), () {
+      Provider.of<AutomotiveProvider>(context, listen: false)
+          .getAutomotiveOptions(context: context);
+    });
   }
 
   int pageNo = 1;
@@ -124,12 +130,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 physics: const AlwaysScrollableScrollPhysics(),
                 itemCount: _timelineProvider.timelineData.length,
                 itemBuilder: (context, timelineIndex) {
-                  List<TimelinePostComments> comments = [];
-
-                  comments =
-                      _timelineProvider.timelineData[timelineIndex]?.comments ??
-                          [];
-
                   String imageURL;
                   String iframe;
                   String videoURL;
@@ -143,6 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   } else {
                     shared = false;
                   }
+                  String postID;
 
                   List<Album> album = [];
                   String videoThumbnail = "";
@@ -153,6 +154,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         .sharedBy
                         ?.videoThumbnail
                         ?.image;
+                    postID = _timelineProvider
+                        .timelineData[timelineIndex].sharedBy?.postId
+                        .toString();
                     if (_timelineProvider.timelineData[timelineIndex].sharedBy
                                 .postText !=
                             null &&
@@ -227,6 +231,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           .timelineData[timelineIndex].sharedBy.postYoutube;
                     }
                   } else {
+                    postID = _timelineProvider
+                        .timelineData[timelineIndex].postId
+                        .toString();
                     videoThumbnail = _timelineProvider
                         .timelineData[timelineIndex].videoThumbnail?.image;
                     if (_timelineProvider
@@ -449,15 +456,22 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                     comments:
                         _timelineProvider.timelineData[timelineIndex].comments,
-                    comment: comments != null
-                        ? comments.length > 0
-                            ? comments[0]
+                    comment: _timelineProvider
+                                .timelineData[timelineIndex]?.comments !=
+                            null
+                        ? _timelineProvider.timelineData[timelineIndex]
+                                    ?.comments?.length >
+                                0
+                            ? _timelineProvider
+                                .timelineData[timelineIndex]?.comments[0]
                             : TimelinePostComments()
                         : TimelinePostComments(),
                     commentButtonCallback: () async {
                       await commentBottomSheet(
                         context,
-                        comments: comments ?? [],
+                        comments: _timelineProvider
+                                .timelineData[timelineIndex]?.comments ??
+                            [],
                         postID: _timelineProvider
                             .timelineData[timelineIndex].postId
                             .toString(),
@@ -472,9 +486,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     shareButtonCallback: () {
                       shareBottomSheet(
                         context,
-                        postID: _timelineProvider
-                            .timelineData[timelineIndex].postId
-                            .toString(),
+                        postID: postID,
                       );
                     },
                     postSticker: _timelineProvider
@@ -552,7 +564,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     showCommentBottomSheet: () async {
                       await commentBottomSheet(
                         context,
-                        comments: comments ?? [],
+                        comments: _timelineProvider
+                                .timelineData[timelineIndex]?.comments ??
+                            [],
                         postID: _timelineProvider
                             .timelineData[timelineIndex].postId
                             .toString(),
