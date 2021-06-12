@@ -134,6 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   String iframe;
                   String videoURL;
                   String postText;
+                  String postSticker;
 
                   bool shared = false;
 
@@ -147,6 +148,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   List<Album> album = [];
                   String videoThumbnail = "";
+                  List<Options> options;
+                  String feelings;
+                  String sharedPostText;
 
                   if (shared) {
                     videoThumbnail = _timelineProvider
@@ -154,9 +158,22 @@ class _HomeScreenState extends State<HomeScreen> {
                         .sharedBy
                         ?.videoThumbnail
                         ?.image;
+                    postSticker = _timelineProvider
+                        .timelineData[timelineIndex].sharedBy?.postSticker;
+
+                    options = _timelineProvider
+                        .timelineData[timelineIndex].sharedBy.options;
                     postID = _timelineProvider
                         .timelineData[timelineIndex].sharedBy?.postId
                         .toString();
+                    if (_timelineProvider
+                                .timelineData[timelineIndex].postText !=
+                            null &&
+                        _timelineProvider
+                            .timelineData[timelineIndex].postText.isNotEmpty) {
+                      sharedPostText = _timelineProvider
+                          .timelineData[timelineIndex].postText;
+                    }
                     if (_timelineProvider.timelineData[timelineIndex].sharedBy
                                 .postText !=
                             null &&
@@ -166,6 +183,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               .timelineData[timelineIndex].sharedBy.postText ??
                           "";
                     }
+
                     if (_timelineProvider.timelineData[timelineIndex].sharedBy
                                 .postYoutube !=
                             null &&
@@ -230,7 +248,16 @@ class _HomeScreenState extends State<HomeScreen> {
                       iframe = _timelineProvider
                           .timelineData[timelineIndex].sharedBy.postYoutube;
                     }
+
+                    feelings = _timelineProvider
+                        .timelineData[timelineIndex].sharedBy.postFeeling;
                   } else {
+                    postSticker = _timelineProvider
+                        .timelineData[timelineIndex].postSticker;
+                    feelings = _timelineProvider
+                        .timelineData[timelineIndex].postFeeling;
+                    options =
+                        _timelineProvider.timelineData[timelineIndex].options;
                     postID = _timelineProvider
                         .timelineData[timelineIndex].postId
                         .toString();
@@ -328,6 +355,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             null
                         ? _timelineProvider.timelineData[timelineIndex].colored
                         : null,
+                    sharedPostText: sharedPostText,
                     likedButtonOnPressed: () {
                       SizeConfig().init(context);
 
@@ -480,8 +508,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                       setState(() {});
                     },
-                    feelings: _timelineProvider
-                        .timelineData[timelineIndex].postFeeling,
+                    feelings: feelings,
                     timelineIndex: timelineIndex,
                     shareButtonCallback: () {
                       shareBottomSheet(
@@ -489,8 +516,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         postID: postID,
                       );
                     },
-                    postSticker: _timelineProvider
-                        .timelineData[timelineIndex].postSticker,
+                    postSticker: postSticker,
                     postID: _timelineProvider.timelineData[timelineIndex].id
                         .toString(),
                     moreButtonCallback: () {
@@ -558,9 +584,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     postType:
                         _timelineProvider.timelineData[timelineIndex].type ??
                             "",
-                    option:
-                        _timelineProvider.timelineData[timelineIndex].options ??
-                            [],
+                    option: options ?? [],
                     showCommentBottomSheet: () async {
                       await commentBottomSheet(
                         context,

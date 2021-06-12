@@ -64,6 +64,7 @@ class HomePostWidget extends StatelessWidget {
   final TimelinePage page;
   final Group group;
   final String videoThumbnail;
+  final String sharedPostText;
 
   HomePostWidget({
     Key key,
@@ -99,6 +100,7 @@ class HomePostWidget extends StatelessWidget {
     @required this.page,
     @required this.user,
     @required this.videoThumbnail,
+    @required this.sharedPostText,
   }) : super(key: key);
 
   String _parseHtmlString(String htmlString) {
@@ -139,6 +141,25 @@ class HomePostWidget extends StatelessWidget {
                 group: group,
                 user: user,
               ),
+              if (sharedPostText != null && sharedPostText.isNotEmpty)
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: SizeConfig.kDefaultSize * 3,
+                  ),
+                  child: Row(
+                    children: [
+                      Flexible(
+                        child: Text(
+                          _parseHtmlString(sharedPostText),
+                          style: labelTextStyle.copyWith(
+                            fontSize: SizeConfig.kDefaultSize * 3.2,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               if (description != null)
                 if (postColor != null && !postType.contains("poll"))
                   PostColorContainer(

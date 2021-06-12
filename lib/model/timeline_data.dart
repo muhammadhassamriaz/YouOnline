@@ -921,6 +921,7 @@ class User {
     data['weather_unit'] = this.weatherUnit;
     data['paystack_ref'] = this.paystackRef;
     data['blogger_approved'] = this.bloggerApproved;
+
     return data;
   }
 }
@@ -991,14 +992,13 @@ class SharedBy {
   ColorPostTypes colored;
   int likesCount;
   VideoThumbnail videoThumbnail;
-
   int reactionCount;
   String reactionTypes;
   String youtube;
   String video;
   String image;
   List<Album> album;
-
+  List<Options> options;
   SharedBy(
       {this.id,
       this.postId,
@@ -1149,6 +1149,12 @@ class SharedBy {
         album.add(Album.fromMap(e));
       });
     }
+    if (json['options'] != null) {
+      options = <Options>[];
+      json['options'].forEach((e) {
+        options.add(Options.fromMap(e));
+      });
+    }
     videoThumbnail = json['video_thumbnail'] != null
         ? new VideoThumbnail.fromJson(json['video_thumbnail'])
         : null;
@@ -1233,6 +1239,9 @@ class SharedBy {
     }
     if (this.videoThumbnail != null) {
       data['video_thumbnail'] = this.videoThumbnail.toJson();
+    }
+    if (this.options != null) {
+      data['options'] = this.options.map((e) => e.toMap()).toList();
     }
     return data;
   }
